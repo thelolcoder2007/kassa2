@@ -41,7 +41,7 @@
       !include ${config.sops.templates."nix-github-token.env".path}
     '';
     settings = {
-      trusted-users = (config.users.users |> lib.filterAttrs (_: val: val.isNormalUser) |> lib.attrNames);
+      trusted-users = lib.attrNames (lib.filterAttrs (_: val: val.isNormalUser) config.users.users);
       cores = 0;
       max-jobs = "auto";
       experimental-features = [
