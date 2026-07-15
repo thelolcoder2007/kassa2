@@ -1,11 +1,11 @@
 ---
 keys:
   - &thomas age1s8sasdxlc8yzw47pqgh0swwhkpergq943jzmc49n6vx7ct7nfucsaqq68t
-  # - &kassa2 age...
+  - &kassa2 age1t7ahcf5cqju2mh4s60cyhm5zg5udw7q4k3nk84t099xdeevykp9qyjy8nq
 
 creation_rules:
   - path_regex: secrets.json$
     key_groups:
       - age:
         - *thomas
-        # - *kassa2
+        - *kassa2
