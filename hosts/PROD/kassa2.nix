@@ -2,7 +2,7 @@ let
   host = {
     ip_addr4 = "145.220.6.20";
     ip_addr6 = "2001:67c:6ec:abba:145:220:6:20";
-    hostName = "bergpad";
+    hostName = "kassa2";
   };
 in
 {

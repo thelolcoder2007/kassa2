@@ -6,8 +6,8 @@ let
   inherit (host) ip_addr4 ip_addr6 hostName;
 
   DNS_server = {
-    ip_addr4 = "";
-    ip_addr6 = "";
+    ip_addr4 = "9.9.9.9";
+    ip_addr6 = "2606:4700:4700::1111";
   };
 in
 {
@@ -20,7 +20,7 @@ in
 
     nftables.enable = true;
 
-    interfaces.ens192 = {
+    interfaces.enp3s0f1 = {
       ipv6.addresses = [
         {
           address = ip_addr6;
@@ -39,13 +39,14 @@ in
 
     defaultGateway = {
       address = firewall_ip_addr4;
-      interface = "ens192";
+      interface = "enp3s0f1";
     };
     defaultGateway6 = {
       address = firewall_ip_addr6;
-      interface = "ens192";
+      interface = "enp3s0f1";
     };
   };
+
   # Fuck resolvconf, all my homies hate resolvconf. Real users write their own resolv.conf
   networking.resolvconf.enable = false;
   environment.etc."resolv.conf" = {
