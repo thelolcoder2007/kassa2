@@ -1,19 +1,11 @@
 ---
 keys:
   - &thomas age1s8sasdxlc8yzw47pqgh0swwhkpergq943jzmc49n6vx7ct7nfucsaqq68t
-  - &nixos-tryout-server age17kj9me6rluhq3xwfd0c7rs7wlzez7qgp34878ap80sxvk59fg3qqz8dlup
-  - &BGP01 age1pfyuh53qv5jg4ege7y0nypg7ddx5mdfnsl40pnmsg0xxuymcfu8qmavma9
+  # - &kassa2 age...
 
 creation_rules:
   - path_regex: secrets.json$
     key_groups:
       - age:
         - *thomas
-        - *nixos-tryout-server
-        - *BGP01
-
-  - path_regex: IRC/irssi.yml$
-    key_groups:
-      - age:
-          - *thomas
-          - *nixos-tryout-server
+        # - *kassa2
