@@ -73,6 +73,7 @@
       bat
       btop
       dig
+      fastfetch
       file
       gh
       git
