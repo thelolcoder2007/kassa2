@@ -46,7 +46,7 @@ with lib;
     };
     networking.firewall = mkIf cfg.openFirewall rec {
       allowedTCPPorts = [
-        443  # HTTPS/HSLS
+        0443 # HTTPS/HSLS
         1935 # RTMP
         4200 # DTSC
         5554 # RTSP
