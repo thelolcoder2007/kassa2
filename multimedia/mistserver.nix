@@ -5,6 +5,7 @@
   ...
 }:
 {
+  environment.systemPackages = [ config.services.mistServer.package ];
   imports = [
     ../pkgs/mistserver/options.nix
     ../base/sops.nix
@@ -59,4 +60,5 @@
         pkgs.v4l2-relayd
       ];
   };
+  networking.firewall.allowedTCPPorts = [80];
 }

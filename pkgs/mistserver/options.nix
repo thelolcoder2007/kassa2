@@ -46,11 +46,11 @@ with lib;
     };
     networking.firewall = mkIf cfg.openFirewall rec {
       allowedTCPPorts = [
+        443  # HTTPS/HSLS
         1935 # RTMP
         4200 # DTSC
-        4433 # Weird HTTPS/HSLS thingies
         5554 # RTSP
-        8080 # Weird HTTP/HLS thingies
+        8080 # HTTP/HLS
       ];
       allowedUDPPorts = allowedTCPPorts ++ [
         8889 # SRT
