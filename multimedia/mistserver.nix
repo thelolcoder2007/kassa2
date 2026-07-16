@@ -4,7 +4,7 @@
 }:
 {
   imports = [
-    ../pkgs/mistserver/options.nix
+    ./mistserver-pkg/options.nix
   ];
 
   environment.systemPackages = [ config.services.mistServer.package ];
