@@ -1,5 +1,5 @@
 {
-  description = "Home infra flake";
+  description = "Kassa 2";
 
   nixConfig = {
     extra-substituters = [

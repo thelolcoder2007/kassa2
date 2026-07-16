@@ -65,7 +65,7 @@
   environment = {
     variables = {
       # keep-sorted start
-      "NH_FLAKE" = "/etc/nixos/nixos-repository";
+      "NH_FLAKE" = "/etc/nixos/kassa2";
       # keep-sorted end
     };
     systemPackages = with pkgs; [

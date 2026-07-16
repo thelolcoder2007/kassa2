@@ -11,6 +11,8 @@ in
     # keep-sorted start
     ../../base/base.nix
     ../../base/users.nix
+    ../../multimedia/gstreamer.nix
+    ../../multimedia/mistserver.nix
     ../../networking/firstInterface.nix
     ../../networking/ssh.nix
     # keep-sorted end
