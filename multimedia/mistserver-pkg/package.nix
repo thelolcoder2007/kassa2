@@ -20,12 +20,13 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "mistserver";
-  version = "3.11";
+  version = "3.11.1";
+  rel = "1";
   src = fetchFromGitHub {
     owner = "ddvtech";
     repo = "mistserver";
     tag = finalAttrs.version;
-    hash = "sha256-vjYsJvLpD68o2bUG06bnjgYKxMLqRl9GHWGoCBrME8s=";
+    hash = "sha256-wghZp8nNUNAH1gpATZ61JNmk0BrDFPAQqBReM6k/gNY=";
 
     nativeBuildInputs = [
       cacert
