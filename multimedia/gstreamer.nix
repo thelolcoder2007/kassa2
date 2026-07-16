@@ -7,7 +7,7 @@
 let
   gstreamer-sh = pkgs.writeShellScriptBin "gstreamer.sh" ''
     ${pkgs.gst_all_1.gstreamer}/bin/gst-launch-1.0 \
-        v4l2src device=/dev/video0 v4l2src device=/dev/video0 ! videoconvert \
+        v4l2src device=/dev/video0 ! videoconvert \
         ! x264enc cabac=1 bframes=2 ref=1 ! flvmux streamable=true name=muxer \
         ! rtmpsink location="rtmp://127.0.0.1/live/$(/nix/store/mfyl1xgssip1ilng4sjswzzvf1gipr0d-coreutils-full-9.11/bin/cat /run/secrets/rtmp_key)"
   '';
