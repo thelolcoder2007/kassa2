@@ -4,8 +4,8 @@
   };
   services.fail2ban = {
     enable = true;
-    bantime = "1h";
+    bantime = "2h";
     bantime-increment.enable = true;
-    maxretry = 10;
+    maxretry = 5;
   };
 }
