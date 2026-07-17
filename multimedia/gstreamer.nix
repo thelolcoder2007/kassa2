@@ -6,10 +6,12 @@
 }:
 let
   gstreamer-sh = pkgs.writeShellScriptBin "gstreamer.sh" ''
-    ${pkgs.gst_all_1.gstreamer}/bin/gst-launch-1.0 \
-        v4l2src device=/dev/video0 ! videoconvert \
-        ! x264enc cabac=1 bframes=2 ref=1 ! flvmux streamable=true name=muxer \
-        ! rtmpsink location="rtmp://127.0.0.1/live/$(/nix/store/mfyl1xgssip1ilng4sjswzzvf1gipr0d-coreutils-full-9.11/bin/cat /run/secrets/rtmp_key)"
+    ${pkgs.gst_all_1.gstreamer}/bin/gst-launch-1.0 -v v4l2src device=/dev/video0 \
+    ! videoconvert ! x264enc quantizer=0 speed-preset=ultrafast tune=zerolatency \
+    ! h264parse ! mpegtsmux \
+    ! srtsink uri="srt://127.0.0.1:8889?streamid=$(${pkgs.coreutils-full}/bin/cat ${
+      config.sops.secrets."rtmp_key".path
+    })"
   '';
 in
 {
