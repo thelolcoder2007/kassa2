@@ -15,6 +15,7 @@ in
     ../../multimedia/mistserver.nix
     ../../networking/firstInterface.nix
     ../../networking/ssh.nix
+    ../../webserver/mistserver-nginx.nix
     # keep-sorted end
   ];
 }
