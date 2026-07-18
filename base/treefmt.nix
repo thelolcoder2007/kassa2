@@ -1,3 +1,5 @@
+{ pkgs, ... }:
+
 {
   # Used to find the project root
   projectRootFile = "flake.nix";
@@ -15,6 +17,16 @@
     mdformat = {
       enable = true;
       settings.number = true;
+    };
+    mypy = {
+      enable = true;
+      directories."" = {
+        extraPythonPackages = with pkgs.python3Packages; [
+          gst-python
+          pygobject3
+        ];
+        options = [ "--ignore-missing-imports" ];
+      };
     };
     shfmt = {
       simplify = true;
