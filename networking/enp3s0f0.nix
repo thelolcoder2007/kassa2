@@ -1,4 +1,4 @@
-{ host, ... }:
+{ config, host, ... }:
 
 let
   firewall_ip_addr4 = "145.220.6.1";
@@ -6,8 +6,9 @@ let
   inherit (host) ip_addr4 ip_addr6 hostName;
 
   DNS_server = {
-    ip_addr4 = "9.9.9.9";
-    ip_addr6 = "2606:4700:4700::1111";
+    # DNS provided by Church of Cyberology (which is really close in terms of BGP hops)
+    ip_addr4 = "192.42.116.9";
+    ip_addr6 = "2001:67c:e60:c0c::53:2";
   };
 in
 {
@@ -54,7 +55,7 @@ in
     text = ''
       nameserver ${DNS_server.ip_addr4}
       nameserver ${DNS_server.ip_addr6}
-      search nationalespeeltuin.nl
+      search ${config.networking.domain}
       options edns0 inet6
     '';
   };
