@@ -1,15 +1,18 @@
+# pyright: reportAttributeAccessIssue=false
 import os
 import gi
 import time
 
 gi.require_version('Gst', '1.0')
-from gi.repository import Gst, GLib
+from gi.repository import Gst, GLib # noqa: E402
 
 # Initialize GStreamer
 Gst.init(None)
 
-
-rtmp_key = "recv-tcp"
+# Get RTSP key from SOPS file
+f = open("/run/secrets/rtmp_key", "r")
+rtmp_key = f.read()
+f.close()
 
 pipeline_str = (
     "v4l2src device=/dev/video0 io-mode=mmap do-timestamp=true "
@@ -48,8 +51,8 @@ def on_new_frame(sink):
 
     if success:
         now = time.localtime()
-        dir_path = time.strftime(f"{base_dir}/%Y-%m-%d-%H", now)
-        file_name = time.strftime("%M_%S.png", now)
+        dir_path = time.strftime(f"{base_dir}/%Y-%m-%d_%H", now)
+        file_name = time.strftime("%M-%S.png", now)
         full_path = os.path.join(dir_path, file_name)
 
         os.makedirs(dir_path, exist_ok=True)
@@ -58,7 +61,6 @@ def on_new_frame(sink):
             f.write(map_info.data)
 
         buffer.unmap(map_info)
-        print(f"Snapshot saved: {full_path}")
 
     return Gst.FlowReturn.OK
 
@@ -80,7 +82,6 @@ bus.connect("message", on_bus_message)
 
 appsink.connect("new-sample", on_new_frame)
 
-print("Press Ctrl+C to stop.")
 pipeline.set_state(Gst.State.PLAYING)
 
 # Run the main loop so the script stays alive
@@ -88,7 +89,7 @@ loop = GLib.MainLoop()
 try:
     loop.run()
 except KeyboardInterrupt:
-    print("\nStopping recording...")
+    print("CTRL+C received, exiting...")
 finally:
     # Crucial: Send an EOS (End of Stream) so the MKV file finalizes properly without corruption
     pipeline.send_event(Gst.Event.new_eos())
