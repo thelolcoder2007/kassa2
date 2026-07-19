@@ -84,14 +84,12 @@ appsink.connect("new-sample", on_new_frame)
 
 pipeline.set_state(Gst.State.PLAYING)
 
-# Run the main loop so the script stays alive
 loop = GLib.MainLoop()
 try:
     loop.run()
 except KeyboardInterrupt:
     print("CTRL+C received, exiting...")
 finally:
-    # Crucial: Send an EOS (End of Stream) so the MKV file finalizes properly without corruption
     pipeline.send_event(Gst.Event.new_eos())
     time.sleep(1)
     pipeline.set_state(Gst.State.NULL)
