@@ -52,8 +52,8 @@
         {
           "kassa2" = nixosSystem {
             modules = [
-              ./hosts/PROD/kassa2.nix
-              ./hosts/PROD/hardware-configuration-kassa2.nix
+              ./hosts/kassa2.nix
+              ./hosts/hardware-configuration-kassa2.nix
             ];
             specialArgs = {
               inherit inputs;

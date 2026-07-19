@@ -9,13 +9,13 @@ in
   _module.args = { inherit host; };
   imports = [
     # keep-sorted start
-    ../../base/base.nix
-    ../../base/users.nix
-    ../../multimedia/gstreamer.nix
-    ../../multimedia/mistserver.nix
-    ../../networking/firstInterface.nix
-    ../../networking/ssh.nix
-    ../../webserver/mistserver-nginx.nix
+    ../base/base.nix
+    ../base/users.nix
+    ../multimedia/gstreamer.nix
+    ../multimedia/mistserver.nix
+    ../networking/enp3s0f0.nix
+    ../networking/ssh.nix
+    ../webserver/mistserver-nginx.nix
     # keep-sorted end
   ];
 }
