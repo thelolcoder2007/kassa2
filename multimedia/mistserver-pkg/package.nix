@@ -33,6 +33,7 @@ stdenv.mkDerivation (finalAttrs: {
       git
       meson
     ];
+
     postFetch = ''
       (
         cd "$out"
@@ -51,6 +52,7 @@ stdenv.mkDerivation (finalAttrs: {
     git
     pkg-config
   ];
+
   buildInputs = [
     cjson
     libmicrohttpd

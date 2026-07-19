@@ -30,12 +30,13 @@
           };
         };
       });
+
   # Github plz no ratelimit tyyy
   sops.secrets.github_token = { };
-
   sops.templates."nix-github-token.env".content = ''
     access-tokens = github.com=${config.sops.placeholder.github_token}
   '';
+
   nix = {
     extraOptions = ''
       !include ${config.sops.templates."nix-github-token.env".path}
@@ -92,7 +93,6 @@
     ];
   };
 
-  boot.kernel.sysctl."kernel.task_delayacct" = 1;
   boot = {
     loader.grub = {
       # Use GRUB
@@ -101,6 +101,7 @@
       efiSupport = true;
       efiInstallAsRemovable = true; # Just because this is easier to boot from on virtualized hosts
     };
+    kernel.sysctl."kernel.task_delayacct" = 1;
     kernelPackages = pkgs.linuxPackages_latest;
   };
 
