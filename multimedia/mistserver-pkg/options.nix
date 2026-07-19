@@ -6,8 +6,13 @@
 }:
 let
   cfg = config.services.mistServer;
+  inherit (lib)
+    mkEnableOption
+    mkOption
+    types
+    mkIf
+    ;
 in
-with lib;
 {
   options.services.mistServer = {
     enable = mkEnableOption "Enable mistserver, a streaming server";
