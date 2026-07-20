@@ -1,15 +1,14 @@
 # pyright: reportAttributeAccessIssue=false
 import os
-import gi
 import time
 
-gi.require_version('Gst', '1.0')
-from gi.repository import Gst, GLib # noqa: E402
+import gi
 
-# Initialize GStreamer
+gi.require_version("Gst", "1.0")
+from gi.repository import GLib, Gst  # noqa: E402
+
 Gst.init(None)
 
-# Get RTSP key from SOPS file
 f = open("/run/secrets/rtmp_key", "r")
 rtmp_key = f.read()
 f.close()
@@ -17,12 +16,10 @@ f.close()
 pipeline_str = (
     "v4l2src device=/dev/video0 io-mode=mmap do-timestamp=true "
     "! capsfilter caps=video/x-raw,width=3840,height=2160,framerate=60/1 ! tee name=t "
-
     # RTSP Branch
     "t. ! queue max-size-bytes=0 max-size-buffers=60 max-size-time=0 leaky=downstream "
     "! videoconvert ! x264enc bitrate=100000 speed-preset=ultrafast tune=zerolatency key-int-max=60 "
-    f"! h264parse config-interval=-1 ! rtspclientsink protocols=tcp location=\"rtsp://127.0.0.1:5554/{rtmp_key}\" "
-
+    f'! h264parse config-interval=-1 ! rtspclientsink protocols=tcp location="rtsp://127.0.0.1:5554/{rtmp_key}" '
     # MKV Recording Branch
     "t. ! queue max-size-bytes=0 max-size-buffers=60 max-size-time=0 leaky=downstream "
     "! videoconvert ! x264enc pass=quant quantizer=0 speed-preset=ultrafast tune=zerolatency "
@@ -40,6 +37,7 @@ pipeline = Gst.parse_launch(pipeline_str)
 appsink = pipeline.get_by_name("snapsink")
 
 base_dir = "/var/mistserver/screenshots"
+
 
 def on_new_frame(sink):
     sample = sink.emit("pull-sample")
@@ -64,8 +62,10 @@ def on_new_frame(sink):
 
     return Gst.FlowReturn.OK
 
+
 bus = pipeline.get_bus()
 bus.add_signal_watch()
+
 
 def on_bus_message(bus, message):
     if message.type == Gst.MessageType.ERROR:
@@ -77,6 +77,7 @@ def on_bus_message(bus, message):
         err, debug = message.parse_warning()
         print(f"[PIPELINE WARNING]: {err}")
     return True
+
 
 bus.connect("message", on_bus_message)
 
