@@ -6,14 +6,16 @@
         "nixpkgs": [
           "nixpkgs"
         ],
-        "treefmt-nix": "treefmt-nix"
+        "treefmt-nix": [
+          "treefmt-nix"
+        ]
       },
       "locked": {
-        "lastModified": 1784736111,
-        "narHash": "sha256-PO5j5qq0okTZbLu1h9lRAJM+Ph2lsr0/xaweEB28LJY=",
+        "lastModified": 1784737787,
+        "narHash": "sha256-inq/KbuzyQ+utHAps4S8gKMMrSlvSGtglCtB1AqqF+8=",
         "ref": "refs/heads/master",
-        "rev": "a01a93a44a64abfb770197031e9e8bcfe7570956",
-        "revCount": 29,
+        "rev": "4ea5ef3a089ecfa7a49cb59b8af43e1aaf7a18c1",
+        "revCount": 30,
         "type": "git",
         "url": "https://git.bartoostveen.nl/bart/nix-packages.git"
       },
@@ -85,7 +87,7 @@
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",
         "sops-nix": "sops-nix",
-        "treefmt-nix": "treefmt-nix_2"
+        "treefmt-nix": "treefmt-nix"
       }
     },
     "sops-nix": {
@@ -109,27 +111,6 @@
       }
     },
     "treefmt-nix": {
-      "inputs": {
-        "nixpkgs": [
-          "bart-pkgs",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1784369104,
-        "narHash": "sha256-47cxbcZODibHv3rELFQ9vZly0vUNkND/atn/U7HLeb0=",
-        "owner": "numtide",
-        "repo": "treefmt-nix",
-        "rev": "df3c0640565d04a0261253cdd89fce78ec50168a",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "treefmt-nix",
-        "type": "github"
-      }
-    },
-    "treefmt-nix_2": {
       "inputs": {
         "nixpkgs": [
           "nixpkgs"
