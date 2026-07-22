@@ -45,19 +45,17 @@
       checks.x86_64-linux.formatting = (treefmt-nix.lib.evalModule nixpkgs.outputs.legacyPackages.x86_64-linux ./base/treefmt.nix).config.build.check self;
 
       # Host configs:
-      nixosConfigurations =
+      nixosConfigurations."kassa2" =
         let
           inherit (nixpkgs.lib) nixosSystem;
         in
-        {
-          "kassa2" = nixosSystem {
-            modules = [
-              ./hosts/kassa2.nix
-              ./hosts/hardware-configuration-kassa2.nix
-            ];
-            specialArgs = {
-              inherit inputs;
-            };
+        nixosSystem {
+          modules = [
+            ./hosts/kassa2.nix
+            ./hosts/hardware-configuration-kassa2.nix
+          ];
+          specialArgs = {
+            inherit inputs;
           };
         };
     };
