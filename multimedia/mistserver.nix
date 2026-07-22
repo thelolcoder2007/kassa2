@@ -2,7 +2,6 @@
   config,
   inputs,
   lib,
-  pkgs,
   ...
 }:
 {
@@ -14,7 +13,6 @@
     groups.mistserver = { };
     users.mistserver = {
       isSystemUser = true;
-      extraGroups = [ config.users.groups.nginx.name ];
       group = "mistserver";
     };
   };
@@ -151,51 +149,8 @@
       variables = null;
     };
   };
-  systemd.services."mistserver" =
-    let
-      cfg = config.services.mistserver;
-
-      runtimeConfigFile = "${cfg.dataDir}/config.json";
-      settingsFormat = pkgs.formats.json { };
-      settingsJson = settingsFormat.generate "mistserver.json" cfg.settings;
-    in
-    lib.mkForce {
-      after = [ "network.target" ];
-      description = "mistserver, a streaming server";
-      wantedBy = [ "multi-user.target" ];
-      preStart = lib.optionalString (cfg.configFile != null) ''
-        ${lib.getExe pkgs.jq} -s 'reduce .[] as $obj ({}; . * $obj)' ${cfg.configFile} ${settingsJson} > ${runtimeConfigFile}
-        chmod 0660 ${runtimeConfigFile}
-      '';
-      script = ''
-        ${lib.getExe cfg.package} -c ${runtimeConfigFile}
-      '';
-      serviceConfig = {
-        Type = "simple";
-        Restart = "always";
-        DynamicUser = true;
-        RestartSec = 2;
-        TimeoutStopSec = 8;
-        TasksMax = "infinity";
-        StateDirectory = "mistserver";
-        UMask = "0027";
-        MemoryDenyWriteExecute = true;
-        PrivateDevices = true;
-        PrivateTmp = true;
-        ProtectHome = true;
-        ProtectControlGroups = true;
-        RestrictSUIDSGID = true;
-        RestrictRealtime = true;
-        LockPersonality = true;
-        ProtectKernelLogs = true;
-        ProtectKernelTunables = true;
-        ProtectHostname = true;
-        ProtectKernelModules = true;
-        PrivateUsers = true;
-        ProtectClock = true;
-        SystemCallArchitectures = "native";
-        SystemCallErrorNumber = "EPERM";
-        SystemCallFilter = "@system-service";
-      };
-    };
+  systemd.services."mistserver".serviceConfig = {
+    SupplementaryGroups = [ "nginx" ];
+    ProtectSystem = lib.mkForce null;
+  };
 }
