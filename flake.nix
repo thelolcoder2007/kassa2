@@ -27,6 +27,10 @@
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    bart-pkgs = {
+      url = "git+https://git.bartoostveen.nl/bart/nix-packages.git";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -53,6 +57,7 @@
           modules = [
             ./hosts/kassa2.nix
             ./hosts/hardware-configuration-kassa2.nix
+            { nixpkgs.overlays = [ inputs.bart-pkgs.overlays.default ]; }
           ];
           specialArgs = {
             inherit inputs;

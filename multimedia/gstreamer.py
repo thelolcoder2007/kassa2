@@ -21,10 +21,9 @@ pipeline_str = (
     "! videoconvert ! x264enc bitrate=100000 speed-preset=ultrafast tune=zerolatency key-int-max=60 "
     f'! h264parse config-interval=-1 ! rtspclientsink protocols=tcp location="rtsp://127.0.0.1:5554/{rtmp_key}" '
     # MKV Recording Branch
-    "t. ! queue max-size-bytes=0 max-size-buffers=60 max-size-time=0 leaky=downstream "
-    "! videoconvert ! x264enc pass=quant quantizer=0 speed-preset=ultrafast tune=zerolatency "
-    f"! matroskamux ! filesink location=/var/mistserver/recordings/sntpings-{time.strftime('%Y-%m-%d_%H-%M-%S', time.localtime())}.mkv async=false "
-
+    # "t. ! queue max-size-bytes=0 max-size-buffers=60 max-size-time=0 leaky=downstream "
+    # "! videoconvert ! x264enc pass=quant quantizer=0 speed-preset=ultrafast tune=zerolatency "
+    # f"! matroskamux ! filesink location=/var/mistserver/recordings/sntpings-{time.strftime('%Y-%m-%d_%H-%M-%S', time.localtime())}.mkv async=false "
     # PNG encoding branch
     "t. ! queue max-size-bytes=0 max-size-buffers=60 max-size-time=0 leaky=downstream "
     "! videorate drop-only=true ! video/x-raw,framerate=1/1 "
