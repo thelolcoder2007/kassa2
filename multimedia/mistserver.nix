@@ -12,6 +12,7 @@
     groups.mistserver = { };
     users.mistserver = {
       isSystemUser = true;
+      extraGroups = [ config.users.groups.nginx.name ];
       group = "mistserver";
     };
   };
