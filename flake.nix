@@ -30,6 +30,7 @@
     bart-pkgs = {
       url = "git+https://git.bartoostveen.nl/bart/nix-packages.git";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.treefmt-nix.follows = "treefmt-nix";
     };
   };
 

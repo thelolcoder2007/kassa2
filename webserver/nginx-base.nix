@@ -1,4 +1,10 @@
 {
+  security.acme = {
+    defaults = {
+      email = "thomas.erents@gmail.com";
+    };
+    acceptTerms = true;
+  };
   services.nginx = {
     enable = true;
     recommendedProxySettings = true;
@@ -11,5 +17,4 @@
     ];
     allowedUDPPorts = [ 443 ];
   };
-
 }

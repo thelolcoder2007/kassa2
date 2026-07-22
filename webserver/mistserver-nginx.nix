@@ -43,24 +43,11 @@
           autoindex on;
         '';
       };
-      listen = lib.mkForce [
-        {
-          addr = "0.0.0.0";
-          port = 443;
-          ssl = true;
-        }
-        {
-          addr = "[::]";
-          port = 443;
-          ssl = true;
-        }
-      ];
       http2 = true;
       http3 = true;
       http3_hq = true;
       addSSL = true;
-      sslCertificate = "/etc/letsencrypt/live/bergpad.nationalespeeltuin.nl/fullchain.pem";
-      sslCertificateKey = "/etc/letsencrypt/live/bergpad.nationalespeeltuin.nl/privkey.pem";
+      enableACME = true;
     };
   };
   users.users.root.extraGroups = [ config.users.groups.nginx.name ];
