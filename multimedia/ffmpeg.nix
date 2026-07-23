@@ -18,8 +18,8 @@ let
 
     ffmpeg -f v4l2 -video_size 3840x2160 -framerate 60 -i /dev/video0 \
       -map 0:v -c:v libx264 -preset ultrafast -tune zerolatency -b:v 100000k -g 60 -x264opts repeat_headers=1 -f rtsp "rtsp://127.0.0.1:5554/$rtmp_key" \
-      -map 0:v -c:v libx264 -preset ultrafast -tune zerolatency -qp 0 -f matroska "/var/mistserver/recordings/sntpings-$(date +%Y-%m-%d_%H-%M-%S).mkv" \
       -map 0:v -vf fps=1 -f image2 -strftime 1 "/var/mistserver/screenshots/%Y-%m-%d_%H/%M_%S.png"
+      # -map 0:v -c:v libx264 -preset ultrafast -tune zerolatency -qp 0 -f matroska "/var/mistserver/recordings/sntpings-$(date +%Y-%m-%d_%H-%M-%S).mkv"
   '';
 in
 {
