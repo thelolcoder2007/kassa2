@@ -35,6 +35,7 @@ in
         Unit = "ffmpeg-create-dirs.service";
         Persistent = true;
       };
+      wantedBy = [ "timers.target" ];
     };
     services = {
       ffmpeg-create-dirs = {
