@@ -4,10 +4,8 @@ let
   mkdir-sh = pkgs.writeShellScript "mkdir.sh" ''
     BASE_DIR="/var/mistserver/screenshots"
 
-    # Current hour folder, e.g. 2026-07-22_22
     current_dir="$(date +%Y-%m-%d_%H)"
 
-    # Next hour folder — computed via `date -d`, handles day/month/year rollover correctly
     next_dir="$(date -d '+1 hour' +%Y-%m-%d_%H)"
 
     mkdir -p "$BASE_DIR/$current_dir" "$BASE_DIR/$next_dir"
@@ -16,8 +14,10 @@ let
   ffmpeg-sh = pkgs.writeShellScript "ffmpeg.sh" ''
     rtmp_key=$(${pkgs.coreutils-full}/bin/cat ${config.sops.secrets."rtmp_key".path})
 
+    # The first branch might be a bad idea, since this is quite a lot of data.
+    # Let's hope that Mistserver compresses it into tiny little pieces so end devices don't consume 100mbit/s just viewing this livestream
     ffmpeg -f v4l2 -video_size 3840x2160 -framerate 60 -i /dev/video0 \
-      -map 0:v -c:v libx264 -preset ultrafast -tune zerolatency -b:v 100000k -g 60 -x264opts repeat_headers=1 -f rtsp "rtsp://127.0.0.1:5554/$rtmp_key" \
+      -map 0:v -c:v libx264 -preset ultrafast -tune zerolatency -qp 0 -g 60 -x264opts repeat_headers=1 -f rtsp "rtsp://127.0.0.1:5554/$rtmp_key" \
       -map 0:v -vf fps=1 -f image2 -strftime 1 "/var/mistserver/screenshots/%Y-%m-%d_%H/%M_%S.png"
       # -map 0:v -c:v libx264 -preset ultrafast -tune zerolatency -qp 0 -f matroska "/var/mistserver/recordings/sntpings-$(date +%Y-%m-%d_%H-%M-%S).mkv"
   '';
@@ -31,7 +31,7 @@ in
     timers."ffmpeg-create-dirs" = {
       description = "Run ensure-snapshot-dirs every hour";
       timerConfig = {
-        OnCalendar = "hourly";
+        OnCalendar = "*-*-* *:30:00"; # Every hour at xx:30
         Unit = "ffmpeg-create-dirs.service";
         Persistent = true;
       };
@@ -49,8 +49,9 @@ in
         after = [
           "network.target"
           "mistserver.service"
+          "ffmpeg-create-dirs.service"
         ];
-        description = "Stream /dev/video0 to Mistserver";
+        description = "Stream /dev/video0 to Mistserver, MKV and PNG";
         wantedBy = [ "multi-user.target" ];
         path = [ pkgs.ffmpeg ];
         serviceConfig = {
