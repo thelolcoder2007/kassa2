@@ -11,6 +11,7 @@ in
     # keep-sorted start
     ../base/base.nix
     ../base/users.nix
+    ../monitoring/zabbix-agent.nix
     ../multimedia/ffmpeg.nix
     ../multimedia/mistserver.nix
     ../networking/enp3s0f0.nix
