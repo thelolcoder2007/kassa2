@@ -16,10 +16,11 @@ let
 
     # The first branch might be a bad idea, since this is quite a lot of data.
     # Let's hope that Mistserver compresses it into tiny little pieces so end devices don't consume 100mbit/s just viewing this livestream
-    ffmpeg -f v4l2 -video_size 3840x2160 -framerate 60 -i /dev/video0 \
-      -map 0:v -c:v libx264 -preset ultrafast -tune zerolatency -qp 0 -g 60 -x264opts repeat_headers=1 -f rtsp "rtsp://127.0.0.1:5554/$rtmp_key" \
-      -map 0:v -vf fps=1 -f image2 -strftime 1 "/var/mistserver/screenshots/%Y-%m-%d_%H/%M_%S.png"
-      # -map 0:v -c:v libx264 -preset ultrafast -tune zerolatency -qp 0 -f matroska "/var/mistserver/recordings/sntpings-$(date +%Y-%m-%d_%H-%M-%S).mkv"
+    ffmpeg -f v4l2 -video_size 3840x2160 -framerate 60 \
+    -thread_queue_size 1024 -i /dev/video0 \
+    -map 0:v -c:v libx264 -preset veryfast -tune zerolatency -g 120 -f rtsp "rtsp://127.0.0.1:5554/$rtmp_key" \
+    -map 0:v -vf fps=1 -f image2 -strftime 1 "/var/mistserver/screenshots/%Y-%m-%d_%H/%M_%S.png" \
+    -map 0:v -c:v libx264 -preset ultrafast -qp 0 -threads 0 -f matroska "/var/mistserver/recordings/sntpings-$(date +%Y-%m-%d_%H-%M-%S).mkv"
   '';
 in
 {
