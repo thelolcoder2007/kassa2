@@ -9,7 +9,10 @@
   imports = [
     ../base/sops.nix
   ];
-  sops.secrets."zabbix-agent-PSK" = { owner = "zabbix-agent"; group = "zabbix-agent";};
+  sops.secrets."zabbix-agent-PSK" = {
+    owner = "zabbix-agent";
+    group = "zabbix-agent";
+  };
   services.zabbixAgent = {
     enable = true;
     server = "87.208.98.246,2a07:54c1:4932::/48,127.0.0.1,::1";
