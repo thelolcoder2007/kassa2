@@ -9,8 +9,13 @@
   imports = [
     ./nginx-base.nix
   ];
+  systemd.tmpfiles.rules = [
+    "d /run/mistserver 0755 root root 1h"
+  ];
+  systemd.services.nginx.serviceConfig.ReadOnlyPaths = [
+    "/run/mistserver"
+  ];
   services.nginx.virtualHosts = {
-
     # Management interface (port 4343)
     "bergpad.nationalespeeltuin.nl:4343" =
       (import ./certs/nginx-vhost-snakeoil.nix { inherit pkgs; })
@@ -38,7 +43,7 @@
     # PNG folder (port 443)
     "bergpad.nationalespeeltuin.nl" = {
       locations."/" = {
-        root = "/var/mistserver/screenshots";
+        root = "/run/mistserver";
         extraConfig = ''
           autoindex on;
         '';
