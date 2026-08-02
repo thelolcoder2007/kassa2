@@ -11,11 +11,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1785608353,
-        "narHash": "sha256-xXcdkJXxrbvp+dxVjPed+upl1i9WYlGVXILCKjRKXUk=",
+        "lastModified": 1785629455,
+        "narHash": "sha256-xrlgCwZ51gBzQtlQvJA0G6G5cIt2DJNI/Dy6e/VHpUk=",
         "ref": "refs/heads/master",
-        "rev": "0b971f3b86f211d3a82c8b0de4307c732cb64039",
-        "revCount": 57,
+        "rev": "f4b5b8675bb5c5ac9df516fcb4f067b035bc974d",
+        "revCount": 59,
         "type": "git",
         "url": "https://git.bartoostveen.nl/bart/nix-packages.git"
       },
@@ -32,11 +32,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1782949081,
-        "narHash": "sha256-vp6Y/Grm98ESt6ceOkWiHWyZRDV3J1RID4w+6NWK9yA=",
+        "lastModified": 1785627969,
+        "narHash": "sha256-4dtXQk/NMePegK/nWp5NSeuZKLATItOq61lpEvmXqGw=",
         "owner": "hercules-ci",
         "repo": "flake-parts",
-        "rev": "17c9d6cdfc60c64f4ee8d306f9bc0b4ccb51481e",
+        "rev": "427bf4bd9435fdf21321c8cc628c24efc14c0f7a",
         "type": "github"
       },
       "original": {
