@@ -18,30 +18,30 @@ in
     ../base/sops.nix
   ];
   sops.secrets."rtmp_key" = { };
-systemd = {
-	tmpfiles.rules = [
-		"d /run/mistserver-recordings 0755 root root -"
-		"d /run/mistserver 0755 root root -"
-	];
-  services.ffmpeg-stream = {
-    after = [
-      "network.target"
-      "mistserver.service"
-      "ffmpeg-create-dirs.service"
+  systemd = {
+    tmpfiles.rules = [
+      "d /run/mistserver-recordings 0755 root root -"
+      "d /run/mistserver 0755 root root -"
     ];
-    description = "Stream /dev/video0 to Mistserver, MKV and PNG";
-    wantedBy = [ "multi-user.target" ];
-    path = [ pkgs.ffmpeg ];
-    serviceConfig = {
-      Type = "simple";
-      Restart = "always";
-      RestartSec = 2;
-      TasksMax = "infinity";
-      TimeoutStopSec = 8;
-      ExecStart = ffmpeg-sh;
-      User = "root";
-      Group = "root";
+    services.ffmpeg-stream = {
+      after = [
+        "network.target"
+        "mistserver.service"
+        "ffmpeg-create-dirs.service"
+      ];
+      description = "Stream /dev/video0 to Mistserver, MKV and PNG";
+      wantedBy = [ "multi-user.target" ];
+      path = [ pkgs.ffmpeg ];
+      serviceConfig = {
+        Type = "simple";
+        Restart = "always";
+        RestartSec = 2;
+        TasksMax = "infinity";
+        TimeoutStopSec = 8;
+        ExecStart = ffmpeg-sh;
+        User = "root";
+        Group = "root";
+      };
     };
   };
-};
 }
