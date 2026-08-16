@@ -10,7 +10,7 @@
     ./nginx-base.nix
   ];
   systemd.tmpfiles.rules = [
-    "d /run/mistserver 0755 root root 1h"
+    "d /run/mistserver 0755 root root -"
   ];
   systemd.services.nginx.serviceConfig.ReadOnlyPaths = [
     "/run/mistserver"
