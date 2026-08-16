@@ -22,6 +22,8 @@ in
     tmpfiles.rules = [
       "d /run/mistserver-recordings 0755 root root -"
       "d /run/mistserver 0755 root root -"
+      "L+ /run/mistserver/README.txt /var/mistserver/README.txt"
+      "L+ /run/mistserver/robots.txt /var/mistserver/robots.txt"
     ];
     services.ffmpeg-stream = {
       after = [
