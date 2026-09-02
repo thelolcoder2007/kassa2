@@ -73,6 +73,7 @@
       # keep-sorted start
       bat
       btop
+      comma
       dig
       fastfetch
       file
@@ -85,6 +86,7 @@
       nh
       nixfmt
       nixfmt-tree
+      pciutils
       tcpdump
       traceroute
       vim
