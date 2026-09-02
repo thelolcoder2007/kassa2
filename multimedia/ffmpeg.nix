@@ -19,8 +19,8 @@ let
       rm /run/mistserver/livestream.m3u8
   '';
   ffmpeg-mkv = pkgs.writeShellScript "ffmpeg-mkv.sh" ''
-  		sleep 10
-    	ffmpeg -i /run/mistserver/livestream.m3u8 -strftime 1 /var/lib/ffmpeg/recordings/livestream-%H_%M_%S.mkv
+    		sleep 10
+      	ffmpeg -i /run/mistserver/livestream.m3u8 "/var/lib/ffmpeg/recordings/livestream-$(date +%Y-%m-%d_%H-%M-%S).mkv"
   '';
 in
 {
