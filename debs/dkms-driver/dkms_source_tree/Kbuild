@@ -1,0 +1,282 @@
+##############################################################################
+#
+# SPDX-License-Identifier: GPL-2.0-or-later
+#
+# Copyright (C) 2020 Verisilicon Inc.
+##############################################################################
+#
+# Linux build file for kernel transcoder driver.
+#
+include $(AQROOT)/config_evb
+
+soc_vendor    := $(firstword $(subst -, ,$(SOC_PLATFORM)))
+soc_board     := $(lastword  $(subst -, ,$(SOC_PLATFORM)))
+
+KERNEL_DIR ?= $(TOOL_DIR)/kernel
+
+TRANS_DIR       := ./
+HOST := $(shell hostname)
+ccflags-y += -DMODULE
+
+MODULE_NAME ?= ama_transcoder
+
+ifeq ($(CONFIG_KASAN),)
+ccflags-y += -Werror -Wno-implicit-fallthrough
+endif
+
+OBJS :=
+
+ifeq ($(USE_PCIE_CONFIG),1)
+OBJS += $(TRANS_DIR)/transcoder.o   \
+        $(TRANS_DIR)/pcie.o         \
+        $(TRANS_DIR)/hdma.o         \
+        $(TRANS_DIR)/hw_monitor.o   \
+        $(TRANS_DIR)/sn_osal.o      \
+        $(TRANS_DIR)/memory_osal.o  \
+        $(TRANS_DIR)/riscv.o        \
+        $(TRANS_DIR)/common.o       \
+        $(TRANS_DIR)/dma_buf.o      \
+        $(TRANS_DIR)/error_notify.o
+
+ccflags-y += -DUSE_OSAL $(OSAL_INCLUDE)
+ccflags-y += -DUSE_OSAL_MEMORY
+
+ifeq ($(VCMD_ENABLE_VC8000D),1)
+OBJS += $(TRANS_DIR)/vcmd/bidirect_list.o       \
+        $(TRANS_DIR)/vcmd/hantro_vcmd.o         \
+        $(TRANS_DIR)/vcmd/vcmdswhwregisters.o
+else
+        ifeq ($(VCMD_ENABLE_VC8000E),1)
+        OBJS += $(TRANS_DIR)/vcmd/bidirect_list.o       \
+                $(TRANS_DIR)/vcmd/hantro_vcmd.o         \
+                $(TRANS_DIR)/vcmd/vcmdswhwregisters.o
+        endif
+endif
+
+ifeq ($(SUB_SYS_VCE),1)
+OBJS += $(TRANS_DIR)/vc8000e.o
+endif
+
+ifeq ($(SUB_SYS_VCD),1)
+OBJS += $(TRANS_DIR)/vc8000d.o
+endif
+
+ifeq ($(SUB_SYS_XABR),1)
+OBJS += $(TRANS_DIR)/xabr_scaler.o
+endif
+
+ifeq ($(SUB_SYS_XAV1),1)
+OBJS += $(TRANS_DIR)/xav1_enc.o
+endif
+
+ifeq ($(SUB_SYS_RISCV),1)
+OBJS += $(TRANS_DIR)/riscv.o
+endif
+
+OBJS += $(TRANS_DIR)/sn_perf.o
+
+endif
+
+ifeq ($(KERNELRELEASE),)
+
+.PHONY: all clean install
+
+# Define targets.
+all:
+	$(info driver configrations dump )
+	$(info ----------------------------------)
+	$(info SUB_SYS_VCD                   =$(SUB_SYS_VCD))
+	$(info S1_VCD_A                      =$(S1_VCD_A))
+	$(info S1_VCD_B                      =$(S1_VCD_B))
+	$(info S2_VCD_A                      =$(S2_VCD_A))
+	$(info S2_VCD_B                      =$(S2_VCD_B))
+	$(info SUB_SYS_VCE                   =$(SUB_SYS_VCE))
+	$(info S1_VCE                        =$(S1_VCE))
+	$(info S2_VCE                        =$(S2_VCE))
+	$(info SKIP_VCE                      =$(SKIP_VCE))
+	$(info VCMD_ENABLE_VC8000D           =$(VCMD_ENABLE_VC8000D))
+	$(info VCMD_ENABLE_VC8000E           =$(VCMD_ENABLE_VC8000E))
+	$(info SUB_SYS_XABR                  =$(SUB_SYS_XABR))
+	$(info SUB_SYS_XAV1                  =$(SUB_SYS_XAV1))
+	$(info SUB_SYS_RISCV                 =$(SUB_SYS_RISCV))
+	$(info SYS_RISCV_0                   =$(SYS_RISCV_0))
+	$(info SYS_RISCV_1                   =$(SYS_RISCV_1))
+	$(info TRACE_PERF                    =$(TRACE_PERF))
+	$(info TRACE_OSAL                    =$(TRACE_OSAL))
+	$(info TRACE_XAV1_ENC                =$(TRACE_XAV1_ENC))
+	$(info TRACE_DMA_BUF                 =$(TRACE_DMA_BUF))
+	$(info NO_DMA_COHERENT               =$(NO_DMA_COHERENT))
+	$(info USE_LINUX_PCIE                =$(USE_LINUX_PCIE))
+	$(info USE_PCIE_CONFIG               =$(USE_PCIE_CONFIG))
+	$(info USE_HDMA_COMFIG               =$(USE_HDMA_CONFIG))
+	$(info DEBUG                         =$(DEBUG))
+	$(info ----------------------------------)
+	@$(MAKE) V=$(V) ARCH=$(ARCH_TYPE) -C $(KERNEL_DIR) M=`pwd` modules
+
+clean:
+	@rm -rf $(OBJS)
+	@rm -rf modules.order Module.symvers .tmp_versions
+	@find $(AQROOT) -name ".gc_*.cmd" | xargs rm -f
+	@rm -f $(MODULE_NAME).ko $(MODULE_NAME).o $(MODULE_NAME).mod.[co] .galcore.*.cmd
+	@rm -rf *.o  .*.o.cmd  .*.cmd  vcmd/.*.o.cmd
+
+install: all
+	@mkdir -p $(SDK_DIR)/drivers
+	@cp $(MODULE_NAME).ko $(SDK_DIR)/drivers
+
+else
+
+ifeq ($(DEBUG),1)
+ccflags-y += -DDBG=1 -DDEBUG -D_DEBUG
+else
+ccflags-y += -DDBG=0
+endif
+
+ifeq ($(NO_DMA_COHERENT),1)
+ccflags-y += -DNO_DMA_COHERENT
+endif
+
+ifeq ($(USE_LINUX_PCIE),1)
+ccflags-y += -DUSE_LINUX_PCIE=1
+else
+ccflags-y += -DUSE_LINUX_PCIE=0
+endif
+
+ifeq ($(USE_HDMA_CONFIG),1)
+ccflags-y += -DUSE_HDMA_CONFIG=1
+else
+ccflags-y += -DUSE_HDMA_CONFIG=0
+endif
+
+######## vc8000d configuration ########
+ifeq ($(SUB_SYS_VCD),1)
+ccflags-y += -DSUB_SYS_VCD=1
+else
+ccflags-y += -DSUB_SYS_VCD=0
+endif
+
+ifeq ($(S1_VCD_A),1)
+ccflags-y += -DS1_VCD_A=1
+else
+ccflags-y += -DS1_VCD_A=0
+endif
+
+ifeq ($(S1_VCD_B),1)
+ccflags-y += -DS1_VCD_B=1
+else
+ccflags-y += -DS1_VCD_B=0
+endif
+
+ifeq ($(S2_VCD_A),1)
+ccflags-y += -DS2_VCD_A=1
+else
+ccflags-y += -DS2_VCD_A=0
+endif
+
+ifeq ($(S2_VCD_B),1)
+ccflags-y += -DS2_VCD_B=1
+else
+ccflags-y += -DS2_VCD_B=0
+endif
+
+######## vc8000e configuration ########
+ifeq ($(SUB_SYS_VCE),1)
+ccflags-y += -DSUB_SYS_VCE=1
+else
+ccflags-y += -DSUB_SYS_VCE=0
+endif
+
+ifeq ($(S1_VCE),1)
+ccflags-y += -DS1_VCE=1
+else
+ccflags-y += -DS1_VCE=0
+endif
+
+ifeq ($(S2_VCE),1)
+ccflags-y += -DS2_VCE=1
+else
+ccflags-y += -DS2_VCE=0
+endif
+
+ifeq ($(SKIP_VCE),1)
+ccflags-y += -DSKIP_VCE=1
+else
+ccflags-y += -DSKIP_VCE=0
+endif
+
+ifeq ($(VCMD_ENABLE_VC8000D),1)
+ccflags-y += -DVCMD_ENABLE_VC8000D=1
+else
+ccflags-y += -DVCMD_ENABLE_VC8000D=0
+endif
+
+ifeq ($(VCMD_ENABLE_VC8000E),1)
+ccflags-y += -DVCMD_ENABLE_VC8000E=1
+else
+ccflags-y += -DVCMD_ENABLE_VC8000E=0
+endif
+
+ifeq ($(SUB_SYS_XABR),1)
+ccflags-y += -DSUB_SYS_XABR=1
+else
+ccflags-y += -DSUB_SYS_XABR=0
+endif
+
+ifeq ($(SUB_SYS_XAV1),1)
+ccflags-y += -DSUB_SYS_XAV1=1
+else
+ccflags-y += -DSUB_SYS_XAV1=0
+endif
+
+ifeq ($(SUB_SYS_RISCV),1)
+ccflags-y += -DSUB_SYS_RISCV=1
+else
+ccflags-y += -DSUB_SYS_RISCV=0
+endif
+
+ifeq ($(SYS_RISCV_0),1)
+ccflags-y += -DSYS_RISCV_0=1
+else
+ccflags-y += -DSYS_RISCV_0=0
+endif
+
+ifeq ($(SYS_RISCV_1),1)
+ccflags-y += -DSYS_RISCV_1=1
+else
+ccflags-y += -DSYS_RISCV_1=0
+endif
+
+ccflags-y += -I$(AQROOT)/
+ccflags-y += -I$(AQROOT)/$(TRANS_DIR)
+
+ifneq ($(CONFIG_ARM),)
+ccflags-y += -Iarch/arm/mm
+endif
+
+ccflags-y += -DHOST=\"$(HOST)\"
+
+ifeq ($(TRACE_OSAL),1)
+$(info TRACE_OSAL enabled)
+ccflags-y += -DTRACE_OSAL
+endif
+
+ifeq ($(TRACE_XAV1_ENC),1)
+$(info TRACE_XAV1_ENC enabled)
+ccflags-y += -DTRACE_XAV1_ENC
+endif
+
+ifeq ($(TRACE_DMA_BUF),1)
+$(info TRACE_DMA_BUF enabled)
+ccflags-y += -DTRACE_DMA_BUF
+endif
+
+ifeq ($(TRACE_OSAL_MEMORY),1)
+$(info TRACE_OSAL_MEMORY enabled)
+ccflags-y += -DTRACE_OSAL_MEMORY
+endif
+
+obj-m = $(MODULE_NAME).o
+
+$(MODULE_NAME)-objs  = $(OBJS)
+
+endif

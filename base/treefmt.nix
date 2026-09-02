@@ -3,6 +3,7 @@
 {
   # Used to find the project root
   projectRootFile = "flake.nix";
+
   programs = {
     # keep-sorted start
     deadnix.enable = true;
@@ -12,7 +13,6 @@
     mdsh.enable = true;
     nixf-diagnose.enable = true;
     nixfmt.enable = true;
-    shellcheck.enable = true;
     # keep-sorted end
     mdformat = {
       enable = true;
@@ -27,10 +27,6 @@
         ];
         options = [ "--ignore-missing-imports" ];
       };
-    };
-    shfmt = {
-      simplify = true;
-      enable = true;
     };
     yamllint = {
       enable = true;

@@ -89,6 +89,7 @@
       pciutils
       tcpdump
       traceroute
+      usbutils
       vim
       wget
       # keep-sorted end

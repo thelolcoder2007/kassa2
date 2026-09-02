@@ -10,8 +10,8 @@ let
     rtmp_key=$(${lib.getExe' pkgs.coreutils-full "cat"} ${config.sops.secrets."rtmp_key".path})
 
     # ffmpeg -f v4l2 -video_size 3840x2160 -framerate 60  -i /dev/video0 \
-    ffmpeg -f rawvideo -pix_fmt yuv420p -video_size 3840x2160 -framerate 60 -i /dev/urandom \
-    -c:v libx264 -profile:v main -pix_fmt yuv420p -preset ultrafast -b:v 50M -maxrate 50M -bufsize 100M -g 30 -threads 2 -tune grain \
+    ffmpeg -hwaccel ama -f rawvideo -pix_fmt yuv422p -video_size 3840x2160 -framerate 60 -i /dev/urandom \
+    -c:v h264_vaapi -profile:v main -preset quality -b:v 50M -maxrate 50M -bufsize 100M -g 30 -threads 2 -tune grain \
     -f hls -hls_time 2 -hls_list_size 5 -hls_flags delete_segments /run/mistserver/livestream.m3u8
   '';
   ffmpeg-remove = pkgs.writeShellScript "remove-hls.sh" ''
@@ -29,6 +29,12 @@ in
   imports = [
     ../base/sops.nix
   ];
+
+  hardware.graphics.extraPackages = with pkgs; [
+    amdvlk
+    libvdpau-va-gl
+  ];
+
   sops.secrets."rtmp_key" = { };
   systemd = {
     tmpfiles.rules = [

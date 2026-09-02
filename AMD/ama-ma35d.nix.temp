@@ -1,0 +1,405 @@
+# ama-ma35d-binary.nix
+#
+# NixOS module for the AMD Alveo MA35D, built on the assumption that the
+# amd-ama-*.deb packages ship PRECOMPILED artifacts (userspace libs/bins
+# already linked against glibc from their build distro, and a kernel
+# module .ko already built against a specific kernel ABI) rather than
+# source you compile yourself. That assumption changes the packaging
+# strategy substantially from a "build from source" approach:
+#
+#   - Userspace: extract the .debs, then use autoPatchelfHook + patchelf
+#     to rewrite ELF interpreters/RPATHs to point at Nix store libs,
+#     instead of a full FHS sandbox. Lighter, and the idiomatic nixpkgs
+#     way to repackage prebuilt binaries.
+#
+#   - Kernel module: a prebuilt .ko is tied to the exact kernel it was
+#     built against (vermagic match). NixOS kernels churn frequently, so
+#     this WILL break on kernel bumps unless you either:
+#       (a) pin boot.kernelPackages to the exact kernel version AMD built
+#           against for this SDK release, or
+#       (b) force-load with `insmod --force`, which skips the vermagic
+#           check and is genuinely risky (can panic or silently corrupt
+#           state if the ABI actually differs) — off by default here.
+#
+# STILL A SCAFFOLD. TODOs mark spots that need the real .deb contents to
+# fill in correctly — I don't have portal/repo access to verify exact
+# paths, so these are best-effort guesses from AMD's public docs.
+#
+# USAGE:
+#   1. Get the .deb files (via AMD's apt/dnf repo — see "Package Feed
+#      Setup" in the AMA SDK docs — `apt download amd-ama-driver
+#      amd-ama-core amd-ama-xma amd-ama-firmware amd-ama-ffmpeg` on a
+#      scratch Debian/Ubuntu box, no need to actually install them).
+#   2. Copy the .debs into one directory, e.g. /root/ama-debs.
+#   3. imports = [ ./ama-ma35d-binary.nix ];
+#      hardware.ama-ma35d = {
+#        enable = true;
+#        debDir = /root/ama-debs;
+#        # Only if you've confirmed the .ko truly won't load otherwise:
+#        # forceInsmod = true;
+#      };
+#   4. nixos-rebuild switch, reboot, then run the one-time flash/validate
+#      steps printed at activation.
+
+{ config, lib, pkgs, ... }:
+
+with lib;
+
+let
+  cfg = config.hardware.ama-ma35d;
+  sdkVersion = "1.5.0";
+
+  # --- Unpack every .deb into one tree ----------------------------------
+  amaUnpacked = pkgs.stdenv.mkDerivation {
+    pname = "ama-sdk-unpacked";
+    version = sdkVersion;
+    src = cfg.debDir;
+
+    nativeBuildInputs = [ pkgs.dpkg ];
+    dontUnpack = true;
+    dontBuild = true;
+
+    installPhase = ''
+      mkdir -p $out
+      for deb in $src/amd-ama-*.deb; do
+        echo "Unpacking $deb"
+        dpkg-deb -x "$deb" $out
+      done
+    '';
+  };
+
+  # --- Userspace: repackage prebuilt binaries with autoPatchelfHook -----
+  # This is the "these are just binaries" path: don't rebuild anything,
+  # just fix up dynamic linking so the Nix store's dynamic linker/libs
+  # are found instead of the FHS paths (/lib64/ld-linux-x86-64.so.2 etc.)
+  # baked in at their build time.
+  amaUserspace = pkgs.stdenv.mkDerivation {
+    pname = "ama-sdk-userspace";
+    version = sdkVersion;
+    src = amaUnpacked;
+
+    nativeBuildInputs = [ pkgs.autoPatchelfHook pkgs.makeWrapper ];
+
+    # Libraries the prebuilt binaries almost certainly link against.
+    # TODO: run `patchelf --print-needed` / `ldd` on the real binaries
+    # once unpacked and extend this list until autoPatchelfHook stops
+    # complaining about missing dependencies.
+    buildInputs = with pkgs; [
+      stdenv.cc.cc.lib   # libstdc++
+      zlib
+      openssl
+      libhugetlbfs
+      boost
+      numactl
+      glib
+    ];
+
+    dontBuild = true;
+    dontConfigure = true;
+
+    installPhase = ''
+      mkdir -p $out
+      cp -r $src/opt $out/opt
+
+      # autoPatchelfHook walks $out and patches every ELF file it finds
+      # automatically as part of the fixup phase — nothing else needed
+      # here beyond making sure buildInputs above covers all .so deps.
+    '';
+
+    # Wrap the ffmpeg binary so LD_LIBRARY_PATH / any env vars their
+    # setup.sh would normally export are set without needing to source
+    # a shell script first.
+    # TODO: confirm real path — this assumes amd-ama-ffmpeg installs to
+    # /opt/amd/ama/ma35/bin/ffmpeg. Adjust after inspecting the tree.
+    postFixup = ''
+      if [ -f "$out/opt/amd/ama/ma35/bin/ffmpeg" ]; then
+        wrapProgram "$out/opt/amd/ama/ma35/bin/ffmpeg" \
+          --prefix LD_LIBRARY_PATH : "$out/opt/amd/ama/ma35/lib" \
+          --prefix PATH : "$out/opt/amd/ama/ma35/bin"
+      else
+        echo "WARNING: expected ffmpeg binary not found at the guessed" >&2
+        echo "path — fix postFixup in ama-ma35d-binary.nix once you've" >&2
+        echo "seen the real unpacked tree." >&2
+      fi
+    '';
+  };
+
+  amaFFmpeg = pkgs.writeShellScriptBin "ama-ffmpeg" ''
+    exec ${amaUserspace}/opt/amd/ama/ma35/bin/ffmpeg "$@"
+  '';
+
+  # --- Kernel module: treat the .ko as a prebuilt binary artifact ------
+  # No compiling here — we just locate the shipped .ko and either install
+  # it the "normal" NixOS way (requires exact vermagic match) or, if
+  # cfg.forceInsmod is set, load it directly with insmod --force.
+  amaModuleInstall = pkgs.runCommand "ama-transcoder-ko" { } ''
+    mkdir -p $out
+    # TODO: fix this glob once you know the real path inside the
+    # unpacked driver .deb, e.g. lib/modules/*/extra/ama_transcoder.ko
+    ko=$(find ${amaUnpacked} -name 'ama_transcoder.ko' | head -n1)
+    if [ -z "$ko" ]; then
+      echo "ERROR: could not find ama_transcoder.ko under the unpacked .deb tree" >&2
+      exit 1
+    fi
+    cp "$ko" $out/ama_transcoder.ko
+  '';
+
+  insmodForceScript = pkgs.writeShellScript "ama-insmod-force.sh" ''
+    set -e
+    if lsmod | grep -q ama_transcoder; then
+      exit 0
+    fi
+    echo "[ama-ma35d] Force-loading prebuilt ama_transcoder.ko (vermagic check skipped)" >&2
+    ${pkgs.kmod}/bin/insmod --force ${amaModuleInstall}/ama_transcoder.ko || {
+      echo "[ama-ma35d] insmod --force failed. This almost certainly means" >&2
+      echo "the .ko was built for a genuinely incompatible kernel ABI —" >&2
+      echo "pin boot.kernelPackages instead of forcing." >&2
+      exit 1
+    }
+  '';
+
+
+
+  amaKernelModule = config.boot.kernelPackages.callPackage
+    ({ stdenv, kernel }: stdenv.mkDerivation {
+      pname = "ama-transcoder";
+      version = "1.5.0";
+
+      src = cfg.kmodSrc;   # e.g. ./vendor/ama-transcoder-src, set below
+
+      patches = cfg.kmodPatches;
+
+      nativeBuildInputs = kernel.moduleBuildDependencies;
+
+      # Matches the real Makefile: it wants KERNEL_DIR (not KDIR) and
+      # its `all` target internally delegates to Kbuild with
+      # M=`pwd` AQROOT=`pwd`. MODULE_NAME defaults to ama_transcoder in
+      # the Makefile, so we know the exact .ko name it produces.
+      #
+      # config_evb (SOC_PLATFORM=amd-supernova) already sets correct
+      # per-card defaults for every SUB_SYS_*/VCMD_ENABLE_*/USE_*_CONFIG
+      # flag via `?=` — those are left untouched here rather than
+      # re-guessed, since a command-line override would silently beat
+      # the vendor's own tuning (`?=` only applies when the variable
+      # isn't already set, and command-line vars always count as set).
+      #
+      # ARCH_TYPE is the one genuinely wrong default: config_evb sets
+      # it to "arm" (this SDK's baseline target is an embedded ARM eval
+      # board), which sends the kernel build system looking for
+      # arch/arm/Makefile even on an x86_64 PCIe host. That one must be
+      # forced.
+      #
+      # cfg.kmodExtraMakeFlags is left available for any per-deployment
+      # overrides you decide you actually need after testing (e.g. a
+      # DEBUG=1 build), but defaults to empty — trust config_evb first.
+      buildPhase = ''
+        runHook preBuild
+        make \
+          KERNEL_DIR=${kernel.dev}/lib/modules/${kernel.modDirVersion}/build \
+          ARCH_TYPE=x86_64 \
+          ${concatStringsSep " " cfg.kmodExtraMakeFlags} \
+          all
+        runHook postBuild
+      '';
+
+      installPhase = ''
+        runHook preInstall
+        mkdir -p $out/lib/modules/${kernel.modDirVersion}/extra
+        cp ama_transcoder.ko $out/lib/modules/${kernel.modDirVersion}/extra/
+        runHook postInstall
+      '';
+
+      meta = {
+        description = "AMD Alveo MA35D ama_transcoder kernel module (vendored DKMS source, AMA SDK 1.5.0)";
+        platforms = platforms.linux;
+      };
+    })
+    { };
+
+
+in
+{
+  options.hardware.ama-ma35d = {
+    enable = mkEnableOption "AMD Alveo MA35D media accelerator support (prebuilt AMA SDK binaries)";
+
+    debDir = mkOption {
+      type = types.path;
+      description = ''
+        Local directory containing the amd-ama-*.deb packages, obtained
+        via AMD's apt/dnf repo (see AMA SDK docs "Package Feed Setup")
+        and pulled down without installing, e.g. `apt download
+        amd-ama-driver amd-ama-core amd-ama-xma amd-ama-firmware
+        amd-ama-ffmpeg` on a scratch Debian/Ubuntu box.
+      '';
+      example = "/root/ama-debs";
+    };
+
+    forceInsmod = mkOption {
+      type = types.bool;
+      default = false;
+      description = ''
+        If true, load the prebuilt ama_transcoder.ko with `insmod
+        --force`, bypassing the kernel's vermagic ABI check. This is
+        genuinely risky — only enable it if you've confirmed the module
+        actually works on your kernel version despite the mismatch (e.g.
+        you tested it manually first). Prefer pinning
+        boot.kernelPackages to a matching version instead, if one is
+        available.
+      '';
+    };
+
+    hugepages = mkOption {
+      type = types.int;
+      default = 4192;
+      description = "2MB hugepages to reserve, per AMD's sizing formula (2048 per device + 96).";
+    };
+
+    kmodSrc = mkOption {
+      type = types.path;
+      description = ''
+        Path to the vendored ama_transcoder DKMS source tree (extracted
+        from /opt/amd/ama/ma35/module/kmod.tar.gz and committed into
+        this repo — see chat instructions for the extraction steps).
+      '';
+      example = "./vendor/ama-transcoder-src";
+    };
+
+    kmodPatches = mkOption {
+      type = types.listOf types.path;
+      default = [ ];
+      description = ''
+        Patches applied on top of kmodSrc before building — e.g. fixes
+        needed to build against your specific kernel version. Generate
+        with `git diff > patches/foo.patch` inside the vendored source
+        tree after making local edits, then revert the edit so the
+        patch is what actually gets applied at build time.
+      '';
+      example = [ ./patches/ama-transcoder-kernel-fix.patch ];
+    };
+
+    kmodSubsystemFlags = mkOption {
+      type = types.listOf types.str;
+      default = [
+        "SUB_SYS_VCD=1"           # decode block (vc8000d.c)
+        "SUB_SYS_VCE=1"           # encode block (vc8000e.c)
+        "SUB_SYS_XABR=1"          # ABR scaler (xabr_scaler.c)
+        "SUB_SYS_XAV1=1"          # AV1 encode block (xav1_enc.c)
+        "SUB_SYS_RISCV=1"         # RISC-V co-processor support (riscv.c)
+        "VCMD_ENABLE_VC8000E=1"   # command-queue mode for the encoder
+      ];
+      description = ''
+        SUB_SYS_*/VCMD_ENABLE_* make variables passed to the kernel
+        module build, controlling which hardware blocks get compiled
+        in. These defaults enable everything the source tree supports;
+        check vendor/ama-transcoder-src/config_evb for this card's own
+        defaults and narrow this list if some blocks aren't present on
+        your specific MA35D SKU (e.g. drop SUB_SYS_XAV1 if your card
+        doesn't have the AV1 encode block).
+      '';
+      example = [ "SUB_SYS_VCD=1" "SUB_SYS_VCE=1" ];
+    };
+
+    kmodExtraMakeFlags = mkOption {
+      type = types.listOf types.str;
+      default = [ ];
+      description = ''
+        Extra VAR=value make flags appended to the kernel module build,
+        beyond KERNEL_DIR and ARCH_TYPE (which are always set). Left
+        empty by default so that config_evb's own SUB_SYS_*/
+        VCMD_ENABLE_*/USE_*_CONFIG defaults for this card
+        (SOC_PLATFORM=amd-supernova) take effect unmodified — only add
+        something here once you've confirmed config_evb's defaults are
+        actually wrong for your deployment, e.g. ["DEBUG=1"] for a
+        debug build.
+      '';
+      example = [ "DEBUG=1" ];
+    };
+  };
+
+  config = mkIf cfg.enable {
+
+    assertions = [
+      {
+        assertion = cfg.debDir != null;
+        message = "hardware.ama-ma35d.debDir must point at a directory of the amd-ama-*.deb files";
+      }
+    ];
+
+    warnings =
+      optional (!cfg.forceInsmod) ''
+        hardware.ama-ma35d: forceInsmod is false, so the prebuilt
+        ama_transcoder.ko will only load if it exactly matches your
+        running kernel's vermagic. If `modprobe`/normal loading fails
+        with a version magic mismatch, either pin boot.kernelPackages to
+        match what AMD built against for this SDK release, or set
+        forceInsmod = true and accept the risk.
+      '';
+
+    boot.kernelParams = [
+      "amd_iommu=on"   # swap for "intel_iommu=on" on Intel hosts
+      "iommu=pt"
+    ];
+
+    boot.kernel.sysctl."vm.nr_hugepages" = cfg.hugepages;
+
+    # Normal path: NixOS-style module install, which enforces vermagic
+    # matching automatically. Only works if boot.kernelPackages happens
+    # to match what the .ko was built for.
+    #
+    # NOTE: this is a hand-rolled copy rather than a proper
+    # kernelPackages.callPackage-wrapped derivation, because there's
+    # nothing to *build* — it's just placing a prebuilt .ko where the
+    # standard module loading machinery expects it. If this route fails
+    # for you, disable it and rely on the forceInsmod systemd service
+    # below instead.
+
+    boot.extraModulePackages = [ amaKernelModule ];
+    boot.kernelModules = [ "ama_transcoder" ];
+
+    # Force-load path: bypasses NixOS's module machinery entirely and
+    # just insmods the raw .ko early in boot via systemd. Only active
+    # when forceInsmod = true.
+    systemd.services.ama-transcoder-force-load = mkIf cfg.forceInsmod {
+      description = "Force-load prebuilt ama_transcoder.ko (unsupported vermagic override)";
+      wantedBy = [ "multi-user.target" ];
+      after = [ "local-fs.target" ];
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+        ExecStart = "${insmodForceScript}";
+      };
+    };
+
+    # --- device permissions ------------------------------------------------
+    # TODO: confirm real device node name once the module actually loads —
+    # check `ls /dev/` and `dmesg` after insmod.
+    users.groups.ama = { };
+    services.udev.extraRules = ''
+      KERNEL=="ama_transcoder*", GROUP="ama", MODE="0660"
+    '';
+
+    environment.systemPackages = [ amaFFmpeg ];
+
+    system.activationScripts.ama-ma35d-reminder = ''
+      cat <<'EOF'
+
+      [ama-ma35d] One-time manual steps after first boot:
+        1. sudo lspci -vvvd 10ee:                         # card visible?
+        2. lsmod | grep ama_transcoder                    # module loaded?
+        3. sudo /opt/amd/ama/ma35/bin/mamgmt flash -d all \
+             -p /opt/amd/ama/ma35/firmware/ma35_firmware.bin
+        4. sudo systemctl poweroff                        # cold reboot after flash
+        5. cat /sys/class/misc/ama_transcoder0/version_information
+        6. mautil validate -d all
+
+      If the kernel module fails to load with a "version magic" error,
+      you have a vermagic mismatch — either pin boot.kernelPackages to
+      match AMD's tested kernel for this SDK version, or set
+      hardware.ama-ma35d.forceInsmod = true and accept the risk.
+
+      Add your user to the "ama" group and re-login before using
+      ama-ffmpeg without sudo.
+      EOF
+    '';
+  };
+}
