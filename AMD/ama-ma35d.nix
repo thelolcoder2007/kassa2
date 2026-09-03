@@ -20,6 +20,7 @@ let
     pname = "amd-ama-drivers-unpacked";
     inherit version;
     srcs = [
+    	# Due to xilinx being fucky they return a 401. I currently don't have another way of getting them automatically
       (fetchurl {
         url = "https://packages.xilinx.com/artifactory/debian-packages/pool/amd-ama-xma_1.5.0-20260424092403.x86_64.deb";
         hash = "sha256-VmUmos7SAcZqUJb9VPIRMKdeW/uTX2FX9vDYzubmPsA=";
