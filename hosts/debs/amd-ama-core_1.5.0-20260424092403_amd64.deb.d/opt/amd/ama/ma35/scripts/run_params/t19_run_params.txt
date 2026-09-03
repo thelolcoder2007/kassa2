@@ -1,2 +1,0 @@
-job_description = /opt/amd/ama/ma35/scripts/describe_job/t19_gst_transcode_hevc_4kp60_to_h264_1080p60.json
-cmdline = gst-launch-1.0 filesrc ! h265parse ! ama_h265dec ! identity eos-after=1200 ! ama_scaler name=s s.src_0 ! 'video/x-raw(memory:AMAMemory),width=1920,height=1080' ! ama_h264enc bitrate=6000000 ! filesink location=/tmp/hevc_to_scale_to_h264.h264

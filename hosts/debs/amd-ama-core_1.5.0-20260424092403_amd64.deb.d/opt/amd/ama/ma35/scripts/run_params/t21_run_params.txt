@@ -1,2 +1,0 @@
-job_description = /opt/amd/ama/ma35/scripts/describe_job/t21_gst_transcode_split_usecase.json
-cmdline = gst-launch-1.0 filesrc ! h265parse ! ama_h265dec ! 'video/x-raw(memory:AMAMemory),format=NV12' ! identity eos-after=1200 ! ama_scaler name=s s.src_0 ! 'video/x-raw(memory:AMAMemory),width=1920,height=1080,format=NV12_4L4' ! tee name=t t.src_0 ! ama_h264enc bitrate=6000000 ! queue ! filesink location=/tmp/hevc_to_scale_to_split.h264 t.src_1 ! ama_av1enc bitrate=6000000 ! queue ! filesink location=/tmp/hevc_to_scale_to_split.av1

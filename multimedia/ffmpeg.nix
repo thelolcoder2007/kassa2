@@ -10,7 +10,7 @@ let
     rtmp_key=$(${lib.getExe' pkgs.coreutils-full "cat"} ${config.sops.secrets."rtmp_key".path})
 
     # ffmpeg -f v4l2 -video_size 3840x2160 -framerate 60  -i /dev/video0 \
-    ffmpeg -hwaccel ama -f rawvideo -pix_fmt yuv422p -video_size 3840x2160 -framerate 60 -i /dev/urandom \
+    ${lib.getExe config.hardware.ama-ma35d.ffmpegBinary} -hwaccel ama -f rawvideo -pix_fmt yuv422p -video_size 3840x2160 -framerate 60 -i /dev/urandom \
     -c:v h264_vaapi -profile:v main -preset quality -b:v 50M -maxrate 50M -bufsize 100M -g 30 -threads 2 -tune grain \
     -f hls -hls_time 2 -hls_list_size 5 -hls_flags delete_segments /run/mistserver/livestream.m3u8
   '';

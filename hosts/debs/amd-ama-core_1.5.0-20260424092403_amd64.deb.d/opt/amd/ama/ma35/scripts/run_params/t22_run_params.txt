@@ -1,2 +1,0 @@
-job_description = /opt/amd/ama/ma35/scripts/describe_job/t22_gst_double_density_usecase.json
-cmdline = gst-launch-1.0 filesrc ! h265parse ! ama_h265dec ! identity eos-after=1200 ! tee name=t t.src_0 ! ama_h264enc bitrate=6000000 ! queue ! filesink location=hevc_to_h264_0.h264 t.src_1 ! ama_av1enc bitrate=6000000 ! queue ! filesink location=hevc_to_av1_0.av1 t.src_2 ! ama_h264enc bitrate=6000000 ! queue ! filesink location=hevc_to_h264_1.h264 t.src_3 ! ama_av1enc bitrate=6000000 ! queue ! filesink location=hevc_to_av1_1.av1

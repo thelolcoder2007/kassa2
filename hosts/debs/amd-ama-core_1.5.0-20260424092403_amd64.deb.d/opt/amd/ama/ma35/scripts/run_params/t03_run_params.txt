@@ -1,2 +1,0 @@
-job_description = /opt/amd/ama/ma35/scripts/describe_job/t03_scale_yuv_4kp60_to_720p60.json
-cmdline = ffmpeg -hide_banner -hwaccel ama -s 3840x2160 -pix_fmt yuv420p -i -filter_complex "hwupload_ama[in];[in]scaler_ama=outputs=1:out_res=(1280x720|nv12)[a];[a]hwdownload_ama,format=nv12[out]" -map "[out]" -vframes 100 -f rawvideo -pix_fmt yuv420p -y /dev/null

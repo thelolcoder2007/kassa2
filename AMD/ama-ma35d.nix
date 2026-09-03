@@ -6,7 +6,7 @@
 }:
 let
   cfg = config.hardware.ama-ma35d;
-  inherit (pkgs) stdenv;
+  inherit (pkgs) stdenv fetchurl;
   inherit (lib)
     concatStringsSep
     platforms
@@ -19,7 +19,28 @@ let
   unpackedDebs = stdenv.mkDerivation (_finalAttrs: {
     pname = "amd-ama-drivers-unpacked";
     inherit version;
-    src = cfg.debDir;
+    srcs = [
+      (fetchurl {
+        url = "https://packages.xilinx.com/artifactory/debian-packages/pool/amd-ama-xma_1.5.0-20260424092403.x86_64.deb";
+        hash = "sha256-VmUmos7SAcZqUJb9VPIRMKdeW/uTX2FX9vDYzubmPsA=";
+      })
+      (fetchurl {
+        url = "https://packages.xilinx.com/artifactory/debian-packages/pool/amd-ama-core_1.5.0-20260424092403.x86_64.deb";
+        hash = "sha256-TmOKJpuxeiQacKLJBzb69bcHSNCsrbbS0Z2hZRmDxU0=";
+      })
+      (fetchurl {
+        url = "https://packages.xilinx.com/artifactory/debian-packages/pool/amd-ama-driver_1.5.0-20260424092403.x86_64.deb";
+        hash = "sha256-sK/eQzeJeWZq3e+CvRG/t4ENnc1lUZTZOiJqzA9bch4=";
+      })
+      (fetchurl {
+        url = "https://packages.xilinx.com/artifactory/debian-packages/pool/amd-ama-firmware_1.5.0-20260424092403.x86_64.deb";
+        hash = "sha256-Qb0dn6mPx7TSN3S36W/K96jPkdG8m+GzUYiVdbX8Vu4=";
+      })
+      (fetchurl {
+        url = "https://packages.xilinx.com/artifactory/debian-packages/pool/amd-ama-ffmpeg_1.5.0-20260424092403.x86_64.deb";
+        hash = "sha256-NkM8M9wR5mt60/bv/Ig+8BC79/bMC7Vg4PGzkb39EFU=";
+      })
+    ];
 
     nativeBuildInputs = [ pkgs.dpkg ];
     dontUnpack = true;
@@ -27,7 +48,7 @@ let
 
     installPhase = ''
       mkdir -p $out
-      for deb in $src/amd-ama-*.deb; do
+      for deb in $srcs; do
         echo "Unpacking $deb"
         dpkg-deb -x "$deb" $out
       done
@@ -43,11 +64,12 @@ let
       makeWrapper
       binutils
       file
+      patchelf
     ];
 
     preInstall = ''
-      	sed -i 's/\/bin\/bash/\/usr\/bin\/env bash/g' *
-        chmod +x $out/opt/amd/ama/ma35/scripts/.on_transcoder_insert.sh
+      	sed -i 's/\/bin\/bash/\/usr\/bin\/env bash/g' $(find -type f -name "*.sh")
+        # chmod +x $out/opt/amd/ama/ma35/scripts/.on_transcoder_insert.sh
     '';
 
     buildInputs = with pkgs; [
@@ -87,7 +109,7 @@ let
       	runHook preInstall
 
         mkdir -p $out
-        cp -r $src $out
+        cp -r $src/* $out
 
         runHook postInstall
     '';
@@ -107,15 +129,14 @@ let
 
     postFixup = ''
       if [ -f "$out/opt/amd/ama/ma35/bin/ffmpeg" ]; then
+        patchelf --set-rpath '$ORIGIN/../lib' "$out/opt/amd/ama/ma35/bin/ffmpeg"
         wrapProgram "$out/opt/amd/ama/ma35/bin/ffmpeg" \
-          --prefix LD_LIBRARY_PATH : "$out/opt/amd/ama/ma35/lib" \
           --prefix PATH : "$out/opt/amd/ama/ma35/bin"
       else
-        echo "WARNING: expected ffmpeg binary not found at the guessed" >&2
-        echo "path — fix postFixup in ama-ma35d-binary.nix once you've" >&2
-        echo "seen the real unpacked tree." >&2
+        echo "WARNING: expected ffmpeg binary not found" >&2
       fi
     '';
+
   };
   amaFFmpeg = pkgs.writeShellScriptBin "ama-ffmpeg" ''
     exec ${amaUserspace}/opt/amd/ama/ma35/bin/ffmpeg "$@"
@@ -177,6 +198,10 @@ in
       type = types.int;
       default = 4192;
       description = "2MB hugepages to reserve, per AMD's sizing formula (2048 per device + 96).";
+    };
+
+    ffmpegBinary = mkOption {
+      default = amaFFmpeg;
     };
 
     kmodExtraMakeFlags = mkOption {

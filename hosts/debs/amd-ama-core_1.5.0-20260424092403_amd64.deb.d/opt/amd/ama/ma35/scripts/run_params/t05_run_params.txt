@@ -1,2 +1,0 @@
-job_description = /opt/amd/ama/ma35/scripts/describe_job/t05_decode_scale_h264_4kp60_to_720p60.json
-cmdline = ffmpeg -hide_banner -hwaccel ama -c:v h264_ama -out_fmt nv12 -i -filter_complex "scaler_ama=outputs=1:out_res=(1280x720|nv12)[a];[a]hwdownload_ama,format=nv12[out]" -map "[out]" -vframes 100 -f rawvideo -pix_fmt nv12 -y /dev/null

@@ -1,2 +1,0 @@
-job_description = /opt/amd/ama/ma35/scripts/describe_job/t02_encode_hevc_4kp60.json
-cmdline = ffmpeg -hide_banner -hwaccel ama -s 3840x2160 -pix_fmt yuv420p -i -vf hwupload_ama -c:v hevc_ama -r 60 -b:v 6M -vframes 100 -f rawvideo -y /dev/null

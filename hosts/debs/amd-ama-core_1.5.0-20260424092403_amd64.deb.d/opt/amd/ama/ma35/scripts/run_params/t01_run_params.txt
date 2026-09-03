@@ -1,2 +1,0 @@
-job_description = /opt/amd/ama/ma35/scripts/describe_job/t01_decode_h264_4kp60.json
-cmdline = ffmpeg -hide_banner -hwaccel ama -c:v h264_ama -out_fmt nv12 -i -filter_complex "hwdownload_ama,format=nv12[out]" -map "[out]" -vframes 100 -f rawvideo -pix_fmt nv12 -y /dev/null

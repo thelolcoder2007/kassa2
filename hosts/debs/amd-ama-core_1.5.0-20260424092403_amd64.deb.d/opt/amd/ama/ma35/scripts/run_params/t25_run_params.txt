@@ -1,2 +1,0 @@
-job_description = /opt/amd/ama/ma35/scripts/describe_job/t25_ml_roi_usecase.json
-cmdline = ffmpeg -hwaccel ama -c:v h264_ama -i -filter_complex "scaler_ama=outputs=2:out_res=(1280x720|yuv420p)(1280x720|rgbp)[ori][a];[a]ml_ama=model=roi:model_args=type=text[mlop];[ori][mlop]roi_scale_ama[res1]" -map [res1] -c:v hevc_ama -b:v 300K -f rawvideo  -vframes 100 -y /tmp/out_vip_roi.hevc

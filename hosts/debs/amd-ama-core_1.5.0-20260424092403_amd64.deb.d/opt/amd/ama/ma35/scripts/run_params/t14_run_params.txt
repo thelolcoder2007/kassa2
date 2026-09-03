@@ -1,2 +1,0 @@
-job_description = /opt/amd/ama/ma35/scripts/describe_job/t14_encode_hevc_4kp60.json
-cmdline = ma35_encoder_app -w 3840 -h 2160 -pix_fmt yuv420p -frames 100 -i -c:v hevc_ama -fps 60 -b:v 5M -o output_t14.hevc

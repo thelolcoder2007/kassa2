@@ -1,2 +1,0 @@
-job_description = /opt/amd/ama/ma35/scripts/describe_job/t11_double_density_usecase.json
-cmdline = ffmpeg -hide_banner -hwaccel ama -c:v h264_ama -i -filter_complex "split=4[a][b][c][d]" -map "[a]" -vframes 500 -c:v av1_ama -b:v 8M -f rawvideo -y out_3840x2160_0.av1 -map "[b]" -vframes 500 -c:v hevc_ama -b:v 8M -f rawvideo -y out_3840x2160_0.hevc -map "[c]" -vframes 500 -c:v av1_ama -b:v 8M -f rawvideo -y out_3840x2160_1.av1 -map "[d]" -vframes 500 -c:v hevc_ama -b:v 8M -f rawvideo -y out_3840x2160_1.hevc
