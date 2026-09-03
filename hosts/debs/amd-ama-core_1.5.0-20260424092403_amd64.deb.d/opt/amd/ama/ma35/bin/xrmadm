@@ -1,0 +1,110 @@
+#!/usr/bin/env python3
+
+#
+# Copyright (C) 2023 - 2025 Advanced Micro Devices, Inc. All rights reserved.
+# Copyright (C) 2019 - 2021 Xilinx, Inc. All rights reserved.
+#
+
+import json
+import platform
+import socket
+import sys
+from collections import OrderedDict
+
+class XRMClient:
+    """
+    XRMClient is a client class to interact with the XRM daemon.
+    
+    Methods:
+    - __init__(host, port): Initializes the client and connects to the XRM daemon.
+    - send(jsonFile): Sends a JSON file to the XRM daemon.
+    - receive(): Receives data from the XRM daemon.
+    - close(): Closes the connection to the XRM daemon.
+    """
+    
+    def __init__(self, host, port):
+        """
+        Initializes the XRMClient and connects to the XRM daemon.
+        
+        Parameters:
+        - host (str): The hostname or IP address of the XRM daemon.
+        - port (int): The port number of the XRM daemon.
+        """
+        self.sock = socket.socket()
+        try:
+            self.sock.connect((host, port))
+        except socket.error as msg:
+            print("    Failed to reach the XRM daemon.")
+            print("    Please check the status of XRM daemon with the following command:\n")
+            print("    #systemctl status xrmd\n")
+            self.sock.close()
+            sys.exit(1)
+
+    def send(self, jsonFile):
+        """
+        Sends a JSON file to the XRM daemon.
+        
+        Parameters:
+        - jsonFile (str): The path to the JSON file to be sent.
+        """
+        with open(jsonFile, 'rb') as jf:
+            data = jf.read()
+        try:
+            self.sock.sendall(data)
+        except socket.error as msg:
+            print("    Failed to send data to the XRM daemon.")
+            print("    Please check the status of XRM daemon with the following command:\n")
+            print("    #systemctl status xrmd\n")
+            self.sock.close()
+            sys.exit(1)
+
+    def receive(self):
+        """
+        Receives data from the XRM daemon.
+        
+        Returns:
+        - bytes: The data received from the XRM daemon.
+        """
+        total_data = bytearray()
+        total_len = 0
+        cur_len = 0
+        while True:
+            cur_data = self.sock.recv(131072)
+            if cur_data:
+                if total_len == 0:
+                    total_len = int.from_bytes(cur_data[0:4], byteorder='little')
+                    cur_len = len(cur_data) - 4
+                    total_data = bytearray(cur_data[4:])
+                else:
+                    cur_len += len(cur_data)
+                    total_data += bytearray(cur_data)
+                if cur_len >= total_len:
+                    break
+            else:
+                break
+        return bytes(total_data)
+
+    def close(self):
+        """
+        Closes the connection to the XRM daemon.
+        """
+        self.sock.close()
+
+if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        if not sys.argv[1].endswith('.json'):
+            print('xrmadm requires a .json file as an argument. Please provide the path to a .json file')
+            exit(1)
+    else:
+        print('xrmadm requires a .json file as an argument. Please provide the path to a .json file')
+        exit(1)
+
+    if (sys.version_info[0] < 2) or ((sys.version_info[0] == 2) and (sys.version_info[1] < 7)):
+        print("WARNING: Python version (" + platform.python_version() + ") is < 2.7. Please use a newer version, otherwise you may run into failures.")
+    
+    jsonFile = sys.argv[1]
+    cli = XRMClient('localhost', 9763)
+    cli.send(jsonFile)
+    parsedOutput = json.loads(cli.receive(), object_pairs_hook = OrderedDict)
+    print(json.dumps(parsedOutput, indent = 4, sort_keys = False))
+    cli.close()

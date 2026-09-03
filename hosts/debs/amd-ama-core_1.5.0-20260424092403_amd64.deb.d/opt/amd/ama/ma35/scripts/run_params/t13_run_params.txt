@@ -1,0 +1,2 @@
+job_description = /opt/amd/ama/ma35/scripts/describe_job/t13_decode_h264_4kp60.json
+cmdline = ma35_decoder_app -frames 100 -c:v h264_ama -pix_fmt yuv420p -i -o output_t13.yuv

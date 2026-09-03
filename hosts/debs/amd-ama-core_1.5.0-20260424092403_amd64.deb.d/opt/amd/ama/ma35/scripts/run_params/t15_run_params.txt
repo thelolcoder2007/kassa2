@@ -1,0 +1,2 @@
+job_description = /opt/amd/ama/ma35/scripts/describe_job/t15_scale_yuv_4kp60_to_720p60.json
+cmdline = ma35_scaler_app -w 3840 -h 2160 -pix_fmt yuv420p -frames 100 -i -w 1280 -h 720 -pix_fmt yuv420p -o output_t15.yuv

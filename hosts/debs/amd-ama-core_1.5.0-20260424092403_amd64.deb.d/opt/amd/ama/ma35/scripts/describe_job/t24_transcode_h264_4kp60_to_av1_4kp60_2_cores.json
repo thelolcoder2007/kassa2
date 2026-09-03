@@ -1,0 +1,24 @@
+{
+    "request": {
+        "name": "t24_transcode_h264_4kp60_to_av1_4kp60_2_cores",
+        "request_id": 1,
+        "parameters": {
+            "name": "testjob",
+            "resources":
+            [
+                {
+                    "function": "DECODER",
+                    "format":   "H264",
+                    "resolution": { "input": { "width": 3840, "height": 2160, "frame-rate": { "num":60, "den":1} } } 
+                },
+                {
+                    "function": "ENCODER",
+                    "format":   "AV1",
+                    "cores": 2,
+                    "lookahead":false,
+                    "resolution": { "input": { "width": 3840, "height": 2160, "frame-rate": { "num":60, "den":1} } } 
+                }
+            ]
+        }
+    }
+}

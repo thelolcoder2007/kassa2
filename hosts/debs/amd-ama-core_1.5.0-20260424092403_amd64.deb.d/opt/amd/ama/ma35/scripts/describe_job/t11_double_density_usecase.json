@@ -1,0 +1,42 @@
+{
+    "request": {
+        "name": "double_density_usecase_2160p",
+        "request_id": 1,
+        "parameters": {
+            "name": "testjob",
+            "resources": 
+            [
+                {
+                    "function": "DECODER",
+                    "format":   "H264",
+                    "resolution": { "input": { "width": 3840, "height": 2160, "frame-rate": { "num":60, "den":1} } }
+                },
+                {
+                    "function": "ENCODER",
+                    "format":   "HEVC",
+                    "resolution": { "input": { "width": 3840, "height": 2160, "frame-rate": { "num":60, "den":1} } }
+                },
+                {
+                    "function": "ENCODER",
+                    "format":   "AV1",
+                    "resolution": { "input": { "width": 3840, "height": 2160, "frame-rate": { "num":60, "den":1} } }
+                },
+                {
+                    "function": "ENCODER",
+                    "format":   "HEVC",
+                    "resolution": { "input": { "width": 3840, "height": 2160, "frame-rate": { "num":60, "den":1} } }
+                },
+                {
+                    "function": "ENCODER",
+                    "format":   "AV1",
+                    "resolution": { "input": { "width": 3840, "height": 2160, "frame-rate": { "num":60, "den":1} } }
+                }
+            ]
+        }
+    }
+}
+
+  
+  
+  
+  

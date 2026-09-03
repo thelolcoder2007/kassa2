@@ -1,0 +1,18 @@
+{
+    "request": {
+        "name": "example_num_job_slots",
+        "request_id": 1,
+        "parameters": {
+            "name": "testjob",
+            "num_job_slots": 1,
+            "resources": 
+            [
+                {
+                    "function": "ENCODER",
+                    "format":   "HEVC",
+                    "resolution": { "input": { "width": 3840, "height": 2160, "frame-rate": { "num":60, "den":1} } } 
+                }
+            ]
+        }
+    }
+}

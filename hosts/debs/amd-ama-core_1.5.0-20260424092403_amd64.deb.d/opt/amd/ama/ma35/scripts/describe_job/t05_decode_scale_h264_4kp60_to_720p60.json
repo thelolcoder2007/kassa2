@@ -1,0 +1,29 @@
+{
+    "request": {
+        "name": "t5_decode_scale_h264_4kp60_to_720p60",
+        "request_id": 1,
+        "parameters": {
+            "name": "testjob",
+            "resources": 
+            [
+                {
+                    "function": "DECODER",
+                    "format":   "H264",
+                    "resolution": { "input": { "width": 3840, "height": 2160, "frame-rate": { "num":60, "den":1} } }
+                },
+                {
+                    "function": "SCALER",
+                    "format":   "yuv420p",
+                    "resolution": 
+                    {
+                        "input": { "width": 3840, "height": 2160, "frame-rate": { "num":60, "den":1} },
+                        "output": 
+                        [
+				            { "width": 1280, "height": 720, "frame-rate": { "num":60, "den":1}}
+                        ]
+                    }
+                }
+            ]
+        }
+    }
+}

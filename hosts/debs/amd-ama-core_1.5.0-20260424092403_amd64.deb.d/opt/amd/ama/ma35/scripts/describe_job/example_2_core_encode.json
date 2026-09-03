@@ -1,0 +1,20 @@
+{
+    "request": {
+        "name": "example_2_core_encode",
+        "request_id": 1,
+        "parameters": {
+            "name": "testjob",
+            "num_job_slots": 1,
+            "resources":
+            [
+                {
+                    "function": "ENCODER",
+                    "format":   "AV1",
+                    "cores": 2,
+                    "lookahead":false,
+                    "resolution": { "input": { "width": 3840, "height": 2160, "frame-rate": { "num":60, "den":1} } } 
+                }
+            ]
+        }
+    }
+}

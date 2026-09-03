@@ -1,0 +1,2 @@
+job_description = /opt/amd/ama/ma35/scripts/describe_job/t27_2-dev_h264_4kp60_to_hevc_2kp60.json
+cmdline = ffmpeg -hwaccel ama -hwaccel_device /dev/ama_transcoder0 -vsync 0 -c:v h264_ama -i -filter_complex "scaler_ama=outputs=1:out_res=(1920x1080|yuv420p), hwdownload_ama,hwupload_ama=device=1" -c:v hevc_ama -b:v 1M -vframes 200 -y /tmp/multi_dev_out_1080p.hevc

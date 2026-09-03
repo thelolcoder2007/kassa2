@@ -1,0 +1,35 @@
+{
+    "request": {
+        "name": "t7_scale_encode_hevc_4kp60_to_720p60_540p60",
+        "request_id": 1,
+        "parameters": {
+            "name": "testjob",
+            "resources": 
+            [
+		        {
+                    "function": "SCALER",
+                    "format":   "yuv420p",
+                    "resolution":{                                                                                 
+                                    "input": { "width": 3840, "height": 2160, "frame-rate": { "num":60, "den":1} },
+                                    "output":
+                                    [        
+                                             { "width": 1280, "height": 720,  "frame-rate": { "num":60, "den":1}},
+                                             { "width": 960, "height": 540, "frame-rate": { "num":60, "den":1}}
+                                    ]
+                                 }
+                },
+                {
+                      "function": "ENCODER",
+                      "format":   "HEVC",
+                      "resolution": { "input": { "width": 1280, "height": 720, "frame-rate": { "num":60, "den":1} } }
+                },
+                {
+                    "function": "ENCODER",
+                    "format":   "HEVC",
+                    "resolution": { "input": { "width": 960, "height": 540, "frame-rate": { "num":60, "den":1} } } 
+                }
+            ]
+        }
+    }
+}
+

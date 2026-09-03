@@ -1,0 +1,40 @@
+{
+    "request": {
+        "name": "t9_transcode_with_scale_h264_4kp60_to_hevc_720p60_540p60",
+        "request_id": 1,
+        "parameters": {
+            "name": "testjob",
+            "resources": 
+            [
+                {
+                    "function": "DECODER",
+                    "format":   "H264",
+                    "resolution": { "input": { "width": 3840, "height": 2160, "frame-rate": { "num":60, "den":1} } }
+                },
+		        {
+                    "function": "SCALER",
+                    "format":   "yuv420p",
+                    "resolution":{                                                                                 
+                                    "input": { "width": 3840, "height": 2160, "frame-rate": { "num":60, "den":1} },
+                                    "output":
+                                    [        
+                                             { "width": 1280, "height": 720,  "frame-rate": { "num":60, "den":1}},
+                                             { "width": 960, "height": 540, "frame-rate": { "num":60, "den":1}}
+                                    ]
+                                 }
+                },
+                {
+                      "function": "ENCODER",
+                      "format":   "HEVC",
+                      "resolution": { "input": { "width": 1280, "height": 720, "frame-rate": { "num":60, "den":1} } }
+                },
+                {
+                    "function": "ENCODER",
+                    "format":   "HEVC",
+                    "resolution": { "input": { "width": 960, "height": 540, "frame-rate": { "num":60, "den":1} } } 
+                }
+            ]
+        }
+    }
+}
+

@@ -1,0 +1,2 @@
+job_description = /opt/amd/ama/ma35/scripts/describe_job/t18_gst_4kp60_transcode_h264_to_av1.json
+cmdline = gst-launch-1.0 -v filesrc ! h264parse ! ama_h264dec ! identity eos-after=1200 ! ama_av1enc bitrate=10000000 ! filesink location=h264_to_av1_type1.av1

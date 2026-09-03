@@ -1,0 +1,2 @@
+job_description = /opt/amd/ama/ma35/scripts/describe_job/t07_scale_encode_hevc_4kp60_to_720p60_540p60.json
+cmdline = ffmpeg -hide_banner -hwaccel ama -s 3840x2160 -pix_fmt yuv420p -i -filter_complex "hwupload_ama[in];[in]scaler_ama=outputs=2:out_res=(1280x720|yuv420p)(960x540|yuv420p)[a][b]" -map "[a]" -c:v hevc_ama -r 60 -b:v 12M -vframes 100 -f rawvideo -y /dev/null -map "[b]" -c:v hevc_ama -r 60 -b:v 12M -vframes 100 -f rawvideo -y /dev/null

@@ -1,0 +1,42 @@
+{
+    "request": {
+        "name": "t22_gst_double_density_usecase",
+        "request_id": 1,
+        "parameters": {
+            "name": "testjob",
+            "resources": 
+            [
+                {
+                    "function": "DECODER",
+                    "format":   "HEVC",
+                    "resolution": { "input": { "width": 3840, "height": 2160, "frame-rate": { "num":60, "den":1} } }
+                },
+                {
+                    "function": "ENCODER",
+                    "format":   "H264",
+                    "resolution": { "input": { "width": 3840, "height": 2160, "frame-rate": { "num":60, "den":1} } }
+                },
+                {
+                    "function": "ENCODER",
+                    "format":   "AV1",
+                    "resolution": { "input": { "width": 3840, "height": 2160, "frame-rate": { "num":60, "den":1} } }
+                },
+                {
+                    "function": "ENCODER",
+                    "format":   "H264",
+                    "resolution": { "input": { "width": 3840, "height": 2160, "frame-rate": { "num":60, "den":1} } }
+                },
+                {
+                    "function": "ENCODER",
+                    "format":   "AV1",
+                    "resolution": { "input": { "width": 3840, "height": 2160, "frame-rate": { "num":60, "den":1} } }
+                }
+            ]
+        }
+    }
+}
+
+  
+  
+  
+  

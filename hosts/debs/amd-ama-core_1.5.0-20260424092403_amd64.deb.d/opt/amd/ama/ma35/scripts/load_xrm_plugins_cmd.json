@@ -1,0 +1,24 @@
+{
+    "request": {
+        "name": "loadXrmPlugins",
+        "requestId": 1,
+        "parameters": [
+            {
+				"xrmPluginFileName": "/opt/amd/ama/ma35/lib/libxrm_scaler_plugin.so",
+				"xrmPluginName": "xrmMA35ScalePlugin"
+            },
+            {
+				"xrmPluginFileName": "/opt/amd/ama/ma35/lib/libxrm_decoder_plugin.so",
+				"xrmPluginName": "xrmMA35DecodePlugin"
+            },
+            {
+				"xrmPluginFileName": "/opt/amd/ama/ma35/lib/libxrm_encoder_plugin.so",
+				"xrmPluginName": "xrmMA35EncodePlugin"
+            },
+            {
+				"xrmPluginFileName": "/opt/amd/ama/ma35/lib/libxrm_ml_plugin.so",
+				"xrmPluginName": "xrmMA35MLPlugin"
+            }
+        ]
+    }
+}

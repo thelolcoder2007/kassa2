@@ -1,0 +1,2 @@
+job_description = /opt/amd/ama/ma35/scripts/describe_job/t16_transcode_wo_scale_h264_4kp60_to_hevc_4kp60.json
+cmdline = ma35_transcoder_app -streams 1 -frames 100 -c:v h264_ama -i -c:v hevc_ama -b:v 5M -o output_t16.hevc

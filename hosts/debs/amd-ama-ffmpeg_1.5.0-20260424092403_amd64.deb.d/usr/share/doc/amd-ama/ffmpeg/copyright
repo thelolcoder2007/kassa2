@@ -1,0 +1,1055 @@
+Components: ffmpeg 6.1.1
+
+
+>>> LGPL
+
+The following text is found at the URL https://www.ffmpeg.org/legal.html:
+-------------------------------------------------------------------------
+
+-------------------------------------------------------------------------
+FFmpeg is licensed under the GNU Lesser General Public License (LGPL) version 2.1 or later. However, FFmpeg incorporates several optional parts and optimizations that are covered by the GNU General Public License (GPL) version 2 or later. If those parts get used the GPL applies to all of FFmpeg.
+-------------------------------------------------------------------------
+Read the license texts to learn how this affects programs built on top of FFmpeg or reusing FFmpeg. You may also wish to have a look at the GPL FAQ.
+-------------------------------------------------------------------------
+Note that FFmpeg is not available under any other licensing terms, especially not proprietary/commercial ones, not even in exchange for payment.
+-------------------------------------------------------------------------
+
+-------------------------------------------------------------------------
+The following information is found from the file CREDITS in the source download:
+-------------------------------------------------------------------------
+
+-------------------------------------------------------------------------
+See the Git history of the project (git://source.ffmpeg.org/ffmpeg) to get the names of people who have contributed to FFmpeg.
+
+
+;******************************************************************************
+;* x86-optimized functions for the CFHD decoder
+;* Copyright (c) 2020 Paul B Mahol
+;*
+;* This file is part of FFmpeg.
+;*
+;* FFmpeg is free software; you can redistribute it and/or
+;* modify it under the terms of the GNU Lesser General Public
+;* License as published by the Free Software Foundation; either
+;* version 2.1 of the License, or (at your option) any later version.
+;*
+;* FFmpeg is distributed in the hope that it will be useful,
+;* but WITHOUT ANY WARRANTY; without even the implied warranty of
+;* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+;* Lesser General Public License for more details.
+;*
+;* You should have received a copy of the GNU Lesser General Public
+;* License along with FFmpeg; if not, write to the Free Software
+;* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+;******************************************************************************
+
+>>> BSD-2
+ * Copyright (c) 2018 Gregor Richards
+ * Copyright (c) 2017 Mozilla
+ * Copyright (c) 2005-2009 Xiph.Org Foundation
+ * Copyright (c) 2007-2008 CSIRO
+ * Copyright (c) 2008-2011 Octasic Inc.
+ * Copyright (c) Jean-Marc Valin
+ * Copyright (c) 2019 Paul B Mahol
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * - Redistributions of source code must retain the above copyright
+ *   notice, this list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright
+ *   notice, this list of conditions and the following disclaimer in the
+ *   documentation and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE FOUNDATION OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+>>> BSD-3
+
+/*
+ * Copyright (c) 2012
+ *      MIPS Technologies, Inc., California.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. Neither the name of the MIPS Technologies, Inc., nor the names of its
+ *    contributors may be used to endorse or promote products derived from
+ *    this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE MIPS TECHNOLOGIES, INC. ``AS IS'' AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED.  IN NO EVENT SHALL THE MIPS TECHNOLOGIES, INC. BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ *
+ * Author:  Author Name (author_name@@mips.com)
+ */
+
+>>> GPL-3
+/*
+ * Copyright (C) 2007 by Andrew Zabolotny (author of lensfun, from which this filter derives from)
+ * Copyright (C) 2018 Stephen Seo
+ *
+ * This file is part of FFmpeg.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+>>> MIT
+/*
+ * Copyright (c) 2001 Fabrice Bellard
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+>>> Boost Software License, Version 1.0
+
+ Boost Software License - Version 1.0 - August 17th, 2003
+Permission is hereby granted, free of charge, to any person or organization
+obtaining a copy of the software and accompanying documentation covered by
+this license (the "Software") to use, reproduce, display, distribute,
+execute, and transmit the Software, and to prepare derivative works of the
+Software, and to permit third-parties to whom the Software is furnished to
+do so, all subject to the following:
+
+The copyright notices in the Software and this entire statement, including
+the above license grant, this restriction and the following disclaimer,
+must be included in all copies of the Software, in whole or in part, and
+all derivative works of the Software, unless such copies or derivative
+works are solely in the form of machine-executable object code generated by
+a source language processor.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE, TITLE AND NON-INFRINGEMENT. IN NO EVENT
+SHALL THE COPYRIGHT HOLDERS OR ANYONE DISTRIBUTING THE SOFTWARE BE LIABLE
+FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.
+
+>>> GPL-2
+/*
+ * Copyright (c) 2012 Loren Merritt
+ *
+ * This file is part of FFmpeg.
+ *
+ * FFmpeg is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * FFmpeg is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with FFmpeg; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
+
+>>> Apache 2.0
+/* Copyright 2023 Lynne
+ * Copyright 2023 Dave Airlie
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+Copyright 2006-2007 Michel Bardiaux <mbardiaux@mediaxim.be>
+Copyright (c) 2017 Mozilla 
+Copyright (c) 2009 Bjorn Axelsson 
+Copyright (c) 2005 VLC authors and VideoLAN 
+Copyright (c) 2021 Josh Dekker 
+Copyright 2005 Balatoni Denes 
+Copyright (c) 2021 Boris Baracaldo 
+copyright if you do
+Copyright 1992-1994 Jutta Degener Carsten Bormann
+Copyright (c) 2011 Anatoliy Wasserman 
+Copyright 2010 Georg Martius <georg.martius@web.de>
+Copyright 2011-2012 Mark Himsley
+Copyright (c) 2002 Zdenek Kabelac <kabi@informatics.muni.cz> 
+Copyright (c) 2008 Vitor Sessak Modifications 
+Copyright 2011 Jordi Ortiz
+Copyright (c) 2009 Colin McQuillian 
+Copyright 2017 Gerion Entrup
+Copyright 2005, 2007-2008 Ian Caulfield
+Copyright 2004-2010 Marcel Holtmann <marcel@holtmann.org>
+Copyright 2011, 2015-2016 Kieran Kunhya <kieran@kunhya.com>
+Copyright 2002 Dieter Shirley
+Copyright 2006-2007 Ryan Martell
+copyright (c) 2002 Remi Guyomarch <rguyom@pobox.com> Port 
+Copyright (c) 2010 Niel van der Westhuizen <nielkie@gmail.com> 
+Copyright 2013 Xiaolei Yu <dreifachstein@gmail.com>
+Copyright 2006-2007 Konstantin Shishkov Partly based on vc9
+Copyright 2006 Smartjog S.A.S Baptiste Coudurier <baptiste.coudurier@gmail.com>
+Copyright (c) 2011 Stefano Sabatini taken from libavfilter vf
+Copyright 1989, 1991, 1999-2001, 2007, 2010-2013 Free Software Foundation Inc
+copyright (c) 2015 Rick Kern <kernrj@gmail.com> 
+Copyright 2020-2021 Nuo Mi <nuomi2021@gmail.com>
+Copyright 2012-2013 Fredrik Mellbin
+Copyright (c) 2017 Steven Liu 
+Copyright (c) 2011 Sven Hesse <drmccoy@drmccoy.de> 
+Copyright (c) 2002 Anders Johansson <ajh@atri.curtin.edu.au> 
+Copyright 2023 Elias Carotti
+Copyright 2015 Eran Kornblau
+Copyright (c) 2014 - 2021 Jason Jang 
+copyright interest in the program
+Copyright 2018-2019 gxw <guxiwei-hf@loongson.cn>
+Copyright 2014, 2016-2017 Alexandra Hjkov
+Copyright 2005-2006 Robert Edele <yartrebo@earthlink.net>
+Copyright (c) 2022 Victoria Zhislina Intel 
+Copyright 2020-2021 Zane van Iperen (zane@zanevaniperen.com)
+Copyright 2015 Rostislav Pehlivanov
+Copyright 2003-2004 Tobias Diedrich
+Copyright (c) 2002 Naoki Shibata 
+Copyright (c) 2003-2004 Romain Dolbeau 
+Copyright (c) 2020 David Bryant 
+Copyright 2003, 2006-2007 Michel Bardiaux
+Copyright 2022 Jack Bruienne
+Copyright 2005-2012 Mans Rullgard <mans@mansr.com>
+Copyright (c) 2011 2012 Hyllian Jararaca <sergiogdb@gmail.com> 
+Copyright (c) 2021 Paul Buxton 
+Copyright 2004 Benjamin Zores
+Copyright (c) 2012 Krzysztof Klinikowski 
+Copyright 2007 Nicholas Tung
+Copyright (c) 2012 Pavel Koshevoy 
+Copyright 2015 Stupeflix
+Copyright 2006-2009 Luca Abeni
+Copyright 2013-2014 Mozilla Corp
+Copyright (c) 2006 Thijs Vermeir <thijs.vermeir@barco.com> 
+Copyright 2022 Jonathan Swinney <jswinney@amazon.com>
+Copyright 2009-2016, 2020 Martin Storsjo
+Copyright (c) 2019 Lynne <dev@lynne.ee> 
+Copyright (C) 2014 Pascal Massimino (pascal.massimino@gmail.com) 
+Copyright 2010, 2013, 2022-2023 Rmi Denis-Courmont
+Copyright (c) 2019 Swaraj Hota 
+Copyright (c) 2017 Clment Bsch <u@pkh.me> 
+Copyright 2021 Loongson Technology Corp Ltd Contributed by Xiwei Gu <guxiwei-hf@loongson.cn>
+Copyright 2012 Rafal Carr <funman@videolanorg>
+Copyright (c) 2008-2011 Octasic Inc. 
+Copyright (c) 2009 Stephen Backway 
+Copyright 2022 Loongson Technology Corp Ltd Contributed by Lu Wang <wanglu@loongson.cn> Hao Chen <chenhao@loongson.cn>
+Copyright 2006-2007 Maxim Gavrilov
+Copyright (c) 2008 Rob Sykes 
+Copyright 2016 Davinder Singh
+Copyright (C) 2012 VLC authors and VideoLAN Author Sukrit Sangwan 
+Copyright 2010, 2012, 2016-2017 Google Inc
+Copyright 2015 Edward Hervey Author Edward Hervey <bilboed@gmail.com>
+Copyright 2007 Mike Melanson Konstantin Shishkov
+Copyright (c) 2011 Ronald S. Bultje <rsbultje@gmail.com> Kieran Kunhya <kieran@kunhya.com> 
+Copyright 2015 Matthew Waters <matthew@centricular.com>
+Copyright 2006-2011 Baptiste Coudurier
+Copyright (c) 2015 Imagination Technologies Ltd 
+Copyright 2015 Zhou Xiaoyong <zhouxiaoyong@loongson.cn> Zhang Shuangshuang <zhangshuangshuang@ict.ac.cn>
+ G.723.1 compatible encoder Copyright (c) Mohamed Naufal <naufal22@gmail.com> 
+Copyright 2011 MirriAd Ltd
+Copyright (c) 2017 Richard Ling 
+Copyright (c) 2013 Darryl Wallace <wallacdj@gmail.com> 
+Copyright 2020-2021, 2023 Loongson Technology Corp Ltd Contributed by Shiyou Yin <yinshiyou-hf@loongson.cn>
+Copyright 1994, 2014-2015 Arwa Arif <arwaarif1994@gmail.com>
+Copyright 2013 James Almer based on BSD-
+Copyright 2011-2014 James Darnley <james.darnley@gmail.com>
+Copyright 2009, 2011 Sebastian Gesemann
+Copyright 1993, 2002, 2006 David Rowe
+Copyright flag when set to
+Copyright 2009 Michael Tison
+Copyright 2010 Fiona Glaser <fiona@x264.com>
+Copyright 2015 Parag Salasakar (Parag.Salasakar@imgtec.com) Zhou Xiaoyong <zhouxiaoyong@loongson.cn>
+Copyright (c) 2008 Alessandro Sappia 
+(c) 2020 Nelson Gomez <nelson.gomez@microsoft.com> 
+Copyright 2009 Kenan Gillet
+Copyright 2004-2006 Lennart Poettering 
+Copyright  2022 Rmi Denis-Courmont. Loosely based on earlier work 
+Copyright 2006, 2009 Stefan Gehrer <stefan.gehrer@gmx.de>
+Copyright 2009 Tobias Bindhammer
+Copyright 2020-2021 24i
+Copyright 2013-2014 Lukasz Marek
+(c) 2000 Chris Bagwell <cbagwell@sprynet.com> Algorithms Recursive single pole low high pass filter Reference The Scientist and Engineer's Guide to Digital Signal Processing 
+Copyright (c) 2013 Guillaume Martres <smarter@ubuntu.com> 
+Copyright (c) 2011 Reinhard Tartler 
+Copyright 2010 Marcelo Galvao Povoa
+Copyright (c) 2023 Leo Izen 
+Copyright 2011-2012 Michael Bradshaw
+Copyright 2014-2015 Collabora Ltd. Author Matthieu Bouron <matthieu.bouron@gcollabora.com>
+Copyright 2012 Sebastien Zwickert
+Copyright 2006 Kartikey Mahendra BHATT
+Copyright (C) 2014 Red Hat Inc. 
+Copyright 2013 Wei Gao <weigao@multicorewareinc.com>
+Copyright (c) 1996-2002 Gerd Knorr 
+Copyright 2018 Yiqun Xu <yiqun.xu@vipl.ict.ac.cn> Falei Luo <falei.luo@gmail.com> Huiwen Ren <hwrenx@gmail.com>
+Copyright 2007-2008 Siarhei Siamashka <ssvb@users.sourceforge.net>
+Copyright 2015 Tom Butterworth <bangnoise@gmail.com>
+Copyright 2013-2014, 2018-2019 James Almer <jamrial@gmail.com>
+Copyright 2016-2017 foo86
+Copyright 2010 Jacob Meuser
+Copyright (c) 2010 Michael Chinen 
+Copyright (c) 2008 vmrsss 
+Copyright 2007-2011, 2020-2021 Peter Ross (pross@xvid.org)
+Copyright (c) 2008 Affine Systems Inc 
+Copyright (c) 2001-2003 David Janssens 
+Copyright 2011 Jan Kokemller
+Copyright 2018, 2020 Loongson Technology Corp Ltd Contributed by Shiyou Yin <yinshiyou-hf@loongson.cn> Gu Xiwei(guxiwei-hf@loongson.cn)
+Copyright (c) 2000 Edward Beingessner And Sundry Contributors. This source code is freely redistributable and may be used for any purpose. This 
+Copyright 2017 Adib Surani
+Copyright 2003 EpicGames
+Copyright 2013-2016 Tiancheng Timothy Gu
+Copyright 2002, 2005 Francois Revol
+Copyright bit and original bitstream bit
+Copyright (c) 2011 Konstantin Shishkov based on work by Vladimir VAG Gneushev 
+Copyright (c) 2016 William Ma Sofia Kim Dustin Woo 
+Copyright (c) 2013 Konstantin Shishkov <kostya.shishkov@gmail.com> 
+Copyright 2009-2010 Daniel Verkamp
+Copyright 2020 Gautam Ramakrishnan
+Copyright 2023 SiFive Inc
+Copyright (c) 1998 Juergen Mueller And Sundry Contributors This source code is freely redistributable and may be used for any purpose. This 
+Copyright 2015 Pedro Arthur <bygrandao@gmail.com>
+Copyright (c) 2005-2008 Mans Rullgard Modifications 
+Copyright (c) 2014 Deti Fliegl 
+Copyright 2021 Nachiket Tarate
+Copyright 2006 Cyril Zorin
+Copyright 2013 Georg Martius
+Copyright (c) 2015 Stephan Holljes 
+Copyright 2010 Nolan Lum <nol888@gmail.com>
+Copyright 2009-2010, 2013-2014, 2016 Reimar Dffinger <Reimar.Doeffinger@gmx.de>
+Copyright (C) 2018 Stephen Seo 
+Copyright 1999, 2001 Chris Bagwell
+Copyright (c) 2015 Andreas Cadhalpun <Andreas.Cadhalpun@googlemail.com> 
+Copyright Indicator. Specifies whether 
+Copyright 2001, 2003 BERO
+Copyright 2009-2010 Howard Chu
+Copyright 2008 Jaikrishnan Menon <realityman@gmx.net>
+Copyright 2010 Mark Nauwelaerts 
+Copyright (C) 2018 Huiwen Ren <hwrenx@126.com> 
+Copyright 2014 Oleksij Rempel <linux@rempel-privat.de>
+Copyright (C) 2007 by Andrew Zabolotny 
+(c) 2001 Fabrice Bellard Started from sample code by Juan J. Sierralta P. 
+Copyright 2011, 2015 Janne Grunau
+Copyright (c) 2015 Tampere University of Technology 
+Copyright (c) 2015 Urvang Joshi 
+Copyright (c) 2013 Diego Biurrun <diego@biurrun.de> 
+Copyright (c) 2020 Zixing Liu 
+Copyright 2012 Jeremy Tran
+Copyright 2016 Thomas Mundt <loudmax@yahoo.de>
+copyright the software, and
+copyright Paris 2010
+Copyright 2014, 2020 Thilo Borgmann <thilo.borgmann@mail.de>
+Copyright (c) 2012 Aleksi Nurmi 
+Copyright (c) 2015 Anshul Maheshwari 
+Copyright (c) 2003 Donnie Smith 
+Copyright (C) 2020 Alyssa Milburn <amilburn@zall.org> 
+Copyright (c) 2020 Jun Zhao<barryjzhao@tencent.com> 
+Copyright 2009 Jimmy Christensen
+Copyright 2008 Sisir Koppaka
+Copyright 2006, 2015 Steve Lhomme
+Copyright 2007 Baptiste Coudurier Benjamin Larsson Ulion
+Copyright (c) 2011 Thomas Kuehnel 
+Copyright (C) 2015 Vittorio Giovara <vittorio.giovara@gmail.com> Based on public domain code by Fabian Giesen Sean Barrett and Yann Collet. 
+Copyright 2023, 8397, 8974 xu fulong <839789740@qq.com>
+Copyright 2007 Loic Minier
+Copyright (c) 2001 FFmpeg project 
+Copyright 2006-2007 Reimar Doeffinger
+Copyright (C) 2013 VTT 
+Copyright 2004-2005 Henryk Ploetz <henryk@ploetzli.ch>
+Copyright (c) 2018 Bjorn Roche 
+Copyright (c) 2012 Rudolf Polzer 
+Copyright 2013 Nicolas Bertrand <nicoinattendu@gmail.com>
+Copyright (c) 2008 Alexander Strange (astrange@ithinksw.com) 
+Copyright (c) 2021 Aidan Richmond 
+Copyright (c) 2013 2015 Jean Delvare <jdelvare@suse.com> 
+Copyright 2023 Nuo Mi
+Copyright 2010-2011, 2017, 2023 Tomas Hrdin
+Copyright (c) 2002 Jindrich Makovicka <makovick@gmail.com> 
+Copyright 2006-2013 Justin Ruggles <justin.ruggles@gmail.com>
+Copyright Alexandra Hajkova
+Copyright (C) 2007 Richard Spindler 
+Copyright 2011, 2015, 2022 Anton Khirnov <anton@khirnov.net>
+Copyright (c) 2014 Nicolas Bertrand 
+Copyright 2013-2014 Rl Aetey Global Technologies AB
+Copyright 2002 Gunnar Monell <gmo@linux.nu>
+Copyright 2002-2008 Jean-Marc Valin
+copyrighted material outside their relationship with you.
+Copyright 2007-2009 Bartlomiej Wolowiec
+Copyright 2017 Alexis Ballier <aballier@gentoo.org>
+Copyright (C) 2006-2011 Xvid Solutions GmbH 
+Copyright 2015-2016 Florian Nouwt
+Copyright 2010 Josh Allmann
+Copyright 2019, 2022 Manoj Gupta Bonda
+Copyright 2010 Rafael Carre
+Copyright 2017-2018 Akamai Technologies Inc
+Copyright (c) 2002 Lennert Buytenhek <buytenh@gnu.org> 
+Copyright 2013-2014 Pierre-Edouard Lepere
+Copyright (c) 2016-2019 Jai Luthra 
+Copyright (C) 2013-2015 Andreas Fuchs Wolfgang Hrauda Acoustics Research Institute 
+Copyright 2008-2011 Sascha Sommer Benjamin Larsson
+Copyright 2012-2013 Gildas Cocherel
+Copyright 2007-2008 Bartlomiej Wolowiec <bartek.wolowiec@gmail.com>
+Copyright 2005-2009 Benjamin Larsson
+Copyright (c) 2014 Neil Birkbeck (birkbeck@google.com) 
+Copyright 2005 Wim Taymans 
+Copyright (c) 2017 Kaustubh Raste (kaustubh.raste@imgtec.com) 
+Copyright (c) 2020 John Stebbins <jstebbins.hb@gmail.com> 
+Copyright 2015-2017 Manojkumar Bhosale (Manojkumar.Bhosale@imgtec.com)
+Copyright 2008 Loren Merrit <lorenm@u.washington.edu>
+Copyright 2021 Mark Reid <mindmark@gmail.com>
+Copyright (c) 2001-2010 Krzysztof Foltman Markus Schmidt Thor Harald Johansen Damien Zammit and others 
+Copyright(C) 2000 Michel Lespinasse <walken@zoy.org> 
+Copyright 1999-2014, 2018, 2023 Intel Corp
+Copyright 2012 Robert Nagy 
+Copyright (c) 2005 Vidar Madsen 
+Copyright 2020 Yaroslav Pogrebnyak <yyyaroslav@gmail.com>
+Copyright 2005 David Hammerton
+Copyright 2006-2010 Prakash Punnoor <prakash@punnoor.de>
+Copyright 2005-2008 Brad Midgley <bmidgley@xmission.com>
+Copyright (C) 2023 Loongson Technology Co. Ltd. Contributed by Bo Jin(jinbo@loongson.cn) All rights reserved. 
+Copyright (c) 2012 AvxSynth Team 
+Copyright (C) 2009 Willow Garage Inc. all rights reserved. 
+Copyright (c) 2014 Aman Gupta <ffmpeg@tmm1.net> 
+Copyright 2008-2009 Baptiste Coudurier <baptiste.coudurier@gmail.com>
+Copyright (C) 2005 Matthieu CASTET Alex Beregszaszi 
+Copyright 2005 Nikolaj Poroshin <porosh3@psu.ru>
+Copyright (c) 2009 Reimar Dffinger based on crcenc
+Copyright (c) 2002 Steve O'Hara-Smith based on Linux video grab interface 
+Copyright 2008, 2010 Alexander Strange <astrange@ithinksw.com>
+Copyright 2004 Maarten Daniels
+Copyright (c) 2022 Loongson Technology Corporation Limited Contributed by Gu Xiwei(guxiwei-hf@loongson.cn) Shiyou Yin(yinshiyou-hf@loongson.cn) 
+Copyright 2010-2011 Elvis Presley
+Copyright (c) 2003 Gustavo Sverzut Barbieri <gsbarbieri@yahoo.com.br> 
+Copyright (c) 2017 Kaixuan Liu 
+Copyright 2014-2015, 2020 Hendrik Leppkes
+Copyright (c) 2018 Thomas Volkert 
+Copyright 2007 Collabora Ltd Philippe Kalaf 
+Copyright 2006, 2008-2009, 2011 Loren Merritt <lorenm@u.washington.edu>
+Copyright 2004 Ville Saari
+Copyright 2020 Andreas Rheinhardt <andreas.rheinhardt@gmail.com>
+Copyright (c) 2014 Tiancheng Timothy Gu <timothygu99@gmail.com> 
+Copyright 2010-2011 Zhentan Feng
+Copyright 2010-2011 Anatoly Nenashev
+Copyright 2012-2013 Mickael Raulet
+copyright treaty adopted on 20 December 1996
+Copyright 2021, 2023 Leo Izen <leo.izen@gmail.com>
+Copyright 2023 Xilinx
+Copyright 2002 Brian Foley
+Copyright 2007-2014 Stefano Sabatini
+Copyright (c) 2016 Tobias Rapp 
+Copyright 2015 Vesselin Bontchev
+Copyright (c) 2001 Lionel Ulmer (lionel.ulmer@free.fr bbrox@bbrox.org) 
+Copyright (C) 2008 Eli Friedman (eli.friedman@gmail.com) 
+Copyright (C) 2012 Matthus G. Anteru Chajdas 
+Copyright (c) 2017 samsamsam@o2.pl based on HLS demux 
+Copyright (c) 2018 Chris Johnson 
+Copyright 2013 Daniel Kang <daniel.d.kang@gmail.com>
+Copyright Joseph Artsimovich and UAB 
+Copyright 2009, 2012 Nathan Caldwell
+Copyright 2002 The Xine project
+Copyright (C) year name of author
+Copyright (c) 2002 Laszlo Torok <torokl@alpha.dfmk.hu> 
+Copyright 2022 Caleb Etemesi <etemesicaleb@gmail.com>
+Copyright (c) 2019 Shiyou Yin (yinshiyou-hf@loongson.cn) 
+Copyright (c) 2002-2007 Professor Benoit Macq 
+Copyright 2004-2007 Eric Lasota Based on RoQ specs
+Copyright (c) 2013 RISC OS Open Ltd <bavison@riscosopen.org> 
+Copyright 2008-2012 Alexander E. Patrakov
+Copyright are property of their respective owners
+Copyright 2009-2010, 2012 Laurent Aimar
+Copyright (c) 2023 Francesco Carusi 
+Copyright 1999 Nick Bailey
+Copyright 2011 Pascal Getreuer
+Copyright (c) 2002-2007 Communications and Remote Sensing Laboratory Universite catholique de Louvain 
+Copyright 2015 Manojkumar Bhosale (Manojkumar.Bhosale@imgtec.com) Zhou Xiaoyong <zhouxiaoyong@loongson.cn>
+Copyright 2012, 2016 Ben GreaseMonkey Russell
+Copyright (c) 2013-2020 Michael Barbour <barbour.michael.0@gmail.com> 
+Copyright (C) 2009 Benjamin Dobell Glass Echidna 
+Copyright 2019 Eugene Lyapustin
+Copyright 2012-2013 Guillaume Martres
+Copyright 2007 Anssi Hannula <anssi.hannula@gmail.com>
+copyright (c) 2016 Ganesh Ajjanagadde <gajjanag@gmail.com> 
+Copyright (c) 2010 Fabrice Bellard Romain Degez 
+Copyright 2008 Ramiro Polla <ramiro.polla@gmail.com>
+Copyright (c) 2022 Pierre-Anthony Lemieux <pal@palemieux.com> 
+Copyright 2007 Christophe GISQUET <christophe.gisquet@free.fr>
+Copyright (C) 2011 Konstantin Shishkov based on work by Mike Melanson 
+Copyright (C) 2010 Amanda Y.N. Wu <amanda11192003@gmail.com> 
+Copyright 2012, 2018-2019 Philip Langdale <philipl@overt.org>
+Copyright 2005 Alban Bedel <albeu@free.fr>
+Copyright (c) 2002-2004 Michael Niedermayer <michaelni@gmx.at> SSE2 optimization is 
+Copyright 2021 Niklas Haas <ffmpeg@haasn.xyz>
+Copyright (c) 2016 Stle Kristoffersen 
+Copyright 2022-2023 J. Dekker <jdek@itanimul.li>
+Copyright 2013 Lenny Wang
+Copyright 2021, 2023 Loongson Technology Corp Ltd Contributed by Hecai Yuan <yuanhecai@loongson.cn>
+Copyright (c) 2010 Mark Heath mjpeg0 
+Copyright 2017 Steinar H. Gunderson
+Copyright 2012 Andrew D'Addesio
+Copyright 2012 British Broadcasting Corp
+Copyright (c) 2022 Mark Gaiser 
+Copyright (c) 2005-2014 Rich Felker et al. 
+Copyright 2006 Patrick Guimond
+Copyright 2009, 2013 Daniel Verkamp <daniel@drv.nu>
+Copyright 2012, 2015, 2018 Henrik Gramner
+Copyright 2010 Mohamed Naufal Basheer <naufal11@gmail.com> derived from the code by
+Copyright 2017, 2022 NVIDIA Corp
+Copyright 2012-2013 Oka Motofumi
+Copyright Sandflow Consulting LLC
+Copyright 2023 Dave Airlie
+Copyright 2006, 2008 Gregory Montoir (cyx@users.sourceforge.net)
+Copyright (c) 2009 Reimar Doeffinger <Reimar.Doeffinger@gmx.de> 
+Copyright (c) 2013 Rudolf Polzer <divverent@xonotic.org> 
+Copyright (c) 2013 Dirk Farin <dirk.farin@gmail.com> 
+Copyright Nick Kurshev
+Copyright 2016 Thomas Volkert <thomas@netzeal.de>
+Copyright (c) 2005 Boa Topakta 
+Copyright (c) 2016 ReneBrals 
+Copyright (c) 2020 FFmpeg 
+Copyright 2009 Dylan Yudaken
+Copyright (c) 2015 Zhang Rui <bbcallen@gmail.com> 
+Copyright (c) 2013 Konstantin Shishkov based on TwinVQ decoder 
+Copyright 2008-2009 Andrej Stepanchuk
+Copyright 2022 Ben Avison
+Copyright 2015 Paul B. Mahol
+Copyright 2010 Rob Clark <rob@ti.com>
+Copyright (c) 2007 Ronald S. Bultje <rbultje@ronald.bitfreak.net> 
+Copyright 2007 Kamil Nowosad
+copyright on the Program, and are irrevocable provided the stated
+Copyright 2012-2018, 2021-2022 James Almer
+Copyright 2002 Mark Hills <mark@pogo.org.uk>
+Copyright (c) 2004-2012 Michael Niedermayer <michaelni@gmx.at> bessel function 
+copyright (C) 2004 Marc Hoffman <marc.hoffman@analog.com> 
+Copyright 2012-2013 Wassim Hamidouche
+Copyright 2013, 2018 Calvin Walton <calvin.walton@kepstin.ca>
+Copyright 2010-2012, 2015, 2017 Carl Eugen Hoyos
+Copyright (c) 2012 Steven Robertson 
+Copyright 2016 Jan Sebechlebsky
+Copyright 2008-2010 Paul Kendall <paul@kcbbs.gen.nz>
+Copyright 2015-2016, 2021 Loongson Technology Corp Ltd
+Copyright 2016 Umair Khan <omerjerk@gmail.com>
+Copyright 2010-2016, 2020 Nicolas George
+Copyright (C) 2003 Ivan Kalvachev 
+Copyright (C) 1995 Mark Adler 
+Copyright 2006-2009, 2012 Rob Sykes <robs@users.sourceforge.net>
+Copyright 2009 Thomas P. Higdon <thomas.p.higdon@gmail.com>
+Copyright (c) 2006 Ryan Martell <rdm4@martellventures.com> 
+Copyright 2003, 2008-2009 Sascha Sommer
+Copyright 2007, 2014 Benoit Fouet
+Copyright 2017 Daniil Cherednik
+Copyright 2001 Juan J. Sierralta P
+(c) 1992-96 Amazing Studio x0a x1a 
+Copyright 2007-2008 CSIRO
+Copyright 2014-2015 Christophe Gisquet
+Copyright 2006-2007 SmartJog S.A. Baptiste Coudurier
+Copyright 2010-2012, 2015-2017 Anton Khirnov
+Copyright 2014-2015 Supraja Meedinti
+Copyright 2015-2016 Zhou Xiaoyong <zhouxiaoyong@loongson.cn>
+Copyright (c) 2011 Andreas man 
+Copyright (c) 2005 Herve Drolon FreeImage Team 
+Copyright (c) 2002 Fabrice Bellard Partly based on libdjbfft by D. J. Bernstein 
+Copyright (c) 2001 Heikki Leinonen 
+copyright interest in the
+Copyright (C) 2009 Joshua Warner 
+Copyright (c) 2000 2001 Fabrice Bellard and simple
+Copyright 2018, 2020 Huiwen Ren <hwrenx@gmail.com>
+Copyright (C) 2005 Ole Andr Vadla Ravns <oleavr@gmail.com> 
+Copyright (c) 2001-2014 Jim Teeuwen 
+Copyright (c) 2019 Martin Storsjo <martin@martin.st> 
+Copyright 2005-2007 Analog Devices Inc
+Copyright (c) 2005 Roine Gustafsson 
+Copyright 2022 Pierre-Anthony Lemieux <pal@palemieux.com> Zane van Iperen <zane@zanevaniperen.com>
+(C) 2001 Tim Ferguson 
+Copyright Markus Schmidt and Christian Holschuh
+Copyright (C) 2009 Konstantin Shishkov based on public domain SHA-
+Copyright (c) 2009 Kostya Shishkov 
+Copyright (c) 2008 Adam Gashlin 
+Copyright 2022 Loongson Technology Corp Ltd Contributed by Hao Chen(chenhao@loongson.cn)
+Copyright 2008, 2010 Eli Friedman
+Copyright (C) 2005 Matthieu CASTET 
+Copyright 2007-2010 Nokia Corp
+Copyright (c) 2011-2017 KO Myung-Hun <komh@chollian.net> 
+Copyright 2006-2007 Reynaldo H. Verdejo Pinochet
+Copyright (c) 2001-2010 Krzysztof Foltman Markus Schmidt Thor Harald Johansen Vladimir Sadovnikov and others 
+Copyright (c) 2015 Ganesh Ajjanagadde 
+Copyright (c) 2015 Mats Peterson 
+Copyright 2006-2010, 2012, 2014, 2019, 2022 Peter Ross
+Copyright (c) 2006 Paul Richards <paul.richards@gmail.com> 
+Copyright 2010 S.N. Hemanth Meenakshisundaram <smeenaks@ucsd.edu>
+Copyright (c) 2022 Thomas Siedel 
+Copyright (c) 2015 Donny Yang 
+Copyright 1990 James Ashton - Sydney University
+Copyright 1969, 2007, 2566, 4251, 5394, 5589, 5870, 6441, 9581 a840bda5870ba11f19698ff6eb9581dfb0f95fa5 539459aeb7d425140b62a3ec7dbf6dc8e408a306 and 520e17cd55896441042b14df2566a6eb610ed444
+Copyright 2004 Romain Dolbeau <romain@dolbeau.org> based on the equivalent C code in swscale
+Copyright (c) 2017 sfan5 <sfan5@live.de> 
+Copyright 2015-2017 Parag Salasakar (Parag.Salasakar@imgtec.com)
+Copyright (C) 2010 Chris Moeller All rights reserved. Optimizations by Gumboot 
+Copyright (c) 2009 Samalyse Author Olivier Guilyardi 
+Copyright Sebastien Bechet <s.bechet@av7.net>
+Copyright (c) 2010 Brandon Mintern 
+Copyright 2009 Daniel Verkamp (daniel@drv.nu)
+Copyright 2003-2014 Loren Merritt
+Copyright 2009, 2015, 2019 James Darnley
+Copyright 2021 quietvoid
+Copyright 2020, 2023 VeriSilicon Holdings Co. Ltd
+Copyright (c) 2012 Youness Alaoui <kakaroto@kakaroto.homelinux.net> 
+Copyright (c) 2007 Christian Ohm 
+Copyright (C) 2001-2010 Krzysztof Foltman Markus Schmidt Thor Harald Johansen 
+Copyright (c) 2009 Nicolas Martin 
+Copyright 2005-2006 Oded Shimon
+Copyright 1325, 2014 StarBrilliant <m13253@hotmail.com>
+Copyright 2012 Aneesh Dogra
+Copyright (c) 2000 Fabien COELHO <fabien@coelho.net> 
+Copyright (c) 2022 Andreas Rheinhardt <andreas.rheinhardt@outlook.com> 
+Copyright (c) 2010 Hans de Goede <hdegoede@redhat.com> 
+Copyright (c) 2019-2021 Sebastian Pop <spop@amazon.com> 
+Copyright 2016 Josh de Kock
+Copyright 2003-2004, 2006 Roman Shaposhnik
+Copyright (c) 2006 Baptiste Coudurier <baptiste.coudurier@smartjog.com> 
+Copyright 2012-2014 Christophe Gisquet <christophe.gisquet@gmail.com>
+Copyright 2016 KongQun Yang (kqyang@google.com)
+Copyright 2015-2017 Matthieu Bouron
+Copyright 2007, 2010 Bobby Bingham
+Copyright 2011-2013, 2015 Luca Barbato
+Copyright 2018 Danil Iashchenko
+Copyright 2008 Sascha Sommer (saschasommer@freenet.de)
+Copyright (c) 2010 Adrian Daerr and Nicolas George 
+Copyright 2003 Thomas Raivio
+Copyright (c) 2000 Chris Ausbrooks <weed@bucket.pp.ualr.edu> 
+Copyright 1993 CMU
+Copyright 2015 Sebastian Drge <sebastian@centricular.com>
+Copyright (C) 1996 1997 Theodore Ts'o. 
+Copyright (c) 2005 Zoltan Hidvegi 
+Copyright 2018 Dylan Fernando
+Copyright 2009 Giliard B. de Freitas <giliarde@gmail.com>
+Copyright 2006 Oded Shimon <ods15@ods15.dyndns.org>
+copyright & original defaults 
+Copyright (c) 2002-2003 Brian J. Murrell 
+Copyright 2011 Mina Nagy Zaki
+Copyright 2010 Daniel G. Taylor <dan@programmer-art.org>
+Copyright 2021-2022 Xilinx Inc -
+Copyright (c) 2013-2014 Luca Barbato Deti Fliegl 
+Copyright (c) 2022 TADANO Tokumei 
+Copyright (c) 2011 Roger Pau Monn <roger.pau@entel.upc.edu> 
+Copyright (c) 2020 Loongson Technology Corporation Limited Gu Xiwei <guxiwei-hf@loongson.cn> 
+Copyright 2015 Kevin Wheatley <kevin.j.wheatley@gmail.com>
+Copyright (c) 2017 Ming Yang 
+Copyright (c) 2018 Gregor Richards 
+Copyright 2014-2015 Thomas Volkert <thomas@homer-conferencing.com>
+Copyright 2014-2015 Seppo Tomperi <seppo.tomperi@vtt.fi>
+Copyright 2010 Sebastian Vater <cdgs.basty@googlemail.com>
+Copyright (c) 2004 Adam Thayer <krevnik@comcast.net> 
+Copyright (c) 2016 Mobibase France 
+Copyright (c) 2016 Michael Niedermayer <michael@niedermayer.cc> 
+Copyright 2015 Ludmila Glinskih
+Copyright (C) 2014 Daniel Oberhoff 
+Copyright 2015-2016, 2019, 2021 rcombs
+Copyright (c) 2006 Baptiste Coudurier <baptiste.coudurier@smartjog.com> Mans Rullgard <mans@mansr.com> 
+Copyright 2015 Gilles Chanteperdrix <gch@xenomai.org>
+Copyright 2013 Seppo Tomperi
+Copyright 2012-2013 MIPS Technologies Inc. California
+Copyright (c) 2018 Yingming Fan <yingmingfan@gmail.com> 
+Copyright 2019, 2021 Xuewei Meng
+Copyright 2016 Neil Birkbeck <neil.birkbeck@gmail.com>
+Copyright 2007-2010, 2012-2013, 2015, 2018 Ronald S. Bultje
+Copyright 2002-2005 Roberto Togni
+Copyright 2005 Steve Underwood
+Copyright 2015 Peter Meerwald <pmeerw@pmeerw.net>
+Copyright 2021, 2023 Loongson Technology Corp Ltd Contributed by Hao Chen <chenhao@loongson.cn>
+Copyright(C) 2010 2011 Philip Langdale <ffmpeg.philipl@overt.org> 
+Copyright 2008 Victor Paesa
+Copyright (c) 2002-2003 Yannick Verschueren 
+Copyright 2005-2007, 2010-2012 Mans Rullgard
+Copyright 2021 Limin Wang
+Copyright 2000-2001 Fabrice Bellard H
+Copyright (C) 2007 Clemens Fruhwirth 
+Copyright 2006-2009, 2011-2012 Justin Ruggles
+Copyright (C) 2010 Eli Friedman <eli.friedman@gmail.com> 
+Copyright (c) 2015 LoRd
+Copyright 2001 Lionel Ulmer
+Copyright (c) 2001-2003 BERO <bero@geocities.co.jp> 
+Copyright 2012, 2019, 2021 Jan Ekstrm
+Copyright (c) 2004 Michael Niedermayer Modifications 
+Copyright 2011-2018, 2022 Clment Bsch
+Copyright (c) 2011 Michael Karcher 
+Copyright 2014 Tim Walker <tdskywalker@gmail.com>
+Copyright (c) 1998 - 2009 Conifer Software 
+Copyright (c) 2009 David Conrad <lessen42@gmail.com> 
+Copyright 2013-2014 Lukasz Marek <lukasz.m.luki@gmail.com>
+Copyright 2015 Shivraj Patil (Shivraj.Patil@imgtec.com) Zhou Xiaoyong <zhouxiaoyong@loongson.cn>
+Copyright 2002 Falk Hueffner <falk@debian.org>
+Copyright 2013 Yukinori Yamazoe
+Copyright (c) 2015-2016 mawen1250 
+Copyright 2017, 4371 Ashish Pratap Singh <ashk43712@gmail.com>
+Copyright (c) 2018 Mina Sami 
+Copyright 2010, 2013, 2020 Anssi Hannula
+Copyright (c) 2013 Aneesh Dogra <aneesh@sugarlabs.org> 
+Copyright (c) 2011 Juan Carlos Rodriguez <ing.juancarlosrodriguez@hotmail.com> 
+Copyright 2006-2014 Ramiro Polla
+Copyright (C) 1995 The Bitmap Brothers Ltd. 
+Copyright 2023 LTN Global Communications
+Copyright (C) 2013 Anand Meher Kotra 
+Copyright 2012-2014 Andrey Utkin
+Copyright 2021 Loongson Technology Corp Ltd Contributed by Jin Bo <jinbo@loongson.cn>
+Copyright 2016 William Ma Ted Ying Jerry Jiang
+Copyright 2012 Collabora Ltd. Author Sebastian Drge <sebastian.droege@collabora.co.uk>
+Copyright 2005, 2007-2008, 2010-2011, 2020 Reimar Dffinger
+Copyright 2013-2014 Andrew Kelley
+Copyright (c) 2005 DivX Inc. 
+Copyright (c) 2008 GUCAS Zhentan Feng 
+copyright string is within the provided data, validate it 
+Copyright (c) 2017 Jun Zhao 
+Copyright (C) 2018 Misty De Meo 
+Copyright 2009-2010 Fiona Glaser
+Copyright 2006-2009 Robert Swain
+Copyright 2010-2011, 2013-2015 Janne Grunau <janne-libav@jannau.net>
+copyright on the software, and 
+Copyright 2009 Zuxy Meng <zuxy.meng@gmail.com>
+Copyright 2010 Holger Lubitz
+Copyright 2021-2022 Wu Jianhua <jianhua.wu@intel.com>
+Copyright 2022 Ben Avison <bavison@riscosopen.org>
+Copyright (C) 2006 Benjamin Larssonb 
+Copyright (c) 2011 Matthew Hoops <clone2727@gmail.com> 
+Copyright 2017 Thomas Mundt <tmundt75@gmail.com>
+Copyright 2006-2010, 2017 Aurelien Jacobs <aurel@gnuage.org>
+Copyright 2007-2008 Mns Rullgrd
+Copyright 2023 Jan Ekstrm <jeebjp@gmail.com>
+Copyright 2022 Andreas Rheinhardt
+Copyright (C) 2002 Frederic 
+Copyright (c) 2019 Vladimir Panteleev 
+Copyright (c) 2007 Callum Lerwick <seg@haxxed.com> 
+Copyright 2000-2003 Fabrice Bellard Modifications
+Copyright (c) 2015-2021 Facebook Inc. All rights reserved. 
+Copyright 2006-2011 Kevin Stone
+Copyright 2023 Loongson Technology Corp Ltd Contributed by Lu Wang <wanglu@loongson.cn>
+Copyright (c) 2001 Michel Lespinasse 
+Copyright 2016-2017 Savoir-faire Linux Inc
+Copyright 1991-1996 Thomas G. Lane
+Copyright 2013-2017 Vittorio Giovara <vittorio.giovara@gmail.com>
+Copyright 2020 Zhenyu Wang <wangzhenyu@pkusz.edu.cn> Bingjie Han <hanbj@pkusz.edu.cn> Huiwen Ren <hwrenx@gmail.com>
+Copyright 2007 Edward Hervey 
+Copyright (c) 2016 Marton Balnt <cus@passwd.hu> 
+Copyright 2016, 2020 Timo Rothenpieler
+Copyright (c) 2014 Barbara Lepage <db0company@gmail.com> 
+Copyright 2013, 2018, 2020 Marton Balint
+Copyright (c) 2009 Toshimitsu Kimura 
+Copyright and no-warranty
+Copyright (c) 2017 Meng Wang <wangmeng.kids@bytedance.com> 
+Copyright 2018 Sergey Lavrushkin
+Copyright (c) 2010 Michele Orr 
+Copyright 2001-2016 Michael Niedermayer <michaelni@gmx.at>
+Copyright 1001, 2007 Vitor Sessak <vitor1001@gmail.com>
+Copyright 2017 Jorge Ramirez <jorge.ramirez-ortiz@linaro.org>
+Copyright (c) 2006 Julian Hall 
+Copyright 2002-2013 Maxim Poliakovski
+Copyright (c) 2014 Petri Hintukainen <phintuka@users.sourceforge.net> 
+Copyright (c) 2006 John Maddock This file is part of FFmpeg. 
+Copyright 2013-2014 RISC OS Open Ltd Author Ben Avison <bavison@riscosopen.org>
+Copyright (c) 2009 Peter Holik 
+copyright (c) 2010 Daniel G. Taylor <dan@programmer-art.org> Relicensed to the LGPL with permission from Remi Guyomarch. 
+Copyright 2008-2013 Alex Converse <alex.converse@gmail.com>
+Copyright 2005-2010 Wolfram Gloger
+Copyright 2007-2008, 2011 Vladimir Voroshilov
+Copyright 2003-2004 Mike Melanson <melanson@pcisys.net>
+Copyright (c) 2011 Oskar Arvidsson 
+copyright 0 len3 32) get
+Copyright 2007 Bjrn Axelsson
+Copyright 2003 Ewald Snel
+Copyright (C) 2013-2015 Andreas Fuchs Wolfgang Hrauda This file is part of FFmpeg. 
+Copyright (c) 2019 Loongson Technology Corporation Limited gxw <guxiwei-hf@loongson.cn> 
+Copyright 2006 Industrial Light & Magic
+Copyright (c) 2005 Jeff Muizelaar 
+Copyright (c) 2009 Xuggle Incorporated 
+Copyright 2020 Vacing Fang <vacingfang@tencent.com>
+Copyright 2003 Daniel Moreno
+Copyright (c) 2015 Zhou Xiaoyong <zhouxiaoyong@loongson.cn> Zhang Shuangshuang <zhangshuangshuang@ict.ac.cn> Heiher <r@hev.cc> 
+Copyright 2007-2011 Vitor Sessak
+Copyright (c) 2007 Benoit Fouet <benoit.fouet@free.fr> 
+Copyright (c) 2007-2016 David Robillard 
+Copyright (c) 2003 Nick Kurshev Based on public domain decoder at http www.honeypot.net audio 
+Copyright 2006, 2008 Baptiste Coudurier <baptiste.coudurier@free.fr>
+Copyright 2001-2014, 2016, 2022 Michael Niedermayer
+Copyright 2004-2005 Denes Balatoni
+Copyright 2015 Kieran Kunhya
+Copyright 2003-2004 Romain Dolbeau <romain@dolbeau.org>
+Copyright (C) 2003-2005 by Christopher R. Hertel (crh@ubiqx.mn.org) 
+Copyright (c) 2013 Jeff Moguillansky 
+Copyright 2021, 2023 Loongson Technology Corp Ltd Contributed by Shiyou Yin <yinshiyou-hf@loongson.cn> Xiwei Gu <guxiwei-hf@loongson.cn>
+Copyright (c) 2016 Floris Sluiter 
+Copyright (c) 2021 parazyd <parazyd@dyne.org> 
+Copyright (c) 2008 Robert Marston 
+Copyright (c) 2003-2007 Francois-Olivier Devaux and Antonin Descampe 
+Copyright (c) 2019 Guo Yejun 
+Copyright 2023 John Cox <jc@kynesim.co.uk>
+Copyright 2020 Bjrn Ottosson
+Copyright (c) 2010 Francesco Lavra <francescolavra@interfree.it> 
+Copyright 2005 Michael Ahlberg Mns Rullgrd
+Copyright 2016-2018 Jokyo Images
+Copyright (c) 2014 Nicholas Robbins 
+Copyright (C) 2015 Claudio Freire 
+Copyright 2004-2005 Michael Niedermayer Loren Merritt
+Copyright 2017 Matthieu Bouron <matthieu.bouron@gmail.com>
+Copyright 2018 Mohammad Izadi
+ 2000-2001 Fabrice Bellard <fabrice@bellard.org> Copyright (c) Nick Kurshev <nickols_k@mail.ru> 
+Copyright 2012, 2014 Georg Lippitsch <georg.lippitsch@gmx.at>
+Copyright 2010 S.N. Hemanth Meenakshisundaram
+Copyright 2020 Google LLC
+Copyright (C) 2008 Jaikrishnan Menon 
+Copyright 2008 robs@users.sourceforge.net
+Copyright (c) 2020 Gautam Ramakrishnan <gautamramk@gmail.com> All rights reserved. 
+COpyright (c) 2002 Daniel Pouzzner 
+Copyright 2023 Lynne
+Copyright (c) 2005 by Neal Symms (tivo@freakinzoo.com) - February 
+Copyright 2010-2012, 2014-2017 Ronald S. Bultje <rsbultje@gmail.com>
+Copyright 2001-2010 Krzysztof Foltman Markus Schmidt Thor Harald Johansen and others
+Copyright 2003 Rich Felker
+Copyright 2007-2010 David Conrad
+Copyright 2005 anonymous Alex Beregszaszi Michael Niedermayer
+Copyright (c) 2008 Laurent Aimar <fenrir@videolan.org> 
+Copyright 2004 Gildas Bazin
+Copyright (c) 1999 Roger Hardiman 
+Copyright 2011-2014 Twitter Inc. Licensed under MIT 
+Copyright 2009-2010, 2013, 2016, 2021-2022 Thilo Borgmann
+Copyright (c) 2012 Martin Storsjo Based on the GStreamer H.
+Copyright 2013 OpenCV Foundation
+Copyright (C) 2001-2010 Krzysztof Foltman Markus Schmidt Thor Harald Johansen Damien Zammit 
+Copyright 2012 Vitaliy E Sugrobov
+Copyright 2008-2009 Splitted-Desktop Systems
+Copyright (c) 2009 Alex Converse 
+Copyright 2009 Sebastien Lucas <sebastien.lucas@gmail.com>
+Copyright (c) 2008-2009 Gregory Maxwell 
+Copyright (c) 2003 LeFunGus lefungus@altern.org 
+Copyright 2013, 2015 Vittorio Giovara
+Copyright 2015-2016 Kyle Swanson <k@ylo.ph>
+Copyright 2003 Dr. Tim Ferguson
+Copyright (c) 1997-2001 ZSNES Team 
+Copyright(C) 2000-2001 Peter Gubanov <peter@elecard.net.ru> Rounding trick 
+Copyright 2006 Daniel Maas <dmaas@maasdigital.com>
+Copyright 2015-2018 Rostislav Pehlivanov <atomnuker@gmail.com>
+Copyright 2005, 2012 Laurent de Soras
+Copyright 2015-2016 Timo Rothenpieler <timo@rothenpieler.org>
+Copyright (c) 2000-2001 Fabrice Bellard <fabrice@bellard.org> 
+Copyright (c) 2011 Max Horn 
+Copyright 2019 - 2021 Osamu Watanabe 
+Copyright (c) 2003 International Business Machines Corp. 
+Copyright 2003 Michael Zucchi <notzed@ximian.com>
+Copyright (C) 2017 Felix Matouschek 
+Copyright 2004 AGAWA Koji
+Copyright 2015-2017 Shivraj Patil (Shivraj.Patil@imgtec.com)
+Copyright 2015, 2021-2022 Niklas Haas
+Copyright 2014 Kieran Kunhya <kierank@obe.tv>
+Copyright (c) 2013 Matthew Heaney 
+Copyright 2014-2016 Muhammad Faiz <mfcc64@gmail.com>
+Copyright (c) 2013-2022 Andreas Unterweger 
+Copyright (c) 2022 Loongson Technology Corporation Limited Contributed by Shiyou Yin <yinshiyou-hf@loongson.cn> Hao Chen <chenhao@loongson.cn> 
+Copyright 2006 Ryan Martell. (rdm4@martellventures.com)
+Copyright 2006-2008 Ivo van Poorten
+Copyright (C) 2003 Alex Beregszaszi & Mike Melanson 
+Copyright 2007 Benjamin Zores <ben@geexbox.org> based upon libdemac from Dave Chapman
+Copyright 2011-2015, 2019 Derek Buitenhuis
+Copyright 2017 Ivan Kalvachev <ikalvachev@gmail.com>
+Copyright (c) 2011 Jonathan Baldwin 
+Copyright (c) 2018 Magnus Rs <mla2.roos@gmail.com> 
+Copyright (c) 2015 Himangi Saraogi <himangi774@gmail.com> 
+Copyright (c) 2005-2008 Diego Biurrun 
+Copyright 2003 Mike Melanson
+Copyright 2004-2018 Konstantin Shishkov
+Copyright (c) 2014 James Yu <james.yu@linaro.org> 
+Copyright 2001-2008, 2013, 2015-2016, 2018-2019, 2021 The FFmpeg Project
+Copyright 2011-2023 Paul B Mahol
+Copyright 2011-2012 Smartjog S.A.S Clment Bsch <clement.boesch@smartjog.com>
+Copyright (c) 2001-2010 Vladimir Sadovnikov 
+Copyright (c) 2001 Fabrice Bellard. cleanup optimizations are 
+Copyright (c) 2012 Antti Seppl 
+Copyright (c) 2015 Roger Pack 
+Copyright 2002 A'rpi
+Copyright 2009, 2013 Christian Schmidt
+Copyright 2005-2008 Commonwealth Scientific and Industrial Research Organisation
+Copyright 2022-2023 Zhao Zhili <zhilizhao@tencent.com>
+Copyright (c) 2007 Marco Gerards 
+Copyright 2010 Mohamed Naufal Basheer
+Copyright 2005-2007, 2011, 2014-2015 Luca Barbato <lu_zero@gentoo.org>
+Copyright 2013, 2017 Philip Langdale
+Copyright 2001, 2003 Donald A. Graft
+Copyright 2009 Michael Niedermayer Author Olivier Guilyardi
+Copyright 2017 Paras Chadha
+Copyright (c) 2012 Petri Hintukainen 
+Copyright 2000-2003, 2005 Fabrice Bellard
+Copyright 2011-2012 Mashiat Sarker Shakkhar
+copyright (c) 2014 Samsung Electronics. All rights reserved. 
+Copyright (C) 2007 Alexis Ballier 
+Copyright (c) 2014 Dave Rice 
+Copyright 2008 NVIDIA
+Copyright (c) 2004-2008 Marko Kreen 
+Copyright 2021 Pekka Vnnen <pekka.vaananen@iki.fi>
+Copyright (c) 2014 Eejya Singh 
+Copyright (c) 2017 Lionel CHAZALLON 
+Copyright 2003 Tinic Uro
+Copyright 2022-2024 Advanced Micro Devices Inc
+Copyright (c) 2008 BBC Anuradha Suraparaju <asuraparaju@gmail.com> 
+Copyright (c) 2006 Daniel Maas <dmaas@maasdigital.com> Funded by BBC Research & Development 
+Copyright (c) 2010 Gordon Schmidt 
+Copyright 2012 Samuel Pitoiset
+Copyright 2015-2016 Open Broadcast Systems Ltd. Author
+Copyright 2013-2014 Ramiro Polla Luca Barbato Deti Fliegl
+Copyright (c) 2000 John Walker 
+Copyright 2019-2020 Andriy Gelman
+Copyright 2001, 2005, 2007-2014 Peter Ross <pross@xvid.org>
+Copyright (c) 2014 Marvin Scholz 
+copyright.  Those thus making or running the covered works
+Copyright 2022 Mohamed Khaled <Mohamed_Khaled_Kamal@outlook.com>
+Copyright (c) 2014 Andreas Cadhalpun 
+Copyright 2012, 2014 Rafal Carr
+Copyright 2011-2013 Daniel Kang
+Copyright (c) 2010 Kenneth Vermeirsch 
+Copyright 2001-2003, 2006, 2009 Michael Niedermayer <michaelni@gmx.at> Modifications
+Copyright 2021-2022 Dawid Kozinski <d.kozinski@samsung.com>
+Copyright 2012 David Kment
+Copyright 2007-2008 Marco Gerards <marco@gnu.org>
+Copyright 2009 Samalyse
+Copyright 2014-2015 Vignesh Venkatasubramanian
+Copyright 2002 Francois Revol <revol@free.fr>
+Copyright (c) 2010 Andrzej Szombierski based on vivparse 
+Copyright(C) 2003 Pascal Massimino <skal@planet-d.net> 
+Copyright (c) 2011 Miroslav Sluge <Thunder.m@seznam.cz> 
+Copyright (C) 2019 Leo Zhang <leozhang@qiyi.com> 
+Copyright 2006 Michael Niedermayer <michaelni@gmx.at> et al
+Copyright 2009 Colin McQuillan
+Copyright (C) 2007-2010 Christophe Gisquet <word1.word2@gmail.com> 
+Copyright 2007, 2011-2012 Nicolas George <nicolas.george@normalesup.org>
+Copyright 2002-2006 Alex Beregszaszi
+Copyright (C) 2003 James Klicman <james@klicman.org> 
+Copyright (c) 2006 Xiaogang Zhang 
+Copyright 2001-2013, 2018 Michael Niedermayer (michaelni@gmx.at)
+Copyright 2013 The WebRTC project authors
+ Nick Kurshev Copyright Michael (michaelni@gmx.at) 
+
+
+Components: libjpeg 9b
+
+
+LEGAL ISSUES
+============
+
+In plain English:
+
+1. We don't promise that this software works.  (But if you find any bugs,
+   please let us know!)
+2. You can use this software for whatever you want.  You don't have to pay us.
+3. You may not pretend that you wrote this software.  If you use it in a
+   program, you must acknowledge somewhere in your documentation that
+   you've used the IJG code.
+
+In legalese:
+
+The authors make NO WARRANTY or representation, either express or implied,
+with respect to this software, its quality, accuracy, merchantability, or
+fitness for a particular purpose.  This software is provided "AS IS", and you,
+its user, assume the entire risk as to its quality and accuracy.
+
+This software is copyright (C) 1991-2016, Thomas G. Lane, Guido Vollbeding.
+All Rights Reserved except as specified below.
+
+Permission is hereby granted to use, copy, modify, and distribute this
+software (or portions thereof) for any purpose, without fee, subject to these
+conditions:
+(1) If any part of the source code for this software is distributed, then this
+README file must be included, with this copyright and no-warranty notice
+unaltered; and any additions, deletions, or changes to the original files
+must be clearly indicated in accompanying documentation.
+(2) If only executable code is distributed, then the accompanying
+documentation must state that "this software is based in part on the work of
+the Independent JPEG Group".
+(3) Permission for use of this software is granted only if the user accepts
+full responsibility for any undesirable consequences; the authors accept
+NO LIABILITY for damages of any kind.
+
+These conditions apply to any software derived from or based on the IJG code,
+not just to the unmodified library.  If you use our work, you ought to
+acknowledge us.
+
+Permission is NOT granted for the use of any IJG author's name or company name
+in advertising or publicity relating to this software or products derived from
+it.  This software may be referred to only as "the Independent JPEG Group's
+software".
+
+We specifically permit and encourage the use of this software as the basis of
+commercial products, provided that all warranty or liability claims are
+assumed by the product vendor.
+
+
+The Unix configuration script "configure" was produced with GNU Autoconf.
+It is copyright by the Free Software Foundation but is freely distributable.
+The same holds for its supporting scripts (config.guess, config.sub,
+ltmain.sh).  Another support script, install-sh, is copyright by X Consortium
+but is also freely distributable.
+
+The IJG distribution formerly included code to read and write GIF files.
+To avoid entanglement with the Unisys LZW patent (now expired), GIF reading
+support has been removed altogether, and the GIF writer has been simplified
+to produce "uncompressed GIFs".  This technique does not use the LZW
+algorithm; the resulting GIF files are larger than usual, but are readable
+by all standard GIF decoders.
+
+
+
+Copyright 1991-1996 Thomas G. Lane
+Copyright and no-warranty
+
+

@@ -1,0 +1,126 @@
+#!/usr/bin/env python3
+
+# Copyright(C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License"). You may
+# not use this file except in compliance with the License. A copy of the
+# License is located at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+
+# ////////////////////////////////////////////////////////////////////////////
+# Get MA35 loads
+# -------------------------------------
+# Usage:
+#   print_ma35_load
+# ////////////////////////////////////////////////////////////////////////////
+# ============================================================================
+
+# -------------------------------------------------------
+# Compose xrmadm command to get info about MA35 load
+# This script gets device_id, kernelAlias, numChanInuse, usedLoad, reservedLoad, resrvUsedLoad, Utilization(%)
+import sys
+import subprocess
+import json
+import os
+import datetime
+
+if not os.access (os.getcwd(), os.W_OK):
+    print (f"ERROR: {os.path.basename(__file__)}: Unable to write to current directory \"{os.getcwd()}\"")
+    sys.exit(-1)
+
+# -------------------------------------------------------
+XRMADM_PATH = "/opt/amd/ama/ma35/bin/xrmadm "
+xrmadm_cmd = XRMADM_PATH + "/opt/amd/ama/ma35/scripts/list_cmd.json"
+
+json_data = json.loads(subprocess.check_output(xrmadm_cmd, shell=True))
+# print('DEBUG:', json_data)
+
+# -------------------------------------------------------
+# Get number of Devices in a system
+# -------------------------------------------------------
+num_devices = int(json_data['response']['data']['deviceNumber'])
+if num_devices == 0:
+    print ('\nERROR: No MA35 devices found\n')
+    sys.exit()
+# print('DEBUG:', num_devices)
+
+# -------------------------------------------------------
+# Print Table Header
+# -------------------------------------------------------
+line_width=111
+print()
+print('='*line_width)
+print('MA35 - Device Loads')
+print('='*line_width)
+print('{:10} {:20} {:15} {:15} {:15} {:15} {}'.format('deviceID', 'kernelAlias', 'numChanInuse', 'usedLoad', 'reservedLoad', 'resrvUsedLoad', 'Utilization(%)'))
+print('-'*line_width)
+
+# -------------------------------------------------------
+# Scan all devices / Scan all CUs
+# -------------------------------------------------------
+# Creating a temprory file to get device loads one at a time
+def get_timestamp():
+    current_time = datetime.datetime.now() # Get the current date and time
+    return current_time.strftime('_%Y%m%d_%H%M%S')  # Format the current date and time as a string
+
+query_file ="list_one_dev" + str(get_timestamp()) + ".json"
+for device_idx in range(int(num_devices)):
+  with open(query_file, "w") as data_to_json:
+    json.dump({
+        "request": {
+            "name": "list",
+            "requestId": 1,
+            "device": device_idx
+        }
+    }, data_to_json)
+  dev_resp = json.loads(subprocess.check_output( XRMADM_PATH + query_file , shell=True))
+  device_data = dev_resp['response']['data']
+  device_id = 'device_' + str(device_idx)
+  current_device_data = device_data[device_id]
+  num_cus = int(current_device_data['cuNumber   '])
+  # print('DEBUG:', device_id)
+  # print('DEBUG:', num_cus)
+
+  # --------------------------------
+  # Check if the device is used
+  # --------------------------------
+  device_used = 0
+  for cu_idx in range(num_cus):
+      cu_id = 'cu_'+str(cu_idx)
+      current_cu_data = current_device_data[cu_id]
+      # check if this device is used or not
+      device_used |= int(current_cu_data['numChanInuse '])
+      device_used |= int((current_cu_data['usedLoad     ']).split('of')[0])
+      device_used |= int((current_cu_data['reservedLoad ']).split('of')[0])
+      device_used |= int((current_cu_data['resrvUsedLoad']).split('of')[0])
+
+  if (device_used == 0):
+      print('{:10} {:20}'.format(device_id, 'Not Used'))
+  else:
+      for cu_idx in range(num_cus):
+          cu_id = 'cu_'+str(cu_idx)
+          current_cu_data = current_device_data[cu_id]
+          kernel_alias  = str(current_cu_data['kernelAlias  '])
+          if kernel_alias == 'ML_AMA':
+              continue
+          num_channel_use  = str(current_cu_data['numChanInuse '])
+          used_load      = str((current_cu_data['usedLoad     ']).split('of')[0])
+          used_load_max = str((current_cu_data['usedLoad     ']).split('of')[1])
+          reserved_load  = str((current_cu_data['reservedLoad ']).split('of')[0])
+          resrv_used_load = str((current_cu_data['resrvUsedLoad']).split('of')[0])
+          utilization_perc   = int(used_load) / int(used_load_max) * 100.0
+          print('{:10} {:20} {:15} {:15} {:15} {:15} {:>6.1f}'.format(device_id, kernel_alias, num_channel_use, used_load, reserved_load, resrv_used_load, utilization_perc))
+
+  print('-'*line_width)
+
+# cleanup
+os.remove(query_file)
+
+print()

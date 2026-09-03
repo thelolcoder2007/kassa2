@@ -1,0 +1,18 @@
+{
+    "request": {
+        "name": "t14_encode_hevc_4kp60",
+        "request_id": 1,
+        "parameters": {
+            "name": "testjob",
+            "num_job_slots": 1,
+            "resources": 
+            [
+                {
+                    "function": "ENCODER",
+                    "format":   "HEVC",
+                    "resolution": { "input": { "width": 3840, "height": 2160, "frame-rate": { "num":60, "den":1} } } 
+                }
+            ]
+        }
+    }
+}

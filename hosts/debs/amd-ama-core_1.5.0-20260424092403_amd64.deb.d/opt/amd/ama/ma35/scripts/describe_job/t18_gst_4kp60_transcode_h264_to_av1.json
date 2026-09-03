@@ -1,0 +1,27 @@
+{
+    "request": {
+        "name": "t18_gst_4kp60_transcode_h264_to_av1",
+        "request_id": 1,
+        "parameters": {
+            "name": "testjob",
+            "resources": 
+            [
+                {
+                    "function": "DECODER",
+                    "format":   "H264",
+                    "resolution": { "input": { "width": 3840, "height": 2160, "frame-rate": { "num":60, "den":1} } } 
+                },
+		
+		            {
+                    "function": "ENCODER",
+                    "format":   "AV1",
+                    "resolution": { "input": { "width": 3840, "height": 2160, "frame-rate": { "num":60, "den":1} } }
+                }
+                
+	
+
+            ]
+        }
+    }
+}
+

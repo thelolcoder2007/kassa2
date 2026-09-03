@@ -1,0 +1,19 @@
+{
+    "request": {
+        "name": "example_encode_type",
+        "request_id": 1,
+        "parameters": {
+            "name": "testjob",
+            "num_job_slots": 1,
+            "resources": 
+            [
+                {
+                    "function": "ENCODER",
+                    "format":   "AV1",
+                    "type":   2,
+                    "resolution": { "input": { "width": 3840, "height": 2160, "frame-rate": { "num":60, "den":1} } } 
+                }
+            ]
+        }
+    }
+}
