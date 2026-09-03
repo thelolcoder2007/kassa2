@@ -38,9 +38,17 @@ let
     inherit version;
     src = unpackedDebs;
 
-    nativeBuildInputs = with pkgs; [ autoPatchelfHook makeWrapper binutils file ];
+    nativeBuildInputs = with pkgs; [
+      autoPatchelfHook
+      makeWrapper
+      binutils
+      file
+    ];
 
-    patches = [ ../debs/usr-bin-env.patch ];
+    preInstall = ''
+      	sed -i 's/\/bin\/bash/\/usr\/bin\/env bash/g' *
+        chmod +x $out/opt/amd/ama/ma35/scripts/.on_transcoder_insert.sh
+    '';
 
     buildInputs = with pkgs; [
       stdenv.cc.cc.lib
@@ -76,8 +84,12 @@ let
     dontConfigure = true;
 
     installPhase = ''
-      mkdir -p $out
-      cp -r $src $out
+      	runHook preInstall
+
+        mkdir -p $out
+        cp -r $src $out
+
+        runHook postInstall
     '';
 
     preFixup = ''
@@ -94,15 +106,15 @@ let
     '';
 
     postFixup = ''
-    if [ -f "$out/opt/amd/ama/ma35/bin/ffmpeg" ]; then
-      wrapProgram "$out/opt/amd/ama/ma35/bin/ffmpeg" \
-        --prefix LD_LIBRARY_PATH : "$out/opt/amd/ama/ma35/lib" \
-        --prefix PATH : "$out/opt/amd/ama/ma35/bin"
-    else
-      echo "WARNING: expected ffmpeg binary not found at the guessed" >&2
-      echo "path — fix postFixup in ama-ma35d-binary.nix once you've" >&2
-      echo "seen the real unpacked tree." >&2
-    fi
+      if [ -f "$out/opt/amd/ama/ma35/bin/ffmpeg" ]; then
+        wrapProgram "$out/opt/amd/ama/ma35/bin/ffmpeg" \
+          --prefix LD_LIBRARY_PATH : "$out/opt/amd/ama/ma35/lib" \
+          --prefix PATH : "$out/opt/amd/ama/ma35/bin"
+      else
+        echo "WARNING: expected ffmpeg binary not found at the guessed" >&2
+        echo "path — fix postFixup in ama-ma35d-binary.nix once you've" >&2
+        echo "seen the real unpacked tree." >&2
+      fi
     '';
   };
   amaFFmpeg = pkgs.writeShellScriptBin "ama-ffmpeg" ''
@@ -111,7 +123,7 @@ let
 
   amaKernelModule = config.boot.kernelPackages.callPackage (
     { stdenv, kernel }:
-    stdenv.mkDerivation (finalAttrs: {
+    stdenv.mkDerivation (_finalAttrs: {
       pname = "ama-transcoder";
       inherit version;
 

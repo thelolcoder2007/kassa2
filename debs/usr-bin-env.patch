@@ -1,0 +1,10 @@
+diff --git a/opt/amd/ama/ma35/scripts/.on_transcoder_insert.sh b/opt/amd/ama/ma35/scripts/.on_transcoder_insert.sh
+index dc8feab..7a36446 100755
+--- a/opt/amd/ama/ma35/scripts/.on_transcoder_insert.sh
++++ b/opt/amd/ama/ma35/scripts/.on_transcoder_insert.sh
+@@ -1,4 +1,4 @@
+-#!/bin/bash
++#!/usr/bin/env bash
+ # Copyright 2024 Xilinx, Inc.
+ #
+ # Licensed under the Apache License, Version 2.0 (the "License");
