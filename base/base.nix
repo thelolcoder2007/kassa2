@@ -1,6 +1,5 @@
 {
   config,
-  inputs,
   lib,
   pkgs,
   ...
@@ -8,28 +7,8 @@
 
 {
   imports = [
-    inputs.home-manager.nixosModules.home-manager
     ./sops.nix
   ];
-  home-manager.users =
-    lib.genAttrs (lib.attrNames (lib.filterAttrs (_: val: val.isNormalUser) config.users.users))
-      (_: {
-        home = {
-          stateVersion = "26.11";
-          file.".local/share/nix/trusted-settings.json" = {
-            text = ''
-              {
-                "extra-substituters": {
-                  "https://nix-community.cachix.org": true
-                },
-                "extra-trusted-public-keys": {
-                  "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=": true
-                }
-              }
-            '';
-          };
-        };
-      });
 
   # Github plz no ratelimit tyyy
   sops.secrets.github_token = { };
@@ -110,7 +89,7 @@
 
   time.timeZone = "Europe/Amsterdam";
 
-  system.stateVersion = "26.05";
+  system.stateVersion = "25.11";
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 }

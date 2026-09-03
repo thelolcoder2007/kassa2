@@ -11,9 +11,9 @@ let
 
     # ffmpeg -f v4l2 -video_size 3840x2160 -framerate 60  -i /dev/video0 \
     ${lib.getExe config.hardware.ama-ma35d.ffmpegBinary} -hwaccel ama -f rawvideo -pix_fmt yuv422p -video_size 3840x2160 -framerate 60 -i /dev/urandom \
-    -c:v h264_vaapi -profile:v main -preset quality -b:v 50M -maxrate 50M -bufsize 100M -g 30 -threads 2 -tune grain \
+    -c:v h264_ama -profile:v main -preset quality -b:v 50M -maxrate 50M -bufsize 100M -g 30 -threads 2 \
     -f hls -hls_time 2 -hls_list_size 5 -hls_flags delete_segments /run/mistserver/livestream.m3u8
-  '';
+  ''; # NOTE: you can use "hevc_ama" if you want to encode to h.265 instead of h.264
   ffmpeg-remove = pkgs.writeShellScript "remove-hls.sh" ''
     	rm /run/mistserver/livestream*.ts
       rm /run/mistserver/livestream.m3u8

@@ -86,6 +86,7 @@ let
       libxinerama
       libxi
       libxrandr
+      apr
       aprutil
       systemd
       alsa-lib
