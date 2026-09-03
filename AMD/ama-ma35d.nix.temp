@@ -99,11 +99,7 @@ let
 
     installPhase = ''
       mkdir -p $out
-      cp -r $src/opt $out/opt
-
-      # autoPatchelfHook walks $out and patches every ELF file it finds
-      # automatically as part of the fixup phase — nothing else needed
-      # here beyond making sure buildInputs above covers all .so deps.
+      cp -r $src $out
     '';
 
     # Wrap the ffmpeg binary so LD_LIBRARY_PATH / any env vars their
@@ -127,37 +123,6 @@ let
   amaFFmpeg = pkgs.writeShellScriptBin "ama-ffmpeg" ''
     exec ${amaUserspace}/opt/amd/ama/ma35/bin/ffmpeg "$@"
   '';
-
-  # --- Kernel module: treat the .ko as a prebuilt binary artifact ------
-  # No compiling here — we just locate the shipped .ko and either install
-  # it the "normal" NixOS way (requires exact vermagic match) or, if
-  # cfg.forceInsmod is set, load it directly with insmod --force.
-  amaModuleInstall = pkgs.runCommand "ama-transcoder-ko" { } ''
-    mkdir -p $out
-    # TODO: fix this glob once you know the real path inside the
-    # unpacked driver .deb, e.g. lib/modules/*/extra/ama_transcoder.ko
-    ko=$(find ${amaUnpacked} -name 'ama_transcoder.ko' | head -n1)
-    if [ -z "$ko" ]; then
-      echo "ERROR: could not find ama_transcoder.ko under the unpacked .deb tree" >&2
-      exit 1
-    fi
-    cp "$ko" $out/ama_transcoder.ko
-  '';
-
-  insmodForceScript = pkgs.writeShellScript "ama-insmod-force.sh" ''
-    set -e
-    if lsmod | grep -q ama_transcoder; then
-      exit 0
-    fi
-    echo "[ama-ma35d] Force-loading prebuilt ama_transcoder.ko (vermagic check skipped)" >&2
-    ${pkgs.kmod}/bin/insmod --force ${amaModuleInstall}/ama_transcoder.ko || {
-      echo "[ama-ma35d] insmod --force failed. This almost certainly means" >&2
-      echo "the .ko was built for a genuinely incompatible kernel ABI —" >&2
-      echo "pin boot.kernelPackages instead of forcing." >&2
-      exit 1
-    }
-  '';
-
 
 
   amaKernelModule = config.boot.kernelPackages.callPackage
