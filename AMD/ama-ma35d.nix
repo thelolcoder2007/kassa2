@@ -152,6 +152,42 @@ let
     let
       gccLib = stdenv.cc.cc.lib + "/lib";
       amaLib = amaUserspace + "/opt/amd/ama/ma35/lib";
+      extraLibPath =
+        with pkgs;
+        lib.makeLibraryPath [
+          stdenv.cc.cc.lib
+          zlib
+          openssl
+          libhugetlbfs
+          boost
+          numactl
+          wayland
+          libxext
+          libxcursor
+          libxinerama
+          libxi
+          libxrandr
+          apr
+          aprutil
+          systemd
+          alsa-lib
+          libbsd
+          krb5
+          libdrm
+          harfbuzz
+          freetype
+          libpulseaudio
+          fribidi
+          fontconfig
+          libxscrnsaver
+          libxkbcommon
+          libxxf86vm
+          zmqpp
+          libuuid
+          libsodium
+          zeromq
+          log4cxx
+        ];
     in
     stdenv.mkDerivation (_finalAttrs: {
       name = "ffmpeg-ama";
@@ -242,15 +278,9 @@ let
       preFixup = ''
         find "$out" -type f | while read -r f; do
           if patchelf --print-rpath "$f" >/dev/null 2>&1; then
-            echo "Patching rpath of $f"
-            patchelf --set-rpath "$out/lib:''
-      + amaLib
-      + ":"
-      + gccLib
-      + ''
-        " "$f"
-                  fi
-                done
+            patchelf --set-rpath "$out/lib:${amaLib}:${extraLibPath}:${gccLib}" "$f"
+          fi
+        done
       '';
       meta = {
         mainProgram = "ffmpeg";
