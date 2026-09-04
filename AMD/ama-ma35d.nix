@@ -148,87 +148,116 @@ let
     '';
 
   };
-  amaFFmpeg = stdenv.mkDerivation (_finalAttrs: {
-    name = "ffmpeg-ama";
-    inherit version;
-    src = unpackedDebs;
+  amaFFmpeg =
+    let
+      gccLib = stdenv.cc.cc.lib + "/lib";
+      amaLib = amaUserspace + "/opt/amd/ama/ma35/lib";
+    in
+    stdenv.mkDerivation (_finalAttrs: {
+      name = "ffmpeg-ama";
+      inherit version;
+      src = amaUserspace;
+      nativeBuildInputs = with pkgs; [
+        autoPatchelfHook
+        pkg-config
+      ];
+      buildInputs = with pkgs; [
+        stdenv.cc.cc.lib
+        zlib
+        openssl
+        libhugetlbfs
+        boost
+        numactl
+        wayland
+        libxext
+        libxcursor
+        libxinerama
+        libxi
+        libxrandr
+        apr
+        aprutil
+        systemd
+        alsa-lib
+        libbsd
+        krb5
+        libdrm
+        harfbuzz
+        freetype
+        libpulseaudio
+        fribidi
+        fontconfig
+        libxscrnsaver
+        libxkbcommon
+        libxxf86vm
+        pkg-config
+        nasm
+        zmqpp
+        libuuid
+        amaUserspace
+        libsodium # libsodium.so.23 — zmq's curve/crypto dep
+        zeromq # often provides libpgm too, or check `pgm` package name
+        krb5 # for libgssapi_krb5 — but see note below
+        log4cxx # liblog4cxx.so.15
+      ];
+      unpackPhase = ''
+        runHook preUnpack
+        mkdir -p source
+        cp $src/* source -r
+        chmod 0777 source -R
+        cd source/opt/amd/ama/ma35/ffmpeg-src
+        sourceRoot=$PWD
+        runHook postUnpack
+      '';
+      dontConfigure = true;
+      dontCheckForBrokenSymlinks = true;
+      preBuild = ''
+        patchShebangs $sourceRoot
+      '';
+      patches = [
+        ./0001-no-absolute-paths.patch
+      ];
+      buildPhase = ''
+        	   	runHook preBuild
+        	   	mkdir -p $out
 
-    nativeBuildInputs = with pkgs; [
-      autoPatchelfHook
-      pkg-config
-    ];
-    buildInputs = with pkgs; [
-      stdenv.cc.cc.lib
-      zlib
-      openssl
-      libhugetlbfs
-      boost
-      numactl
-      wayland
-      libxext
-      libxcursor
-      libxinerama
-      libxi
-      libxrandr
-      apr
-      aprutil
-      systemd
-      alsa-lib
-      libbsd
-      krb5
-      libdrm
-      harfbuzz
-      freetype
-      libpulseaudio
-      fribidi
-      fontconfig
-      libxscrnsaver
-      libxkbcommon
-      libxxf86vm
-      pkg-config
-      nasm
-      zmqpp
-      libuuid
-    ];
+        	   	ama_root=$(dirname "$PWD")
 
-    unpackPhase = ''
-      runHook preUnpack
-      mkdir -p source
-      cp $src/* source -r
-      chmod 0777 source -R
-      cd source/opt/amd/ama/ma35/ffmpeg-src
-      sourceRoot=$PWD
-      runHook postUnpack
-    '';
+        	   	if [ -n "$LD_LIBRARY_PATH" ]; then
+        	   	  export LD_LIBRARY_PATH="''
+      + gccLib
+      + ''
+        :$ama_root/lib:$LD_LIBRARY_PATH"
+        	   	else
+        	   	  export LD_LIBRARY_PATH="''
+      + gccLib
+      + ''
+        :$ama_root/lib"
+        	   	fi
 
-    dontConfigure = true;
-    dontCheckForBrokenSymlinks = true;
-
-    preBuild = ''
-      patchShebangs $sourceRoot
-    '';
-    patches = [
-      ./0001-no-absolute-paths.patch
-    ];
-
-    buildPhase = ''
-	   	runHook preBuild
-	   	mkdir -p $out
-
-			export LD_LIBRARY_PATH="${stdenv.cc.cc.lib}/lib:$LD_LIBRARY_PATH:/build/source/opt/amd/ama/ma35/lib"
-
-	    ./configure_ma35 --prefix=$out
-	    make -j
-	    make install
-
-	    runHook postBuild
-    '';
-    meta = {
-      mainProgram = "ffmpeg";
-      description = "AMD Alveo MA35D ffmpeg binary";
-      platforms = platforms.linux;
-    };
-  });
+        	    ./configure_ma35 --prefix=$out
+        	    make -j
+        	    make install
+        	    runHook postBuild
+      '';
+      preFixup = ''
+        find "$out" -type f | while read -r f; do
+          if patchelf --print-rpath "$f" >/dev/null 2>&1; then
+            echo "Patching rpath of $f"
+            patchelf --set-rpath "$out/lib:''
+      + amaLib
+      + ":"
+      + gccLib
+      + ''
+        " "$f"
+                  fi
+                done
+      '';
+      meta = {
+        mainProgram = "ffmpeg";
+        description = "AMD Alveo MA35D ffmpeg binary";
+        platforms = platforms.linux;
+      };
+    });
 
   amaKernelModule = config.boot.kernelPackages.callPackage (
     { stdenv, kernel }:
@@ -236,7 +265,7 @@ let
       pname = "ama-transcoder";
       inherit version;
 
-      src = "${unpackedDebs}/opt/amd/ama/ma35/module/kmod.tar.gz";
+      src = "${amaUserspace}/opt/amd/ama/ma35/module/kmod.tar.gz";
 
       sourceRoot = "dkms_source_tree";
 
