@@ -6,7 +6,7 @@
 }:
 let
   cfg = config.hardware.ama-ma35d;
-  inherit (pkgs) stdenv fetchurl;
+  inherit (pkgs) stdenv;
   inherit (lib)
     concatStringsSep
     platforms
@@ -20,27 +20,32 @@ let
     pname = "amd-ama-drivers-unpacked";
     inherit version;
     srcs = [
-    	# Due to xilinx being fucky they return a 401. I currently don't have another way of getting them automatically
-      (fetchurl {
-        url = "https://packages.xilinx.com/artifactory/debian-packages/pool/amd-ama-xma_1.5.0-20260424092403.x86_64.deb";
-        hash = "sha256-VmUmos7SAcZqUJb9VPIRMKdeW/uTX2FX9vDYzubmPsA=";
-      })
-      (fetchurl {
-        url = "https://packages.xilinx.com/artifactory/debian-packages/pool/amd-ama-core_1.5.0-20260424092403.x86_64.deb";
-        hash = "sha256-TmOKJpuxeiQacKLJBzb69bcHSNCsrbbS0Z2hZRmDxU0=";
-      })
-      (fetchurl {
-        url = "https://packages.xilinx.com/artifactory/debian-packages/pool/amd-ama-driver_1.5.0-20260424092403.x86_64.deb";
-        hash = "sha256-sK/eQzeJeWZq3e+CvRG/t4ENnc1lUZTZOiJqzA9bch4=";
-      })
-      (fetchurl {
-        url = "https://packages.xilinx.com/artifactory/debian-packages/pool/amd-ama-firmware_1.5.0-20260424092403.x86_64.deb";
-        hash = "sha256-Qb0dn6mPx7TSN3S36W/K96jPkdG8m+GzUYiVdbX8Vu4=";
-      })
-      (fetchurl {
-        url = "https://packages.xilinx.com/artifactory/debian-packages/pool/amd-ama-ffmpeg_1.5.0-20260424092403.x86_64.deb";
-        hash = "sha256-NkM8M9wR5mt60/bv/Ig+8BC79/bMC7Vg4PGzkb39EFU=";
-      })
+      # Due to xilinx being fucky they return a 401. I currently don't have another way of getting them automatically
+      # (fetchurl {
+      #   url = "https://packages.xilinx.com/artifactory/debian-packages/pool/amd-ama-xma_1.5.0-20260424092403.x86_64.deb";
+      #   hash = "sha256-VmUmos7SAcZqUJb9VPIRMKdeW/uTX2FX9vDYzubmPsA=";
+      # })
+      # (fetchurl {
+      #   url = "https://packages.xilinx.com/artifactory/debian-packages/pool/amd-ama-core_1.5.0-20260424092403.x86_64.deb";
+      #   hash = "sha256-TmOKJpuxeiQacKLJBzb69bcHSNCsrbbS0Z2hZRmDxU0=";
+      # })
+      # (fetchurl {
+      #   url = "https://packages.xilinx.com/artifactory/debian-packages/pool/amd-ama-driver_1.5.0-20260424092403.x86_64.deb";
+      #   hash = "sha256-sK/eQzeJeWZq3e+CvRG/t4ENnc1lUZTZOiJqzA9bch4=";
+      # })
+      # (fetchurl {
+      #   url = "https://packages.xilinx.com/artifactory/debian-packages/pool/amd-ama-firmware_1.5.0-20260424092403.x86_64.deb";
+      #   hash = "sha256-Qb0dn6mPx7TSN3S36W/K96jPkdG8m+GzUYiVdbX8Vu4=";
+      # })
+      # (fetchurl {
+      #   url = "https://packages.xilinx.com/artifactory/debian-packages/pool/amd-ama-ffmpeg_1.5.0-20260424092403.x86_64.deb";
+      #   hash = "sha256-NkM8M9wR5mt60/bv/Ig+8BC79/bMC7Vg4PGzkb39EFU=";
+      # })
+      ./amd-ama-core_1.5.0-20260424092403_amd64.deb
+      ./amd-ama-driver_1.5.0-20260424092403_amd64.deb
+      ./amd-ama-ffmpeg-src_1.5.0-20260424092403.noarch.deb
+      ./amd-ama-firmware_1.5.0-20260424092403_amd64.deb
+      ./amd-ama-xma_1.5.0-20260424092403_amd64.deb
     ];
 
     nativeBuildInputs = [ pkgs.dpkg ];
@@ -54,6 +59,7 @@ let
         dpkg-deb -x "$deb" $out
       done
     '';
+    dontCheckForBrokenSymlinks = true;
   });
   amaUserspace = pkgs.stdenv.mkDerivation {
     pname = "ama-sdk-userspace";
@@ -116,6 +122,8 @@ let
         runHook postInstall
     '';
 
+    dontCheckForBrokenSymlinks = true;
+
     preFixup = ''
       find "$out" -type f | while read -r f; do
         if ${pkgs.file}/bin/file "$f" | grep -q ELF; then
@@ -140,9 +148,87 @@ let
     '';
 
   };
-  amaFFmpeg = pkgs.writeShellScriptBin "ama-ffmpeg" ''
-    exec ${amaUserspace}/opt/amd/ama/ma35/bin/ffmpeg "$@"
-  '';
+  amaFFmpeg = stdenv.mkDerivation (_finalAttrs: {
+    name = "ffmpeg-ama";
+    inherit version;
+    src = unpackedDebs;
+
+    nativeBuildInputs = with pkgs; [
+      autoPatchelfHook
+      pkg-config
+    ];
+    buildInputs = with pkgs; [
+      stdenv.cc.cc.lib
+      zlib
+      openssl
+      libhugetlbfs
+      boost
+      numactl
+      wayland
+      libxext
+      libxcursor
+      libxinerama
+      libxi
+      libxrandr
+      apr
+      aprutil
+      systemd
+      alsa-lib
+      libbsd
+      krb5
+      libdrm
+      harfbuzz
+      freetype
+      libpulseaudio
+      fribidi
+      fontconfig
+      libxscrnsaver
+      libxkbcommon
+      libxxf86vm
+      pkg-config
+      nasm
+      zmqpp
+      libuuid
+    ];
+
+    unpackPhase = ''
+      runHook preUnpack
+      mkdir -p source
+      cp $src/* source -r
+      chmod 0777 source -R
+      cd source/opt/amd/ama/ma35/ffmpeg-src
+      sourceRoot=$PWD
+      runHook postUnpack
+    '';
+
+    dontConfigure = true;
+    dontCheckForBrokenSymlinks = true;
+
+    preBuild = ''
+      patchShebangs $sourceRoot
+    '';
+    patches = [
+      ./0001-no-absolute-paths.patch
+    ];
+
+    buildPhase = ''
+	   	runHook preBuild
+	   	mkdir -p $out
+
+			export LD_LIBRARY_PATH="${stdenv.cc.cc.lib}/lib:$LD_LIBRARY_PATH:/build/source/opt/amd/ama/ma35/lib"
+
+	    ./configure_ma35 --prefix=$out
+	    make -j
+	    make install
+
+	    runHook postBuild
+    '';
+    meta = {
+      mainProgram = "ffmpeg";
+      description = "AMD Alveo MA35D ffmpeg binary";
+      platforms = platforms.linux;
+    };
+  });
 
   amaKernelModule = config.boot.kernelPackages.callPackage (
     { stdenv, kernel }:
@@ -185,17 +271,6 @@ in
   options.hardware.ama-ma35d = {
     enable = mkEnableOption "AMD Alveo MA35D media accelerator support (prebuilt AMA SDK binaries)";
 
-    debDir = mkOption {
-      type = types.path;
-      description = ''
-        Local directory containing the amd-ama-*.deb packages, obtained
-        via AMD's apt/dnf repo (see AMA SDK docs "Package Feed Setup")
-        and pulled down without installing, e.g. `apt download
-        amd-ama-driver amd-ama-core amd-ama-xma amd-ama-firmware
-        amd-ama-ffmpeg` on a scratch Debian/Ubuntu box.
-      '';
-      example = "/root/ama-debs";
-    };
     hugepages = mkOption {
       type = types.int;
       default = 4192;
@@ -224,13 +299,6 @@ in
   };
 
   config = mkIf cfg.enable {
-
-    assertions = [
-      {
-        assertion = cfg.debDir != null;
-        message = "hardware.ama-ma35d.debDir must point at a directory of the amd-ama-*.deb files";
-      }
-    ];
 
     boot.kernelParams = [
       "amd_iommu=on" # swap for "intel_iommu=on" on Intel hosts

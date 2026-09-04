@@ -66,6 +66,7 @@
       nixfmt
       nixfmt-tree
       pciutils
+      screen
       tcpdump
       traceroute
       usbutils
@@ -74,6 +75,8 @@
       # keep-sorted end
     ];
   };
+
+  nix.settings.keep-failed = true;
 
   boot = {
     loader.grub = {

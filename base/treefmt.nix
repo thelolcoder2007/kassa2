@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 
 {
   # Used to find the project root
@@ -7,7 +7,6 @@
   programs = {
     # keep-sorted start
     deadnix.enable = true;
-    flake-edit.enable = true;
     jsonfmt.enable = true;
     keep-sorted.enable = true;
     mdsh.enable = true;
@@ -17,16 +16,6 @@
     mdformat = {
       enable = true;
       settings.number = true;
-    };
-    mypy = {
-      enable = true;
-      directories."" = {
-        extraPythonPackages = with pkgs.python3Packages; [
-          gst-python
-          pygobject3
-        ];
-        options = [ "--ignore-missing-imports" ];
-      };
     };
     yamllint = {
       enable = true;

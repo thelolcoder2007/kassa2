@@ -3,10 +3,9 @@
   imports = [
     ./ama-ma35d.nix
   ];
-  hardware.ama-ma35d = {
-    enable = true;
-    debDir = ../debs;
-  };
+
+  hardware.ama-ma35d.enable = true;
+
   # programs.nix-ld = {
   #   enable = true;
   #   libraries = with pkgs; [
