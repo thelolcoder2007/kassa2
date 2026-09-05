@@ -1,6 +1,0 @@
-AMD/amd-ama-core_1.5.0-20260424092403_amd64.deb filter=lfs diff=lfs merge=lfs -text
-AMD/amd-ama-driver_1.5.0-20260424092403_amd64.deb filter=lfs diff=lfs merge=lfs -text
-AMD/amd-ama-ffmpeg_1.5.0-20260424092403_amd64.deb filter=lfs diff=lfs merge=lfs -text
-AMD/amd-ama-ffmpeg-src_1.5.0-20260424092403.noarch.deb filter=lfs diff=lfs merge=lfs -text
-AMD/amd-ama-firmware_1.5.0-20260424092403_amd64.deb filter=lfs diff=lfs merge=lfs -text
-AMD/amd-ama-xma_1.5.0-20260424092403_amd64.deb filter=lfs diff=lfs merge=lfs -text
