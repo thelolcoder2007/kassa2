@@ -2,7 +2,7 @@
   description = "Kassa 2";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
 
     sops-nix = {
       url = "github:Mic92/sops-nix";
@@ -27,19 +27,54 @@
       self,
       ...
     }@inputs:
+
+    let
+      mkPkgs =
+        system:
+        import nixpkgs {
+          inherit system;
+          overlays = [
+            (_: _: { _bartPackages.prefix = "bart"; })
+            inputs.bart-pkgs.overlays.default
+          ];
+        };
+      systems = [ "x86_64-linux" ];
+
+      inherit (nixpkgs.lib)
+        genAttrs
+        nixosSystem
+        ;
+
+      pkgsForSystem = genAttrs systems mkPkgs;
+
+      forEachSystem =
+        f:
+        genAttrs systems (
+          system:
+          f {
+            inherit system;
+            pkgs = pkgsForSystem.${system};
+          }
+        );
+    in
     {
       # for `nix fmt`
-      formatter.x86_64-linux =
-        (treefmt-nix.lib.evalModule nixpkgs.outputs.legacyPackages.x86_64-linux ./base/treefmt.nix)
-        .config.build.wrapper;
-      # for `nix flake check`
-      checks.x86_64-linux.formatting = (treefmt-nix.lib.evalModule nixpkgs.outputs.legacyPackages.x86_64-linux ./base/treefmt.nix).config.build.check self;
+      formatter = forEachSystem (
+        { pkgs, ... }: (treefmt-nix.lib.evalModule pkgs ./base/treefmt.nix).config.build.wrapper
+      );
 
-      nixosConfigurations."kassa2" = nixpkgs.lib.nixosSystem {
+      # for `nix flake check`
+      checks = forEachSystem (
+        { pkgs, ... }: {
+          formatting = (treefmt-nix.lib.evalModule pkgs ./base/treefmt.nix).config.build.check self;
+        }
+      );
+
+      nixosConfigurations."kassa2" = nixosSystem {
+        pkgs = pkgsForSystem.x86_64-linux;
         modules = [
           ./hosts/kassa2.nix
           ./hosts/hardware-configuration-kassa2.nix
-          { nixpkgs.overlays = [ inputs.bart-pkgs.overlays.default ]; }
         ];
         specialArgs = {
           inherit inputs;

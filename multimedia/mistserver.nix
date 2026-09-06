@@ -2,6 +2,7 @@
   config,
   inputs,
   lib,
+  pkgs,
   ...
 }:
 {
@@ -32,6 +33,7 @@
 
   services.mistserver = {
     enable = true;
+    package = pkgs.bart.mistserver;
     openFirewall = true;
     configFile = config.sops.secrets."mistserver-config".path;
     settings = {
