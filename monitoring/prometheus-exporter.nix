@@ -30,10 +30,24 @@
   };
   networking.firewall.extraInputRules =
     let
-      promExportersEnabled = lib.filterAttrs (
-        _: value: value.enable
-      ) config.services.prometheus.exporters;
-      allowedPorts = map (exporter: exporter.port) promExportersEnabled;
+    promExportersEnabled = lib.filterAttrs (
+      name: exporter:
+        let
+          result = builtins.tryEval (
+            builtins.isAttrs exporter && exporter ? enable && exporter.enable
+          );
+        in
+        result.success && result.value
+    ) config.services.prometheus.exporters;
+
+    allowedPorts = lib.pipe promExportersEnabled [
+      (lib.mapAttrsToList (
+        _: exporter:
+        let result = builtins.tryEval (toString exporter.port);
+        in if result.success then result.value else null
+      ))
+      (builtins.filter (p: p != null))
+    ];
     in
     ''
       		ip saddr 0.0.0.0 tcp dport {${builtins.concatStringsSep ", " allowedPorts}} accept comment "Allow Prometheus from Jetse's Prometheus daemon";
