@@ -50,9 +50,8 @@
     ];
     in
     ''
-      		ip saddr 0.0.0.0 tcp dport {${builtins.concatStringsSep ", " allowedPorts}} accept comment "Allow Prometheus from Jetse's Prometheus daemon";
-      		ip6 saddr :: tcp dport {${builtins.concatStringsSep ", " allowedPorts}} accept comment "Allow Prometheus from Jetse's Prometheus daemon";
-      	'';
+  		ip saddr 194.171.96.49 tcp dport {${builtins.concatStringsSep ", " allowedPorts}} accept comment "Allow Prometheus from Jetse's Prometheus daemon";
+   	'';
 
   boot.kernel.sysctl."kernel.perf_event_paranoid" = 0; # Prometheus recommends it, I don't really know what it does
 }
