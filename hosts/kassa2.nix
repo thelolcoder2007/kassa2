@@ -11,6 +11,7 @@ in
     # keep-sorted start
     ../base/base.nix
     ../base/users.nix
+    ../monitoring/prometheus-exporter.nix
     ../monitoring/zabbix-agent.nix
     ../multimedia/ffmpeg.nix
     ../multimedia/mistserver.nix
