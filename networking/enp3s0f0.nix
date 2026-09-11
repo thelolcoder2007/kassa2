@@ -21,7 +21,7 @@ in
 
     nftables.enable = true;
 
-    interfaces.enp3s0f0 = {
+    interfaces.enx10ffe0be8cf0 = {
       ipv6.addresses = [
         {
           address = ip_addr6;
@@ -40,11 +40,11 @@ in
 
     defaultGateway = {
       address = firewall_ip_addr4;
-      interface = "enp3s0f0";
+      interface = "enx10ffe0be8cf0";
     };
     defaultGateway6 = {
       address = firewall_ip_addr6;
-      interface = "enp3s0f0";
+      interface = "enx10ffe0be8cf0";
     };
   };
 

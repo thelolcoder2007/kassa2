@@ -9,18 +9,24 @@ let
   ffmpeg-sh = pkgs.writeShellScript "ffmpeg.sh" ''
     rtmp_key=$(${lib.getExe' pkgs.coreutils-full "cat"} ${config.sops.secrets."rtmp_key".path})
 
-    # ffmpeg -f v4l2 -video_size 3840x2160 -framerate 60  -i /dev/video0 \
-    ${lib.getExe pkgs.ffmpeg} -hwaccel qsv -hwaccel_output_format qsv -f rawvideo -pix_fmt yuv422p -video_size 3840x2160 -framerate 60 -i /dev/urandom \
-    -c:v hevc_qsv -profile:v main -preset medium -b:v 50M -maxrate 50M -bufsize 100M -g 30 -threads 2 \
-    -f hls -hls_time 2 -hls_list_size 5 -hls_flags delete_segments /run/mistserver/livestream.m3u8
-  ''; # NOTE: you can use "h264_qsv" if you want to encode to h.264 instead of h.265
+    # ${lib.getExe pkgs.ffmpeg} -init_hw_device vaapi=va:/dev/dri/renderD128 -filter_hw_device va \
+		    # -hwaccel vaapi -hwaccel_output_format vaapi \
+		    # -f v4l2 -input_format mjpeg -video_size 3840x2160 -framerate 60 -i /dev/video0 \
+		    # -c:v hevc_vaapi -profile:v main -quality 4 -b:v 50M -maxrate 50M -bufsize 100M -g 30 \
+		    # -f hls -hls_time 2 -hls_list_size 5 -hls_flags delete_segments /run/mistserver/livestream.m3u8
+    ${lib.getExe pkgs.ffmpeg} -init_hw_device vaapi=va:/dev/dri/renderD128 -filter_hw_device va \
+        -f rawvideo -pix_fmt yuv420p -video_size 3840x2160 -framerate 60 -i /dev/urandom \
+        -vf 'format=nv12,hwupload' \
+        -c:v hevc_vaapi -profile:v main -quality 4 -b:v 50M -maxrate 50M -bufsize 100M -g 30 \
+        -f hls -hls_time 2 -hls_list_size 5 -hls_flags delete_segments /run/mistserver/livestream.m3u8
+  ''; # NOTE: you can use "h264_vaapi" if you want to encode to h.264 instead of h.265
   ffmpeg-remove = pkgs.writeShellScript "remove-hls.sh" ''
     		rm /run/mistserver/livestream*.ts
     		rm /run/mistserver/livestream.m3u8
   '';
   ffmpeg-mkv = pkgs.writeShellScript "ffmpeg-mkv.sh" ''
     		sleep 10
-    		ffmpeg -hwaccel qsv -hwaccel_output_format qsv -i /run/mistserver/livestream.m3u8 \
+    		ffmpeg -hwaccel vaapi -hwaccel_output_format vaapi -i /run/mistserver/livestream.m3u8 \
     		"/var/lib/ffmpeg/recordings/livestream-$(date +%Y-%m-%d_%H-%M-%S).mkv"
   '';
 in
