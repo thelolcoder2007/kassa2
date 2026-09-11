@@ -2,7 +2,7 @@
 
 let
   firewall_ip_addr4 = "145.220.6.1";
-  firewall_ip_addr6 = "2001:67c:6ec:abba:145:220:6:1";
+  firewall_ip_addr6 = "fe80::ee0d:9aff:fe5f:44c8";
   inherit (host) ip_addr4 ip_addr6 hostName;
 
   DNS_server = {
