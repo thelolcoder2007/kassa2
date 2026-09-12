@@ -7,19 +7,25 @@
 
 let
   ffmpeg-sh = pkgs.writeShellScript "ffmpeg.sh" ''
-    rtmp_key=$(${lib.getExe' pkgs.coreutils-full "cat"} ${config.sops.secrets."rtmp_key".path})
+        rtmp_key=$(${lib.getExe' pkgs.coreutils-full "cat"} ${config.sops.secrets."rtmp_key".path})
 
-    # ${lib.getExe pkgs.ffmpeg} -init_hw_device vaapi=va:/dev/dri/renderD128 -filter_hw_device va \
-		    # -hwaccel vaapi -hwaccel_output_format vaapi \
-		    # -f v4l2 -input_format mjpeg -video_size 3840x2160 -framerate 60 -i /dev/video0 \
-		    # -c:v hevc_vaapi -profile:v main -quality 4 -b:v 50M -maxrate 50M -bufsize 100M -g 30 \
-		    # -f hls -hls_time 2 -hls_list_size 5 -hls_flags delete_segments /run/mistserver/livestream.m3u8
-    ${lib.getExe pkgs.ffmpeg} -init_hw_device vaapi=va:/dev/dri/renderD128 -filter_hw_device va \
-        -f rawvideo -pix_fmt yuv420p -video_size 3840x2160 -framerate 60 -i /dev/urandom \
-        -vf 'format=nv12,hwupload' \
-        -c:v hevc_vaapi -profile:v main -quality 4 -b:v 50M -maxrate 50M -bufsize 100M -g 30 \
-        -f hls -hls_time 2 -hls_list_size 5 -hls_flags delete_segments /run/mistserver/livestream.m3u8
-  ''; # NOTE: you can use "h264_vaapi" if you want to encode to h.264 instead of h.265
+        # ${lib.getExe pkgs.ffmpeg} -init_hw_device vaapi=va:/dev/dri/renderD128 -filter_hw_device va \
+        #     -f v4l2 -input_format nv12 -video_size 3840x2160 -framerate 60 -i /dev/video0 \
+        #     -vf 'hwupload' \
+        #     -c:v hevc_vaapi -profile:v main -quality 4 -bf 2 \
+        #     -rc_mode VBR -b:v 30M -maxrate 33M -bufsize 6M -g 30 \
+        #     -f hls -hls_time 2 -hls_list_size 5 -hls_flags delete_segments /run/mistserver/livestream.m3u8
+        # ${lib.getExe pkgs.ffmpeg} -init_hw_device vaapi=va:/dev/dri/renderD128 -filter_hw_device va \
+        # 	-f rawvideo -pix_fmt nv12 -video_size 3840x2160 -framerate 60 -i /dev/urandom \
+    	   #  -vf 'hwupload' -c:v hevc_vaapi -profile:v main -quality 4 -bf 2 \
+    	   #  -rc_mode CBR -b:v 30M -maxrate 30M -bufsize 6M -g 120 \
+    	   #  -f hls -hls_time 2 -hls_list_size 5 -hls_flags delete_segments /run/mistserver/livestream.m3u8
+    		${lib.getExe pkgs.ffmpeg} -init_hw_device vaapi=va:/dev/dri/renderD128 -filter_hw_device va \
+    			-f rawvideo -pix_fmt nv12 -video_size 3840x2160 -framerate 60 -i /dev/urandom \
+    			-vf 'hwupload' -c:v hevc_vaapi \
+    			-rc_mode CBR -b:v 30M -maxrate 30M -bufsize 6M -g 120 \
+    			-f hls -hls_time 2 -hls_list_size 5 -hls_flags delete_segments /run/mistserver/livestream.m3u8
+  '';
   ffmpeg-remove = pkgs.writeShellScript "remove-hls.sh" ''
     		rm /run/mistserver/livestream*.ts
     		rm /run/mistserver/livestream.m3u8
