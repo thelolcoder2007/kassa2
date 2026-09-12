@@ -45,12 +45,14 @@
       comma
       dig
       fastfetch
+      ffmpeg
       file
       gh
       git
       htop
       iftop
       iotop
+      libva-utils
       nano
       nh
       nixfmt
@@ -62,8 +64,6 @@
       usbutils
       vim
       wget
-      libva-utils
-      ffmpeg
       # keep-sorted end
     ];
   };
@@ -87,10 +87,12 @@
   system.stateVersion = "26.05";
   hardware.graphics = {
     enable = true;
-    extraPackages = with pkgs; lib.mkForce [
-    intel-media-driver   # iHD driver — required for Arc (DG2/Xe-HPG)
-    vpl-gpu-rt           # oneVPL runtime, needed for QSV-based tools/ffmpeg plugins
-    ];
+    extraPackages =
+      with pkgs;
+      lib.mkForce [
+        intel-media-driver
+        vpl-gpu-rt
+      ];
   };
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
