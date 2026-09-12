@@ -18,18 +18,6 @@
     server = "87.208.98.246,2a07:54c1:4932::/48,127.0.0.1,::1";
     settings = {
       Hostname = config.networking.hostName;
-      UserParameter =
-        let
-          nix-update-script-path = pkgs.writeShellScript "zabbix-update-check.sh" ''
-            cp /etc/nixos/kassa2/flake.* /tmp/ >/dev/null
-            cd /tmp
-            ${lib.getExe pkgs.nix} flake update --output-lock-file /dev/stdout 2> /dev/null | ${lib.getExe pkgs.git} diff /dev/stdin /tmp/flake.lock 2> /dev/null | wc -l
-            rm /tmp/flake.*
-          '';
-        in
-        [
-          "nix_updates,${nix-update-script-path}"
-        ];
       TLSConnect = "psk";
       TLSAccept = "psk";
       TLSPSKFile = config.sops.secrets."zabbix-agent-PSK".path;
