@@ -42,10 +42,10 @@
       fsType = "btrfs";
       options = [ "subvol=nix" ];
     };
-    "/var/lib/ffmpeg" = {
-      device = "/dev/disk/by-uuid/7e790150-8de0-4187-af7b-b6a42d674dae";
-      fsType = "ext4";
-    };
+    # "/var/lib/ffmpeg" = {
+    #   device = "/dev/disk/by-uuid/7e790150-8de0-4187-af7b-b6a42d674dae";
+    #   fsType = "xfs";
+    # };
   };
 
   swapDevices = [ ];
