@@ -12,6 +12,9 @@ let
   };
 in
 {
+  services.udev.extraRules = ''
+    SUBSYSTEM=="net", ACTION=="add", KERNELS=="0000:07:00.0", NAME="smoliface"
+  '';
   networking = {
     inherit hostName;
     domain = "nationalespeeltuin.nl";
@@ -21,7 +24,7 @@ in
 
     nftables.enable = true;
 
-    interfaces.enx10ffe0be8cf0 = {
+    interfaces.smoliface = {
       ipv6.addresses = [
         {
           address = ip_addr6;
@@ -40,11 +43,11 @@ in
 
     defaultGateway = {
       address = firewall_ip_addr4;
-      interface = "enx10ffe0be8cf0";
+      interface = "smoliface";
     };
     defaultGateway6 = {
       address = firewall_ip_addr6;
-      interface = "enx10ffe0be8cf0";
+      interface = "smoliface";
     };
   };
 
