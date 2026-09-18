@@ -11,11 +11,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1789559725,
-        "narHash": "sha256-57B2WcypzO9jB89c/6XPjuQHL1GmD/2Qe7q99Z9ml9w=",
+        "lastModified": 1789725424,
+        "narHash": "sha256-p//HMcx6Yf8rerkfrB2G6AAOPouYE0M0uHFE8GD1tP8=",
         "ref": "refs/heads/master",
-        "rev": "be82fe8c87d22c67e892dada5e53f52681a98a33",
-        "revCount": 202,
+        "rev": "631b6647399d2dce2222343b574148598106d0a3",
+        "revCount": 205,
         "type": "git",
         "url": "https://git.bartoostveen.nl/bart/nix-packages.git"
       },
@@ -76,11 +76,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1788914643,
-        "narHash": "sha256-4GuMPW90JSxXWDPUB9M+1m7fYbe3H0apOd86/zBQ2Kw=",
+        "lastModified": 1789691124,
+        "narHash": "sha256-k+I+R6uwHX3VcJ7326qLV6vCahZUgsVl+i8sSU/Stxk=",
         "owner": "Mic92",
         "repo": "sops-nix",
-        "rev": "13616fff713a9f94055c66f15687ebdc17a335df",
+        "rev": "1e73e8f7176d65e1b55e324de099bbfff4b2c574",
         "type": "github"
       },
       "original": {
