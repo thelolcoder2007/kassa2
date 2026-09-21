@@ -1,13 +1,7 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ lib, pkgs, ... }:
 
 let
   ffmpeg-sh = pkgs.writeShellScript "ffmpeg.sh" ''
-     rtmp_key=$(${lib.getExe' pkgs.coreutils-full "cat"} ${config.sops.secrets."rtmp_key".path})
 
      ${lib.getExe pkgs.ffmpeg} -init_hw_device vaapi=va:/dev/dri/renderD128 -filter_hw_device va \
     		-f rawvideo -pix_fmt nv12 -video_size 3840x2160 -framerate 60 -i /dev/urandom \
@@ -46,7 +40,6 @@ in
     libvdpau-va-gl
   ];
 
-  sops.secrets."rtmp_key" = { };
   systemd = {
     tmpfiles.rules = [
       "d /run/mistserver 0755 root root -"

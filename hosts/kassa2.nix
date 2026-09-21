@@ -14,10 +14,9 @@ in
     ../monitoring/prometheus-exporter.nix
     ../monitoring/zabbix-agent.nix
     ../multimedia/ffmpeg.nix
-    ../multimedia/mistserver.nix
-    ../networking/enp3s0f0.nix
+    ../networking/smoliface.nix
     ../networking/ssh.nix
-    ../webserver/mistserver-nginx.nix
+    ../webserver/hsls-nginx-conf.nix
     # keep-sorted end
   ];
 }
