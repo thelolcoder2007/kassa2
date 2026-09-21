@@ -1,5 +1,5 @@
 {
-  description = "Kassa 2";
+  description = "The streaming host for SNTpings 2026";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -11,11 +11,6 @@
 
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    bart-pkgs = {
-      url = "git+https://git.bartoostveen.nl/bart/nix-packages.git";
-      inputs.treefmt-nix.follows = "treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -39,7 +34,6 @@
         modules = [
           ./hosts/kassa2.nix
           ./hosts/hardware-configuration-kassa2.nix
-          { nixpkgs.overlays = [ inputs.bart-pkgs.overlays.default ]; }
         ];
         specialArgs = {
           inherit inputs;
