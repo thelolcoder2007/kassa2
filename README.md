@@ -1,4 +1,5 @@
 <!-- markdownlint-disable MD013 -->
+
 # SNTpings streaming host configuration
 
 This repository is used for the configuration of the HSLS streaming computer for SNTpings 2026.
