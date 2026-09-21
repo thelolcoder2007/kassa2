@@ -85,14 +85,17 @@
   documentation.nixos.enable = false;
 
   system.stateVersion = "26.05";
-  hardware.graphics = {
-    enable = true;
-    extraPackages =
-      with pkgs;
-      lib.mkForce [
-        intel-media-driver
-        vpl-gpu-rt
-      ];
+  hardware = {
+    enableAllFirmware = true;
+    graphics = {
+      enable = true;
+      extraPackages =
+        with pkgs;
+        lib.mkForce [
+          intel-media-driver
+          vpl-gpu-rt
+        ];
+    };
   };
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
