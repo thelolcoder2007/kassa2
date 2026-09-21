@@ -15,6 +15,7 @@
   sops.templates."nix-github-token.env".content = ''
     access-tokens = github.com=${config.sops.placeholder.github_token}
   '';
+  nixpkgs.config.allowUnfree = true;
 
   nix = {
     extraOptions = ''
@@ -87,6 +88,7 @@
   system.stateVersion = "26.05";
   hardware = {
     enableAllFirmware = true;
+    enableRedistributableFirmware = true;
     graphics = {
       enable = true;
       extraPackages =
