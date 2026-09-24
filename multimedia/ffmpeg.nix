@@ -3,22 +3,22 @@
 let
   ffmpeg-sh = pkgs.writeShellScript "ffmpeg.sh" ''
 
-     ${lib.getExe pkgs.ffmpeg} -init_hw_device vaapi=va:/dev/dri/renderD128 -filter_hw_device va \
-    		-f rawvideo -pix_fmt nv12 -video_size 3840x2160 -framerate 60 -i /dev/urandom \
-      	-vf 'hwupload' -c:v hevc_vaapi -low_power 1 \
+    # ${lib.getExe pkgs.ffmpeg} -init_hw_device vaapi=va:/dev/dri/renderD128 -filter_hw_device va \
+    #  	-f rawvideo -pix_fmt yuyv422 -video_size 3840x2160 -framerate 60 -i /dev/urandom \
+    #  	-vf 'hwupload' -c:v hevc_vaapi -low_power 1 \
+    #    -rc_mode CBR -b:v 30M -maxrate 30M -bufsize 30M -g 120 \
+    #    -f hls -hls_time 2 -hls_list_size 5 -hls_flags delete_segments /run/mistserver/livestream.m3u8
+    #    -f v4l2 -input_format nv12 -video_size 3840x2160 -framerate 60 -i /dev/video0 \
+    ${lib.getExe pkgs.ffmpeg} -init_hw_device vaapi=va:/dev/dri/renderD128 -filter_hw_device va \
+      -f rawvideo -pix_fmt yuyv422 -video_size 3840x2160 -framerate 60 -i /dev/urandom \
+      -filter_complex "[0:v]split=2[a][b];[a]hwupload,split=2[live];[b]fps=1[pics]" \
+      -map "[live]" -c:v av1_vaapi \
         -rc_mode CBR -b:v 30M -maxrate 30M -bufsize 30M -g 120 \
-        -f hls -hls_time 2 -hls_list_size 5 -hls_flags delete_segments /run/mistserver/livestream.m3u8
-     	# -f v4l2 -input_format nv12 -video_size 3840x2160 -framerate 60 -i /dev/video0 \
-     # ${lib.getExe pkgs.ffmpeg} -init_hw_device vaapi=va:/dev/dri/renderD128 -filter_hw_device va \
-    	# 	-f rawvideo -pix_fmt nv12 -video_size 3840x2160 -framerate 60 -i /dev/urandom \
-     #   -filter_complex "[0:v]hwupload,split=2[live][rec]" \
-     #   -map "[live]" \
-     #   -c:v hevc_vaapi -low_power 1 \
-     #     -rc_mode CBR -b:v 30M -maxrate 30M -bufsize 30M -g 120 \
-     #     -f hls -hls_time 2 -hls_list_size 5 -hls_flags delete_segments /run/mistserver/livestream.m3u8 \
-     #   -map "[rec]" -c:v hevc_vaapi -low_power 1 \
-     #     -rc_mode CQP -qp 20 -g 120 \
-     #     -f matroska "/var/lib/ffmpeg/sntpings-recording-$(date +%Y-%m-%d_%H-%M-%S).mkv"
+        -f hls -hls_time 2 -hls_list_size 5 -hls_flags delete_segments /run/mistserver/livestream.m3u8 \
+      -map "[pics]" -f image2 -strftime 1 "/run/mistserver/%S.png" \
+      # -map "[rec]" -c:v av1_vaapi \
+      #   -rc_mode CQP -g 120 \
+      #   -f matroska "/var/lib/ffmpeg/sntpings-recording-$(date +%Y-%m-%d_%H-%M-%S).mkv"
   '';
   ffmpeg-remove = pkgs.writeShellScript "remove-hls.sh" ''
     rm -f /run/mistserver/livestream*.ts
